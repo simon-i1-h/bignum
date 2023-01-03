@@ -153,18 +153,10 @@ bignat_add(bignat *sum, bignat x, bignat y)
 	uint32_t carry = sum_digit >> 32;
 
 	for (size_t i = 1; i < x.ndigits; i++) {
-		if (i < y.ndigits) {
-			sum_digit = (uint64_t)carry +
-				(uint64_t)x.digits[i] + (uint64_t)y.digits[i];
-			bignat_push(&tmp_sum,
-				    sum_digit & (uint64_t)0xffffffff);
-			carry = sum_digit >> 32;
-		} else {
-			sum_digit = (uint64_t)carry + (uint64_t)x.digits[i];
-			bignat_push(&tmp_sum,
-				    sum_digit & (uint64_t)0xffffffff);
-			carry = sum_digit >> 32;
-		}
+		uint64_t y_digit = i < y.ndigits ? y.digits[i] : 0;
+		sum_digit = (uint64_t)carry + (uint64_t)x.digits[i] + y_digit;
+		bignat_push(&tmp_sum, sum_digit & (uint64_t)0xffffffff);
+		carry = sum_digit >> 32;
 	}
 
 	if (carry != 0) {
