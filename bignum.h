@@ -27,4 +27,12 @@ int bignat_sub(bignat *diff, bignat x, bignat y);
 int bignat_mul(bignat *prod, bignat x, bignat y);
 int bignat_div(bignat *quot, bignat x, bignat y);
 
+typedef struct bigint {
+	int sign;
+	bignat abs;
+} bigint;
+
+bigint bigint_new(int sign, uint32_t abs);
+void bigint_del(bigint n);
+
 #endif /* BIGNUM_H */
