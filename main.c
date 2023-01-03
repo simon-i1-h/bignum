@@ -225,9 +225,11 @@ test_bignat_add(void)
 		bignat x = bignat_new(1);
 		bignat y = bignat_new(2);
 		bignat sum;
+		bool b;
 
 		test_assert(bignat_add(&sum, x, y) == 0);
-		test_assert(sum.digits[0] == 3);
+		test_assert(bignat_eq(&b, sum, bignat_new(3)) == 0);
+		test_assert(b);
 
 		bignat_del(x);
 		bignat_del(y);
@@ -237,9 +239,11 @@ test_bignat_add(void)
 		bignat x = bignat_new(2);
 		bignat y = bignat_new(1);
 		bignat sum;
+		bool b;
 
 		test_assert(bignat_add(&sum, x, y) == 0);
-		test_assert(sum.digits[0] == 3);
+		test_assert(bignat_eq(&b, sum, bignat_new(3)) == 0);
+		test_assert(b);
 
 		bignat_del(x);
 		bignat_del(y);
@@ -254,9 +258,11 @@ test_bignat_sub(void)
 		bignat x = bignat_new(3);
 		bignat y = bignat_new(2);
 		bignat diff;
+		bool b;
 
 		test_assert(bignat_sub(&diff, x, y) == 0);
-		test_assert(diff.digits[0] == 1);
+		test_assert(bignat_eq(&b, diff, bignat_new(1)) == 0);
+		test_assert(b);
 
 		bignat_del(x);
 		bignat_del(y);
@@ -281,9 +287,11 @@ test_bignat_mul(void)
 		bignat x = bignat_new(3);
 		bignat y = bignat_new(4);
 		bignat prod;
+		bool b;
 
 		test_assert(bignat_mul(&prod, x, y) == 0);
-		test_assert(prod.digits[0] == 12);
+		test_assert(bignat_eq(&b, prod, bignat_new(12)) == 0);
+		test_assert(b);
 
 		bignat_del(x);
 		bignat_del(y);
@@ -293,9 +301,11 @@ test_bignat_mul(void)
 		bignat x = bignat_new(1);
 		bignat y = bignat_new(0);
 		bignat prod;
+		bool b;
 
 		test_assert(bignat_mul(&prod, x, y) == 0);
-		test_assert(prod.digits[0] == 0);
+		test_assert(bignat_eq(&b, prod, bignat_new(0)) == 0);
+		test_assert(b);
 
 		bignat_del(x);
 		bignat_del(y);
@@ -310,9 +320,11 @@ test_bignat_div(void)
 		bignat x = bignat_new(13);
 		bignat y = bignat_new(3);
 		bignat quot;
+		bool b;
 
 		test_assert(bignat_div(&quot, x, y) == 0);
-		test_assert(quot.digits[0] == 4);
+		test_assert(bignat_eq(&b, quot, bignat_new(4)) == 0);
+		test_assert(b);
 
 		bignat_del(x);
 		bignat_del(y);
