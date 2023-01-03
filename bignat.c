@@ -198,6 +198,11 @@ bignat_sub(bignat *diff, bignat x, bignat y)
 				tmp_diff.digits[i + 1]--;
 				borrow = 1;
 
+				/*
+				 * TODO: 最上位でx.digits[i] ==
+				 * y.digits[i]の場合の繰り下がりを処理
+				 * できていない。
+				 */
 				if (tmp_diff.digits[i + 1] == 0) {
 					tmp_diff.ndigits--;
 				}
