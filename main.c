@@ -6,8 +6,8 @@
 #define test_assert(expr) test_assert2(__FILE__, __LINE__, #expr, expr)
 #define test_assert2(file, line, code, expr) do {			\
 		if (!(expr)) {						\
-			printf("%s:%d: test failed: %s\n", (file), (line), \
-			       (code));				\
+			printf("%s:%d: test failed: %s\n", (file),	\
+			       (line), (code));			\
 			exit(1);					\
 		}							\
 	} while (0)

@@ -178,13 +178,39 @@ bignat_add(bignat *sum, bignat x, bignat y)
 int
 bignat_sub(bignat *diff, bignat x, bignat y)
 {
-	if (x.digits[0] < y.digits[0]) {
+	bool x_is_less;
+	int err = bignat_lt(&x_is_less, x, y);
+	if (err || x_is_less) {
 		return 1;
 	}
 
 	/* x >= y */
 
-	*diff = bignat_new(x.digits[0] - y.digits[0]);
+	bignat tmp_diff = (bignat){
+		.digits=xrealloc(NULL, sizeof(bignat) * x.ndigits),
+		.ndigits=x.ndigits
+	};
+
+	for (size_t i = x.ndigits - 1; i < x.ndigits; i--) {
+		if (i < y.ndigits) {
+			uint32_t borrow = 0;
+			if (x.digits[i] < y.digits[i]) {
+				tmp_diff.digits[i + 1]--;
+				borrow = 1;
+
+				if (tmp_diff.digits[i + 1] == 0) {
+					tmp_diff.ndigits--;
+				}
+			}
+
+			tmp_diff.digits[i] = ((uint64_t)borrow << 32) +
+				(uint64_t)x.digits[i] - (uint64_t)y.digits[i];
+		} else {
+			tmp_diff.digits[i] = x.digits[i];
+		}
+	}
+
+	*diff = tmp_diff;
 	return 0;
 }
 
