@@ -342,10 +342,130 @@ test_bignat_div(void)
 	}
 }
 
+void
+test_bigint_eq(void)
+{
+	{
+		bigint x = bigint_new(1, 1);
+		bigint y = bigint_new(1, 1);
+		bool b;
+
+		test_assert(bigint_eq(&b, x, y) == 0);
+		test_assert(b);
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x = bigint_new(-1, 1);
+		bigint y = bigint_new(-1, 1);
+		bool b;
+
+		test_assert(bigint_eq(&b, x, y) == 0);
+		test_assert(b);
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x = bigint_new(0, 0);
+		bigint y = bigint_new(0, 0);
+		bool b;
+
+		test_assert(bigint_eq(&b, x, y) == 0);
+		test_assert(b);
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x = bigint_new(1, 1);
+		bigint y = bigint_new(1, 2);
+		bool b;
+
+		test_assert(bigint_eq(&b, x, y) == 0);
+		test_assert(!b);
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x = bigint_new(-1, 1);
+		bigint y = bigint_new(-1, 2);
+		bool b;
+
+		test_assert(bigint_eq(&b, x, y) == 0);
+		test_assert(!b);
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+}
+
+void
+test_bigint_ne(void)
+{
+	{
+		bigint x = bigint_new(1, 1);
+		bigint y = bigint_new(1, 1);
+		bool b;
+
+		test_assert(bigint_ne(&b, x, y) == 0);
+		test_assert(!b);
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x = bigint_new(-1, 1);
+		bigint y = bigint_new(-1, 1);
+		bool b;
+
+		test_assert(bigint_ne(&b, x, y) == 0);
+		test_assert(!b);
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x = bigint_new(0, 0);
+		bigint y = bigint_new(0, 0);
+		bool b;
+
+		test_assert(bigint_ne(&b, x, y) == 0);
+		test_assert(!b);
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x = bigint_new(1, 1);
+		bigint y = bigint_new(1, 2);
+		bool b;
+
+		test_assert(bigint_ne(&b, x, y) == 0);
+		test_assert(b);
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x = bigint_new(-1, 1);
+		bigint y = bigint_new(-1, 2);
+		bool b;
+
+		test_assert(bigint_ne(&b, x, y) == 0);
+		test_assert(b);
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+}
+
 int
 main(void)
 {
-	/* nat */
+	/* bignat */
 	test_bignat_eq();
 	test_bignat_ne();
 	test_bignat_lt();
@@ -356,6 +476,10 @@ main(void)
 	test_bignat_sub();
 	test_bignat_mul();
 	test_bignat_div();
+
+	/* bigint */
+	test_bigint_eq();
+	test_bigint_ne();
 
 	printf("done\n");
 	return 0;

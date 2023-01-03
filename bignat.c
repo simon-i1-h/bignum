@@ -42,7 +42,7 @@ bignat_del(bignat n)
 	free(n.digits);
 }
 
-static int
+int
 bignat_cmp(int *dst, bignat x, bignat y)
 {
 	if (x.ndigits < y.ndigits) {

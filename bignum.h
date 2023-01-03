@@ -15,6 +15,7 @@ typedef struct bignat {
 bignat bignat_new(uint32_t n);
 void bignat_del(bignat n);
 
+int bignat_cmp(int *dst, bignat x, bignat y);
 int bignat_eq(bool *dst, bignat x, bignat y);
 int bignat_ne(bool *dst, bignat x, bignat y);
 int bignat_lt(bool *dst, bignat x, bignat y);
@@ -34,5 +35,8 @@ typedef struct bigint {
 
 bigint bigint_new(int sign, uint32_t abs);
 void bigint_del(bigint n);
+
+int bigint_eq(bool *dst, bigint x, bigint y);
+int bigint_ne(bool *dst, bigint x, bigint y);
 
 #endif /* BIGNUM_H */

@@ -30,3 +30,54 @@ bigint_del(bigint int_)
 {
 	bignat_del(int_.abs);
 }
+
+static int
+bigint_cmp(int *dst, bigint x, bigint y)
+{
+	if (x.sign < y.sign) {
+		*dst = -1;
+		return 0;
+	}
+
+	if (x.sign > y.sign) {
+		*dst = 1;
+		return 0;
+	}
+
+	/* x.sign == y.sign */
+
+	if (x.sign < 0) {
+		return bignat_cmp(dst, y.abs, x.abs);
+	}
+
+	if (x.sign > 0) {
+		return bignat_cmp(dst, x.abs, y.abs);
+	}
+
+	/* x.sign == 0 && y.sign == 0 */
+
+	*dst = 0;
+	return 0;
+}
+
+int
+bigint_eq(bool *dst, bigint x, bigint y)
+{
+	int cmp;
+	int err = bigint_cmp(&cmp, x, y);
+	if (err == 0) {
+		*dst = cmp == 0;
+	}
+	return err;
+}
+
+int
+bigint_ne(bool *dst, bigint x, bigint y)
+{
+	int cmp;
+	int err = bigint_cmp(&cmp, x, y);
+	if (err == 0) {
+		*dst = cmp != 0;
+	}
+	return err;
+}
