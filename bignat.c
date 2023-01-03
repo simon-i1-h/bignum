@@ -198,11 +198,6 @@ bignat_sub(bignat *diff, bignat x, bignat y)
 				tmp_diff.digits[i + 1]--;
 				borrow = 1;
 
-				/*
-				 * TODO: 最上位でx.digits[i] ==
-				 * y.digits[i]の場合の繰り下がりを処理
-				 * できていない。
-				 */
 				if (tmp_diff.digits[i + 1] == 0) {
 					tmp_diff.ndigits--;
 				}
@@ -210,6 +205,10 @@ bignat_sub(bignat *diff, bignat x, bignat y)
 
 			tmp_diff.digits[i] = ((uint64_t)borrow << 32) +
 				(uint64_t)x.digits[i] - (uint64_t)y.digits[i];
+			if (tmp_diff.digits[i] == 0 &&
+			    i == tmp_diff.ndigits - 1) {
+				tmp_diff.ndigits--;
+			}
 		} else {
 			tmp_diff.digits[i] = x.digits[i];
 		}
