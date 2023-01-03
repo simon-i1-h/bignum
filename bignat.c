@@ -218,6 +218,7 @@ bignat_sub(bignat *diff, bignat x, bignat y)
 	return 0;
 }
 
+/* TODO: 多倍長 */
 int
 bignat_mul(bignat *prod, bignat x, bignat y)
 {
@@ -225,6 +226,7 @@ bignat_mul(bignat *prod, bignat x, bignat y)
 	return 0;
 }
 
+/* TODO: 多倍長 */
 int
 bignat_div(bignat *quot, bignat x, bignat y)
 {
