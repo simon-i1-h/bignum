@@ -67,6 +67,158 @@ test_bignat_ne(void)
 }
 
 void
+test_bignat_lt(void)
+{
+	{
+		bignat x = bignat_new(1);
+		bignat y = bignat_new(1);
+		bool b;
+
+		test_assert(bignat_lt(&b, x, y) == 0);
+		test_assert(!b);
+
+		bignat_del(x);
+		bignat_del(y);
+	}
+	{
+		bignat x = bignat_new(1);
+		bignat y = bignat_new(2);
+		bool b;
+
+		test_assert(bignat_lt(&b, x, y) == 0);
+		test_assert(b);
+
+		bignat_del(x);
+		bignat_del(y);
+	}
+	{
+		bignat x = bignat_new(2);
+		bignat y = bignat_new(1);
+		bool b;
+
+		test_assert(bignat_lt(&b, x, y) == 0);
+		test_assert(!b);
+
+		bignat_del(x);
+		bignat_del(y);
+	}
+}
+
+void
+test_bignat_gt(void)
+{
+	{
+		bignat x = bignat_new(1);
+		bignat y = bignat_new(1);
+		bool b;
+
+		test_assert(bignat_gt(&b, x, y) == 0);
+		test_assert(!b);
+
+		bignat_del(x);
+		bignat_del(y);
+	}
+	{
+		bignat x = bignat_new(1);
+		bignat y = bignat_new(2);
+		bool b;
+
+		test_assert(bignat_gt(&b, x, y) == 0);
+		test_assert(!b);
+
+		bignat_del(x);
+		bignat_del(y);
+	}
+	{
+		bignat x = bignat_new(2);
+		bignat y = bignat_new(1);
+		bool b;
+
+		test_assert(bignat_gt(&b, x, y) == 0);
+		test_assert(b);
+
+		bignat_del(x);
+		bignat_del(y);
+	}
+}
+
+void
+test_bignat_le(void)
+{
+	{
+		bignat x = bignat_new(1);
+		bignat y = bignat_new(1);
+		bool b;
+
+		test_assert(bignat_le(&b, x, y) == 0);
+		test_assert(b);
+
+		bignat_del(x);
+		bignat_del(y);
+	}
+	{
+		bignat x = bignat_new(1);
+		bignat y = bignat_new(2);
+		bool b;
+
+		test_assert(bignat_le(&b, x, y) == 0);
+		test_assert(b);
+
+		bignat_del(x);
+		bignat_del(y);
+	}
+	{
+		bignat x = bignat_new(2);
+		bignat y = bignat_new(1);
+		bool b;
+
+		test_assert(bignat_le(&b, x, y) == 0);
+		test_assert(!b);
+
+		bignat_del(x);
+		bignat_del(y);
+	}
+}
+
+void
+test_bignat_ge(void)
+{
+	{
+		bignat x = bignat_new(1);
+		bignat y = bignat_new(1);
+		bool b;
+
+		test_assert(bignat_ge(&b, x, y) == 0);
+		test_assert(b);
+
+		bignat_del(x);
+		bignat_del(y);
+	}
+	{
+		bignat x = bignat_new(1);
+		bignat y = bignat_new(2);
+		bool b;
+
+		test_assert(bignat_ge(&b, x, y) == 0);
+		test_assert(!b);
+
+		bignat_del(x);
+		bignat_del(y);
+	}
+	{
+		bignat x = bignat_new(2);
+		bignat y = bignat_new(1);
+		bool b;
+
+		test_assert(bignat_ge(&b, x, y) == 0);
+		test_assert(b);
+
+		bignat_del(x);
+		bignat_del(y);
+	}
+}
+
+void
 test_bignat_add(void)
 {
 	{
@@ -75,7 +227,7 @@ test_bignat_add(void)
 		bignat sum;
 
 		test_assert(bignat_add(&sum, x, y) == 0);
-		test_assert(sum.digit == 3);
+		test_assert(sum.digits[0] == 3);
 
 		bignat_del(x);
 		bignat_del(y);
@@ -87,7 +239,7 @@ test_bignat_add(void)
 		bignat sum;
 
 		test_assert(bignat_add(&sum, x, y) == 0);
-		test_assert(sum.digit == 3);
+		test_assert(sum.digits[0] == 3);
 
 		bignat_del(x);
 		bignat_del(y);
@@ -104,7 +256,7 @@ test_bignat_sub(void)
 		bignat diff;
 
 		test_assert(bignat_sub(&diff, x, y) == 0);
-		test_assert(diff.digit == 1);
+		test_assert(diff.digits[0] == 1);
 
 		bignat_del(x);
 		bignat_del(y);
@@ -131,7 +283,7 @@ test_bignat_mul(void)
 		bignat prod;
 
 		test_assert(bignat_mul(&prod, x, y) == 0);
-		test_assert(prod.digit == 12);
+		test_assert(prod.digits[0] == 12);
 
 		bignat_del(x);
 		bignat_del(y);
@@ -143,7 +295,7 @@ test_bignat_mul(void)
 		bignat prod;
 
 		test_assert(bignat_mul(&prod, x, y) == 0);
-		test_assert(prod.digit == 0);
+		test_assert(prod.digits[0] == 0);
 
 		bignat_del(x);
 		bignat_del(y);
@@ -160,7 +312,7 @@ test_bignat_div(void)
 		bignat quot;
 
 		test_assert(bignat_div(&quot, x, y) == 0);
-		test_assert(quot.digit == 4);
+		test_assert(quot.digits[0] == 4);
 
 		bignat_del(x);
 		bignat_del(y);
@@ -175,7 +327,6 @@ test_bignat_div(void)
 
 		bignat_del(x);
 		bignat_del(y);
-		bignat_del(quot);
 	}
 }
 
@@ -185,6 +336,10 @@ main(void)
 	/* nat */
 	test_bignat_eq();
 	test_bignat_ne();
+	test_bignat_lt();
+	test_bignat_gt();
+	test_bignat_le();
+	test_bignat_ge();
 	test_bignat_add();
 	test_bignat_sub();
 	test_bignat_mul();
