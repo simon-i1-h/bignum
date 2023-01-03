@@ -197,21 +197,21 @@ bignat_sub(bignat *diff, bignat x, bignat y)
 			if (x.digits[i] < y.digits[i]) {
 				tmp_diff.digits[i + 1]--;
 				borrow = 1;
-
-				if (tmp_diff.digits[i + 1] == 0) {
-					tmp_diff.ndigits--;
-				}
 			}
 
 			tmp_diff.digits[i] = ((uint64_t)borrow << 32) +
 				(uint64_t)x.digits[i] - (uint64_t)y.digits[i];
-			if (tmp_diff.digits[i] == 0 &&
-			    i == tmp_diff.ndigits - 1) {
-				tmp_diff.ndigits--;
-			}
 		} else {
 			tmp_diff.digits[i] = x.digits[i];
 		}
+	}
+
+	/* 末尾0の削除 */
+	for (size_t i = tmp_diff.ndigits - 1; i != 0; i--) {
+		if (tmp_diff.digits[i] != 0) {
+			break;
+		}
+		tmp_diff.ndigits--;
 	}
 
 	*diff = tmp_diff;
