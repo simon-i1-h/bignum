@@ -1,9 +1,11 @@
-#ifndef BIGNUM_BIGNAT_H
-#define BIGNUM_BIGNAT_H
+#ifndef BIGNUM_H
+#define BIGNUM_H
 
 #include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>
+
+/* bignat */
 
 typedef struct bignat {
 	uint32_t *digits;
@@ -25,4 +27,4 @@ int bignat_sub(bignat *diff, bignat x, bignat y);
 int bignat_mul(bignat *prod, bignat x, bignat y);
 int bignat_div(bignat *quot, bignat x, bignat y);
 
-#endif /* BIGNUM_BIGNAT_H */
+#endif /* BIGNUM_H */

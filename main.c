@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "bignat.h"
+#include "bignum.h"
 
 #define test_assert(expr) test_assert2(__FILE__, __LINE__, #expr, expr)
 #define test_assert2(file, line, code, expr) do {			\

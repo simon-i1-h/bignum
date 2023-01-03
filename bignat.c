@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "bignat.h"
+#include "bignum.h"
 
 void *
 xrealloc(void *ptr, size_t size)

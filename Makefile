@@ -20,6 +20,6 @@ test_bignum: $(OBJS)
 	$(CC) $(CFLAGS) -MMD -MP -c -o $@ $<
 
 clean:
-	rm -f $(PROG) $(OBJS)
+	rm -f $(PROG) $(OBJS) $(DEPS)
 
 -include $(DEPS)
