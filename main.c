@@ -16,8 +16,8 @@ void
 test_bignat_eq(void)
 {
 	{
-		bignat x = bignat_new(1);
-		bignat y = bignat_new(1);
+		bignat x = bignat_from_a_digit(1);
+		bignat y = bignat_from_a_digit(1);
 		bool b;
 
 		test_assert(bignat_eq(&b, x, y) == 0);
@@ -27,8 +27,8 @@ test_bignat_eq(void)
 		bignat_del(y);
 	}
 	{
-		bignat x = bignat_new(1);
-		bignat y = bignat_new(2);
+		bignat x = bignat_from_a_digit(1);
+		bignat y = bignat_from_a_digit(2);
 		bool b;
 
 		test_assert(bignat_eq(&b, x, y) == 0);
@@ -43,8 +43,8 @@ void
 test_bignat_ne(void)
 {
 	{
-		bignat x = bignat_new(1);
-		bignat y = bignat_new(2);
+		bignat x = bignat_from_a_digit(1);
+		bignat y = bignat_from_a_digit(2);
 		bool b;
 
 		test_assert(bignat_ne(&b, x, y) == 0);
@@ -54,8 +54,8 @@ test_bignat_ne(void)
 		bignat_del(y);
 	}
 	{
-		bignat x = bignat_new(1);
-		bignat y = bignat_new(1);
+		bignat x = bignat_from_a_digit(1);
+		bignat y = bignat_from_a_digit(1);
 		bool b;
 
 		test_assert(bignat_ne(&b, x, y) == 0);
@@ -70,8 +70,8 @@ void
 test_bignat_lt(void)
 {
 	{
-		bignat x = bignat_new(1);
-		bignat y = bignat_new(1);
+		bignat x = bignat_from_a_digit(1);
+		bignat y = bignat_from_a_digit(1);
 		bool b;
 
 		test_assert(bignat_lt(&b, x, y) == 0);
@@ -81,8 +81,8 @@ test_bignat_lt(void)
 		bignat_del(y);
 	}
 	{
-		bignat x = bignat_new(1);
-		bignat y = bignat_new(2);
+		bignat x = bignat_from_a_digit(1);
+		bignat y = bignat_from_a_digit(2);
 		bool b;
 
 		test_assert(bignat_lt(&b, x, y) == 0);
@@ -92,8 +92,8 @@ test_bignat_lt(void)
 		bignat_del(y);
 	}
 	{
-		bignat x = bignat_new(2);
-		bignat y = bignat_new(1);
+		bignat x = bignat_from_a_digit(2);
+		bignat y = bignat_from_a_digit(1);
 		bool b;
 
 		test_assert(bignat_lt(&b, x, y) == 0);
@@ -108,8 +108,8 @@ void
 test_bignat_gt(void)
 {
 	{
-		bignat x = bignat_new(1);
-		bignat y = bignat_new(1);
+		bignat x = bignat_from_a_digit(1);
+		bignat y = bignat_from_a_digit(1);
 		bool b;
 
 		test_assert(bignat_gt(&b, x, y) == 0);
@@ -119,8 +119,8 @@ test_bignat_gt(void)
 		bignat_del(y);
 	}
 	{
-		bignat x = bignat_new(1);
-		bignat y = bignat_new(2);
+		bignat x = bignat_from_a_digit(1);
+		bignat y = bignat_from_a_digit(2);
 		bool b;
 
 		test_assert(bignat_gt(&b, x, y) == 0);
@@ -130,8 +130,8 @@ test_bignat_gt(void)
 		bignat_del(y);
 	}
 	{
-		bignat x = bignat_new(2);
-		bignat y = bignat_new(1);
+		bignat x = bignat_from_a_digit(2);
+		bignat y = bignat_from_a_digit(1);
 		bool b;
 
 		test_assert(bignat_gt(&b, x, y) == 0);
@@ -146,8 +146,8 @@ void
 test_bignat_le(void)
 {
 	{
-		bignat x = bignat_new(1);
-		bignat y = bignat_new(1);
+		bignat x = bignat_from_a_digit(1);
+		bignat y = bignat_from_a_digit(1);
 		bool b;
 
 		test_assert(bignat_le(&b, x, y) == 0);
@@ -157,8 +157,8 @@ test_bignat_le(void)
 		bignat_del(y);
 	}
 	{
-		bignat x = bignat_new(1);
-		bignat y = bignat_new(2);
+		bignat x = bignat_from_a_digit(1);
+		bignat y = bignat_from_a_digit(2);
 		bool b;
 
 		test_assert(bignat_le(&b, x, y) == 0);
@@ -168,8 +168,8 @@ test_bignat_le(void)
 		bignat_del(y);
 	}
 	{
-		bignat x = bignat_new(2);
-		bignat y = bignat_new(1);
+		bignat x = bignat_from_a_digit(2);
+		bignat y = bignat_from_a_digit(1);
 		bool b;
 
 		test_assert(bignat_le(&b, x, y) == 0);
@@ -184,8 +184,8 @@ void
 test_bignat_ge(void)
 {
 	{
-		bignat x = bignat_new(1);
-		bignat y = bignat_new(1);
+		bignat x = bignat_from_a_digit(1);
+		bignat y = bignat_from_a_digit(1);
 		bool b;
 
 		test_assert(bignat_ge(&b, x, y) == 0);
@@ -195,8 +195,8 @@ test_bignat_ge(void)
 		bignat_del(y);
 	}
 	{
-		bignat x = bignat_new(1);
-		bignat y = bignat_new(2);
+		bignat x = bignat_from_a_digit(1);
+		bignat y = bignat_from_a_digit(2);
 		bool b;
 
 		test_assert(bignat_ge(&b, x, y) == 0);
@@ -206,8 +206,8 @@ test_bignat_ge(void)
 		bignat_del(y);
 	}
 	{
-		bignat x = bignat_new(2);
-		bignat y = bignat_new(1);
+		bignat x = bignat_from_a_digit(2);
+		bignat y = bignat_from_a_digit(1);
 		bool b;
 
 		test_assert(bignat_ge(&b, x, y) == 0);
@@ -222,13 +222,13 @@ void
 test_bignat_add(void)
 {
 	{
-		bignat x = bignat_new(1);
-		bignat y = bignat_new(2);
+		bignat x = bignat_from_a_digit(1);
+		bignat y = bignat_from_a_digit(2);
 		bignat sum;
 		bool b;
 
 		test_assert(bignat_add(&sum, x, y) == 0);
-		test_assert(bignat_eq(&b, sum, bignat_new(3)) == 0);
+		test_assert(bignat_eq(&b, sum, bignat_from_a_digit(3)) == 0);
 		test_assert(b);
 
 		bignat_del(x);
@@ -236,13 +236,13 @@ test_bignat_add(void)
 		bignat_del(sum);
 	}
 	{
-		bignat x = bignat_new(2);
-		bignat y = bignat_new(1);
+		bignat x = bignat_from_a_digit(2);
+		bignat y = bignat_from_a_digit(1);
 		bignat sum;
 		bool b;
 
 		test_assert(bignat_add(&sum, x, y) == 0);
-		test_assert(bignat_eq(&b, sum, bignat_new(3)) == 0);
+		test_assert(bignat_eq(&b, sum, bignat_from_a_digit(3)) == 0);
 		test_assert(b);
 
 		bignat_del(x);
@@ -255,13 +255,13 @@ void
 test_bignat_sub(void)
 {
 	{
-		bignat x = bignat_new(3);
-		bignat y = bignat_new(2);
+		bignat x = bignat_from_a_digit(3);
+		bignat y = bignat_from_a_digit(2);
 		bignat diff;
 		bool b;
 
 		test_assert(bignat_sub(&diff, x, y) == 0);
-		test_assert(bignat_eq(&b, diff, bignat_new(1)) == 0);
+		test_assert(bignat_eq(&b, diff, bignat_from_a_digit(1)) == 0);
 		test_assert(b);
 
 		bignat_del(x);
@@ -269,8 +269,8 @@ test_bignat_sub(void)
 		bignat_del(diff);
 	}
 	{
-		bignat x = bignat_new(2);
-		bignat y = bignat_new(3);
+		bignat x = bignat_from_a_digit(2);
+		bignat y = bignat_from_a_digit(3);
 		bignat diff;
 
 		test_assert(bignat_sub(&diff, x, y) == 1);
@@ -284,13 +284,13 @@ void
 test_bignat_mul(void)
 {
 	{
-		bignat x = bignat_new(3);
-		bignat y = bignat_new(4);
+		bignat x = bignat_from_a_digit(3);
+		bignat y = bignat_from_a_digit(4);
 		bignat prod;
 		bool b;
 
 		test_assert(bignat_mul(&prod, x, y) == 0);
-		test_assert(bignat_eq(&b, prod, bignat_new(12)) == 0);
+		test_assert(bignat_eq(&b, prod, bignat_from_a_digit(12)) == 0);
 		test_assert(b);
 
 		bignat_del(x);
@@ -298,13 +298,13 @@ test_bignat_mul(void)
 		bignat_del(prod);
 	}
 	{
-		bignat x = bignat_new(1);
-		bignat y = bignat_new(0);
+		bignat x = bignat_from_a_digit(1);
+		bignat y = bignat_from_a_digit(0);
 		bignat prod;
 		bool b;
 
 		test_assert(bignat_mul(&prod, x, y) == 0);
-		test_assert(bignat_eq(&b, prod, bignat_new(0)) == 0);
+		test_assert(bignat_eq(&b, prod, bignat_from_a_digit(0)) == 0);
 		test_assert(b);
 
 		bignat_del(x);
@@ -317,13 +317,13 @@ void
 test_bignat_div(void)
 {
 	{
-		bignat x = bignat_new(13);
-		bignat y = bignat_new(3);
+		bignat x = bignat_from_a_digit(13);
+		bignat y = bignat_from_a_digit(3);
 		bignat quot;
 		bool b;
 
 		test_assert(bignat_div(&quot, x, y) == 0);
-		test_assert(bignat_eq(&b, quot, bignat_new(4)) == 0);
+		test_assert(bignat_eq(&b, quot, bignat_from_a_digit(4)) == 0);
 		test_assert(b);
 
 		bignat_del(x);
@@ -331,8 +331,8 @@ test_bignat_div(void)
 		bignat_del(quot);
 	}
 	{
-		bignat x = bignat_new(1);
-		bignat y = bignat_new(0);
+		bignat x = bignat_from_a_digit(1);
+		bignat y = bignat_from_a_digit(0);
 		bignat quot;
 
 		test_assert(bignat_div(&quot, x, y) == 1);

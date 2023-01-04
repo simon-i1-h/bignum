@@ -26,7 +26,7 @@ bignat_push(bignat *nat, uint32_t n)
 }
 
 bignat
-bignat_new(uint32_t n)
+bignat_from_a_digit(uint32_t n)
 {
 	bignat nat = {
 		.digits=xrealloc(NULL, sizeof(uint32_t)),
@@ -149,7 +149,7 @@ bignat_add(bignat *sum, bignat x, bignat y)
 	/* x.ndigits >= y.ndigits */
 
 	uint64_t sum_digit = (uint64_t)x.digits[0] + (uint64_t)y.digits[0];
-	bignat tmp_sum = bignat_new(sum_digit & (uint64_t)0xffffffff);
+	bignat tmp_sum = bignat_from_a_digit(sum_digit & (uint64_t)0xffffffff);
 	uint32_t carry = sum_digit >> 32;
 
 	for (size_t i = 1; i < x.ndigits; i++) {
@@ -214,7 +214,7 @@ bignat_sub(bignat *diff, bignat x, bignat y)
 int
 bignat_mul(bignat *prod, bignat x, bignat y)
 {
-	*prod = bignat_new(x.digits[0] * y.digits[0]);
+	*prod = bignat_from_a_digit(x.digits[0] * y.digits[0]);
 	return 0;
 }
 
@@ -226,6 +226,6 @@ bignat_div(bignat *quot, bignat x, bignat y)
 		return 1;
 	}
 
-	*quot = bignat_new(x.digits[0] / y.digits[0]);
+	*quot = bignat_from_a_digit(x.digits[0] / y.digits[0]);
 	return 0;
 }

@@ -1,3 +1,4 @@
 /test_bignum
 *.o
 *.d
+/compile_commands.json
