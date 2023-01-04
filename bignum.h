@@ -12,6 +12,7 @@ typedef struct bignat {
 	size_t ndigits;
 } bignat;
 
+void bignat_dump(bignat nat);
 bignat bignat_from_a_digit(uint32_t n);
 void bignat_del(bignat n);
 

@@ -25,6 +25,19 @@ bignat_push(bignat *nat, uint32_t n)
 	nat->digits[new_ndigits - 1] = n;
 }
 
+void
+bignat_dump(bignat nat)
+{
+	printf("dump bignat---------\n");
+	printf("ndigits:%zu\n", nat.ndigits);
+	printf("digits:");
+	for (size_t i = 0; i < nat.ndigits; i++) {
+		printf("%d,", nat.digits[i]);
+	}
+	printf("\n");
+	printf("--------------------\n");
+}
+
 bignat
 bignat_from_a_digit(uint32_t n)
 {
@@ -210,11 +223,52 @@ bignat_sub(bignat *diff, bignat x, bignat y)
 	return 0;
 }
 
-/* TODO: 多倍長 */
+static bignat
+bignat_from_prod_digit(uint64_t prod_digit, size_t start)
+{
+	bool is_2digits = prod_digit & 0xffffffff00000000;
+
+	size_t ndigits = start + 1;
+	if (is_2digits) {
+		ndigits++;
+	}
+
+	bignat nat = {
+		.digits=xrealloc(NULL, sizeof(uint32_t) * ndigits),
+		.ndigits=ndigits
+	};
+	for (size_t i = 0; i < start; i++) {
+		nat.digits[i] = 0;
+	}
+
+	nat.digits[start] = prod_digit & 0xffffffff;
+	if (is_2digits) {
+		nat.digits[start + 1] = prod_digit >> 32;
+	}
+
+	return nat;
+}
+
 int
 bignat_mul(bignat *prod, bignat x, bignat y)
 {
-	*prod = bignat_from_a_digit(x.digits[0] * y.digits[0]);
+	bignat tmp_prod = bignat_from_a_digit(0);
+
+	for (size_t ix = 0; ix < x.ndigits; ix++) {
+		for (size_t iy = 0; iy < y.ndigits; iy++) {
+			uint64_t prod_digit = (uint64_t)x.digits[ix] *
+				(uint64_t)y.digits[iy];
+			bignat new_tmp_prod;
+			bignat p = bignat_from_prod_digit(
+				prod_digit, ix + iy);
+			bignat_add(&new_tmp_prod, tmp_prod, p);
+			bignat_del(tmp_prod);
+			bignat_del(p);
+			tmp_prod = new_tmp_prod;
+		}
+	}
+
+	*prod = tmp_prod;
 	return 0;
 }
 
