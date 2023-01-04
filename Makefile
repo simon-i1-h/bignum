@@ -23,6 +23,6 @@ test_bignum: $(OBJS)
 	$(CC) $(CFLAGS) -MMD -MP -c -o $@ $<
 
 clean:
-	rm -f $(PROG) $(OBJS) $(DEPS)
+	rm -f $(PROG) $(OBJS) $(DEPS) compile_commands.json
 
 -include $(DEPS)
