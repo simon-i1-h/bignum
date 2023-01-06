@@ -21,7 +21,7 @@ bigint_new(int sign, uint32_t abs)
 
 	return (bigint){
 		.sign=sign,
-		.abs=bignat_from_a_digit(abs)
+		.abs=bignat_from_digit(abs)
 	};
 }
 

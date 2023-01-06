@@ -39,7 +39,7 @@ bignat_dump(bignat nat)
 }
 
 bignat
-bignat_from_a_digit(uint32_t n)
+bignat_from_digit(uint32_t n)
 {
 	bignat nat = {
 		.digits=xrealloc(NULL, sizeof(uint32_t)),
@@ -162,7 +162,7 @@ bignat_add(bignat *sum, bignat x, bignat y)
 	/* x.ndigits >= y.ndigits */
 
 	uint64_t sum_digit = (uint64_t)x.digits[0] + (uint64_t)y.digits[0];
-	bignat tmp_sum = bignat_from_a_digit(sum_digit & (uint64_t)0xffffffff);
+	bignat tmp_sum = bignat_from_digit(sum_digit & (uint64_t)0xffffffff);
 	uint32_t carry = sum_digit >> 32;
 
 	for (size_t i = 1; i < x.ndigits; i++) {
@@ -194,7 +194,7 @@ bignat_sub(bignat *diff, bignat x, bignat y)
 	uint32_t borrow = x.digits[0] < y.digits[0];
 	uint32_t diff_digit = ((uint64_t)borrow << 32) +
 			(uint64_t)x.digits[0] - y.digits[0];
-	bignat tmp_diff = bignat_from_a_digit(diff_digit);
+	bignat tmp_diff = bignat_from_digit(diff_digit);
 
 	for (size_t i = 1; i < x.ndigits; i++) {
 		uint64_t y_digit = (uint64_t)borrow +
@@ -246,7 +246,7 @@ bignat_from_prod_digit(uint64_t prod_digit, size_t start)
 int
 bignat_mul(bignat *prod, bignat x, bignat y)
 {
-	bignat tmp_prod = bignat_from_a_digit(0);
+	bignat tmp_prod = bignat_from_digit(0);
 
 	for (size_t ix = 0; ix < x.ndigits; ix++) {
 		for (size_t iy = 0; iy < y.ndigits; iy++) {
@@ -274,6 +274,6 @@ bignat_div(bignat *quot, bignat x, bignat y)
 		return 1;
 	}
 
-	*quot = bignat_from_a_digit(x.digits[0] / y.digits[0]);
+	*quot = bignat_from_digit(x.digits[0] / y.digits[0]);
 	return 0;
 }
