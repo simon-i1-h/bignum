@@ -191,24 +191,18 @@ bignat_sub(bignat *diff, bignat x, bignat y)
 
 	/* x >= y */
 
-	bignat tmp_diff = (bignat){
-		.digits=xrealloc(NULL, sizeof(bignat) * x.ndigits),
-		.ndigits=x.ndigits
-	};
+	uint32_t borrow = x.digits[0] < y.digits[0];
+	uint32_t diff_digit = ((uint64_t)borrow << 32) +
+			(uint64_t)x.digits[0] - y.digits[0];
+	bignat tmp_diff = bignat_from_a_digit(diff_digit);
 
-	for (size_t i = x.ndigits - 1; i < x.ndigits; i--) {
-		if (i < y.ndigits) {
-			uint32_t borrow = 0;
-			if (x.digits[i] < y.digits[i]) {
-				tmp_diff.digits[i + 1]--;
-				borrow = 1;
-			}
-
-			tmp_diff.digits[i] = ((uint64_t)borrow << 32) +
-				(uint64_t)x.digits[i] - (uint64_t)y.digits[i];
-		} else {
-			tmp_diff.digits[i] = x.digits[i];
-		}
+	for (size_t i = 1; i < x.ndigits; i++) {
+		uint64_t y_digit = (uint64_t)borrow +
+			(uint64_t)(i < y.ndigits ? y.digits[i] : 0);
+		borrow = x.digits[i] < y_digit;
+		diff_digit = ((uint64_t)borrow << 32) +
+			(uint64_t)x.digits[i] - y_digit;
+		bignat_push(&tmp_diff, diff_digit);
 	}
 
 	/* 末尾0の削除 */
