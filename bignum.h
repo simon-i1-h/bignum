@@ -21,8 +21,13 @@ uint32_t dgtvec_pop(dgtvec *v);
 
 /* bignat */
 
+/*
+ * 先行0は常にすべて取り除かれる。特に、値0は要素数0として表現されるこ
+ * とに注意。
+ */
 typedef dgtvec bignat;
 
+bignat bignat_new(uint32_t *digits, size_t ndigits);
 bignat bignat_from_digit(uint32_t n);
 void bignat_del(bignat n);
 
