@@ -1,6 +1,36 @@
+#include <stdint.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "bignum.h"
+
+#define countof(a) (sizeof(a) / sizeof((a)[0]))
+
+/* dump */
+
+void
+dump_dgtvec(void)
+{
+	{
+		dgtvec v = dgtvec_new(NULL, 0);
+		dgtvec_dump(v);
+		dgtvec_del(v);
+	}
+	{
+		uint32_t digit = 1;
+		dgtvec v = dgtvec_new(&digit, 1);
+		dgtvec_dump(v);
+		dgtvec_del(v);
+	}
+	{
+		uint32_t digits[] = {3, 1, 2};
+		dgtvec v = dgtvec_new(digits, countof(digits));
+		dgtvec_dump(v);
+		dgtvec_del(v);
+	}
+}
+
+/* test */
 
 int nfailures = 0;
 int nsuccesses = 0;
@@ -501,8 +531,13 @@ test_bigint_ne(void)
 }
 
 int
-main(void)
+main(int argc, char **argv)
 {
+	if (argc > 1 && strcmp(argv[1], "--dumper") == 0) {
+		dump_dgtvec();
+		return 0;
+	}
+
 	/* dgtvec */
 	test_dgtvec_push();
 	test_dgtvec_pop();

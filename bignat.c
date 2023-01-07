@@ -5,19 +5,6 @@
 
 #include "bignum.h"
 
-void
-bignat_dump(bignat nat)
-{
-	printf("dump bignat---------\n");
-	printf("ndigits:%zu\n", nat.ndigits);
-	printf("digits:");
-	for (size_t i = 0; i < nat.ndigits; i++) {
-		printf("%d,", nat.digits[i]);
-	}
-	printf("\n");
-	printf("--------------------\n");
-}
-
 bignat
 bignat_from_digit(uint32_t n)
 {

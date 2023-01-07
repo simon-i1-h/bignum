@@ -62,6 +62,25 @@ dgtvec_del(dgtvec v)
 }
 
 void
+dgtvec_dump(dgtvec v)
+{
+	printf("dump dgtvec---------\n");
+	printf("digits: ");
+	if (v.ndigits == 0) {
+		printf("(none)");
+	} else {
+		printf("%d", v.digits[0]);
+		for (size_t i = 1; i < v.ndigits; i++) {
+			printf(", %d", v.digits[i]);
+		}
+	}
+	printf("\n");
+	printf("ndigits: %zu\n", v.ndigits);
+	printf("cap: %zu\n", v.cap);
+	printf("--------------------\n");
+}
+
+void
 dgtvec_push(dgtvec *v, uint32_t n)
 {
 	if (v->cap == v->ndigits) {

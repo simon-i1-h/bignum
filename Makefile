@@ -11,6 +11,7 @@ CFLAGS = -std=c2x -g -Wall -Wextra
 all: test_bignum
 
 test: all
+	./test_dumper.sh
 	./$(PROG)
 
 bear: clean
@@ -24,5 +25,6 @@ test_bignum: $(OBJS)
 
 clean:
 	rm -f $(PROG) $(OBJS) $(DEPS) compile_commands.json
+	rm -rf tmp
 
 -include $(DEPS)
