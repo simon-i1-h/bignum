@@ -5,6 +5,19 @@
 #include <stdint.h>
 #include <stddef.h>
 
+/* dgtvec */
+
+typedef struct dgtvec {
+	uint32_t *digits;
+	size_t ndigits;
+	size_t cap;
+} dgtvec;
+
+dgtvec dgtvec_new(uint32_t *digits, size_t ndigits);
+void dgtvec_del(dgtvec v);
+void dgtvec_push(dgtvec *v, uint32_t n);
+uint32_t dgtvec_pop(dgtvec *v);
+
 /* bignat */
 
 typedef struct bignat {

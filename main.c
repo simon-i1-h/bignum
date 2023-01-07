@@ -1,16 +1,54 @@
 #include <stdio.h>
-#include <stdlib.h>
 
 #include "bignum.h"
+
+int nfailures = 0;
+int nsuccesses = 0;
 
 #define test_assert(expr) test_assert2(__FILE__, __LINE__, #expr, expr)
 #define test_assert2(file, line, code, expr) do {			\
 		if (!(expr)) {						\
 			printf("%s:%d: test failed: %s\n", (file),	\
 			       (line), (code));			\
-			exit(1);					\
+			nfailures++;					\
+		} else {						\
+			nsuccesses++;					\
 		}							\
 	} while (0)
+
+void
+test_dgtvec_push(void)
+{
+	dgtvec v = dgtvec_new(NULL, 0);
+
+	dgtvec_push(&v, 0);
+	dgtvec_push(&v, 0);
+	dgtvec_push(&v, 1);
+	test_assert(v.ndigits == 3);
+	test_assert(v.digits[0] == 0);
+	test_assert(v.digits[1] == 0);
+	test_assert(v.digits[2] == 1);
+
+	dgtvec_del(v);
+}
+
+void
+test_dgtvec_pop(void)
+{
+	dgtvec v = dgtvec_new(NULL, 0);
+
+	dgtvec_push(&v, 3);
+	dgtvec_push(&v, 2);
+	dgtvec_push(&v, 1);
+	test_assert(dgtvec_pop(&v) == 1);
+	test_assert(v.ndigits == 2);
+	test_assert(dgtvec_pop(&v) == 2);
+	test_assert(v.ndigits == 1);
+	test_assert(dgtvec_pop(&v) == 3);
+	test_assert(v.ndigits == 0);
+
+	dgtvec_del(v);
+}
 
 void
 test_bignat_eq(void)
@@ -465,6 +503,10 @@ test_bigint_ne(void)
 int
 main(void)
 {
+	/* dgtvec */
+	test_dgtvec_push();
+	test_dgtvec_pop();
+
 	/* bignat */
 	test_bignat_eq();
 	test_bignat_ne();
@@ -481,6 +523,8 @@ main(void)
 	test_bigint_eq();
 	test_bigint_ne();
 
-	printf("done\n");
-	return 0;
+	printf("successes: %d\n", nsuccesses);
+	printf("failures: %d\n", nfailures);
+
+	return !!nfailures;
 }
