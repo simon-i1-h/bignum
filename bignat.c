@@ -30,6 +30,7 @@ bignat_from_digit(uint32_t n)
 	if (n == 0) {
 		return dgtvec_new(NULL, 0);
 	}
+
 	return dgtvec_new(&n, 1);
 }
 
