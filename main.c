@@ -370,8 +370,8 @@ void
 test_bigint_eq(void)
 {
 	{
-		bigint x = bigint_new(1, 1);
-		bigint y = bigint_new(1, 1);
+		bigint x = bigint_from_digit(1, 1);
+		bigint y = bigint_from_digit(1, 1);
 
 		test_assert(bigint_eq(x, y));
 
@@ -379,8 +379,8 @@ test_bigint_eq(void)
 		bigint_del(y);
 	}
 	{
-		bigint x = bigint_new(-1, 1);
-		bigint y = bigint_new(-1, 1);
+		bigint x = bigint_from_digit(-1, 1);
+		bigint y = bigint_from_digit(-1, 1);
 
 		test_assert(bigint_eq(x, y));
 
@@ -388,8 +388,8 @@ test_bigint_eq(void)
 		bigint_del(y);
 	}
 	{
-		bigint x = bigint_new(0, 0);
-		bigint y = bigint_new(0, 0);
+		bigint x = bigint_from_digit(0, 0);
+		bigint y = bigint_from_digit(0, 0);
 
 		test_assert(bigint_eq(x, y));
 
@@ -397,8 +397,8 @@ test_bigint_eq(void)
 		bigint_del(y);
 	}
 	{
-		bigint x = bigint_new(1, 1);
-		bigint y = bigint_new(1, 2);
+		bigint x = bigint_from_digit(1, 1);
+		bigint y = bigint_from_digit(1, 2);
 
 		test_assert(!bigint_eq(x, y));
 
@@ -406,8 +406,8 @@ test_bigint_eq(void)
 		bigint_del(y);
 	}
 	{
-		bigint x = bigint_new(-1, 1);
-		bigint y = bigint_new(-1, 2);
+		bigint x = bigint_from_digit(-1, 1);
+		bigint y = bigint_from_digit(-1, 2);
 
 		test_assert(!bigint_eq(x, y));
 
@@ -420,8 +420,8 @@ void
 test_bigint_ne(void)
 {
 	{
-		bigint x = bigint_new(1, 1);
-		bigint y = bigint_new(1, 1);
+		bigint x = bigint_from_digit(1, 1);
+		bigint y = bigint_from_digit(1, 1);
 
 		test_assert(!bigint_ne(x, y));
 
@@ -429,8 +429,8 @@ test_bigint_ne(void)
 		bigint_del(y);
 	}
 	{
-		bigint x = bigint_new(-1, 1);
-		bigint y = bigint_new(-1, 1);
+		bigint x = bigint_from_digit(-1, 1);
+		bigint y = bigint_from_digit(-1, 1);
 
 		test_assert(!bigint_ne(x, y));
 
@@ -438,8 +438,8 @@ test_bigint_ne(void)
 		bigint_del(y);
 	}
 	{
-		bigint x = bigint_new(0, 0);
-		bigint y = bigint_new(0, 0);
+		bigint x = bigint_from_digit(0, 0);
+		bigint y = bigint_from_digit(0, 0);
 
 		test_assert(!bigint_ne(x, y));
 
@@ -447,8 +447,8 @@ test_bigint_ne(void)
 		bigint_del(y);
 	}
 	{
-		bigint x = bigint_new(1, 1);
-		bigint y = bigint_new(1, 2);
+		bigint x = bigint_from_digit(1, 1);
+		bigint y = bigint_from_digit(1, 2);
 
 		test_assert(bigint_ne(x, y));
 
@@ -456,8 +456,8 @@ test_bigint_ne(void)
 		bigint_del(y);
 	}
 	{
-		bigint x = bigint_new(-1, 1);
-		bigint y = bigint_new(-1, 2);
+		bigint x = bigint_from_digit(-1, 1);
+		bigint y = bigint_from_digit(-1, 2);
 
 		test_assert(bigint_ne(x, y));
 

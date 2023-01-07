@@ -5,7 +5,7 @@
 #include "bignum.h"
 
 bigint
-bigint_new(int sign, uint32_t abs)
+bigint_from_digit(int sign, uint32_t abs)
 {
 	if (abs == 0) {
 		if (sign != 0) {
