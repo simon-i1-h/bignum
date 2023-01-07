@@ -40,100 +40,65 @@ bignat_del(bignat n)
 }
 
 int
-bignat_cmp(int *dst, bignat x, bignat y)
+bignat_cmp(bignat x, bignat y)
 {
 	if (x.ndigits < y.ndigits) {
-		*dst = -1;
-		return 0;
+		return -1;
 	}
 
 	if (x.ndigits > y.ndigits) {
-		*dst = 1;
-		return 0;
+		return 1;
 	}
 
 	/* x.ndigits == y.ndigits */
 
 	for (size_t i = x.ndigits - 1; i < x.ndigits; i--) {
 		if (x.digits[i] < y.digits[i]) {
-			*dst = -1;
-			return 0;
+			return -1;
 		}
 
 		if (x.digits[i] > y.digits[i]) {
-			*dst = 1;
-			return 0;
+			return 1;
 		}
 	}
 
-	*dst = 0;
 	return 0;
 }
 
-int
-bignat_eq(bool *dst, bignat x, bignat y)
+bool
+bignat_eq(bignat x, bignat y)
 {
-	int cmp;
-	int err = bignat_cmp(&cmp, x, y);
-	if (err == 0) {
-		*dst = cmp == 0;
-	}
-	return err;
+	return bignat_cmp(x, y) == 0;
 }
 
-int
-bignat_ne(bool *dst, bignat x, bignat y)
+bool
+bignat_ne(bignat x, bignat y)
 {
-	int cmp;
-	int err = bignat_cmp(&cmp, x, y);
-	if (err == 0) {
-		*dst = cmp != 0;
-	}
-	return err;
+	return bignat_cmp(x, y) != 0;
 }
 
-int
-bignat_lt(bool *dst, bignat x, bignat y)
+bool
+bignat_lt(bignat x, bignat y)
 {
-	int cmp;
-	int err = bignat_cmp(&cmp, x, y);
-	if (err == 0) {
-		*dst = cmp < 0;
-	}
-	return err;
+	return bignat_cmp(x, y) < 0;
 }
 
-int
-bignat_gt(bool *dst, bignat x, bignat y)
+bool
+bignat_gt(bignat x, bignat y)
 {
-	int cmp;
-	int err = bignat_cmp(&cmp, x, y);
-	if (err == 0) {
-		*dst = cmp > 0;
-	}
-	return err;
+	return bignat_cmp(x, y) > 0;
 }
 
-int
-bignat_le(bool *dst, bignat x, bignat y)
+bool
+bignat_le(bignat x, bignat y)
 {
-	int cmp;
-	int err = bignat_cmp(&cmp, x, y);
-	if (err == 0) {
-		*dst = cmp <= 0;
-	}
-	return err;
+	return bignat_cmp(x, y) <= 0;
 }
 
-int
-bignat_ge(bool *dst, bignat x, bignat y)
+bool
+bignat_ge(bignat x, bignat y)
 {
-	int cmp;
-	int err = bignat_cmp(&cmp, x, y);
-	if (err == 0) {
-		*dst = cmp >= 0;
-	}
-	return err;
+	return bignat_cmp(x, y) >= 0;
 }
 
 int
@@ -167,9 +132,7 @@ bignat_add(bignat *sum, bignat x, bignat y)
 int
 bignat_sub(bignat *diff, bignat x, bignat y)
 {
-	bool x_is_less;
-	int err = bignat_lt(&x_is_less, x, y);
-	if (err || x_is_less) {
+	if (bignat_lt(x, y)) {
 		return 1;
 	}
 
