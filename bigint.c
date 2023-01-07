@@ -5,9 +5,9 @@
 #include "bignum.h"
 
 bigint
-bigint_from_digit(int sign, uint32_t abs)
+bigint_new(int sign, uint32_t *digits, size_t ndigits)
 {
-	if (abs == 0) {
+	if (ndigits == 0) {
 		if (sign != 0) {
 			fprintf(stderr, "invalid sign\n");
 			exit(1);
@@ -21,8 +21,20 @@ bigint_from_digit(int sign, uint32_t abs)
 
 	return (bigint){
 		.sign=sign,
-		.abs=bignat_from_digit(abs)
+		.abs=bignat_new(digits, ndigits)
 	};
+}
+
+bigint
+bigint_from_digit(int32_t x)
+{
+	if (x == 0) {
+		return bigint_new(0, NULL, 0);
+	}
+
+	int sign = x < 0 ? -1 : 1;
+	uint32_t abs = x < 0 ? (int64_t)x * -1 : x;
+	return bigint_new(sign, &abs, 1);
 }
 
 void
