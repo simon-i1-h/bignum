@@ -1,5 +1,5 @@
-/test_bignum
 *.o
 *.d
+/test_bignum
 /compile_commands.json
 /tmp
