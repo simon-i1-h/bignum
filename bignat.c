@@ -5,26 +5,6 @@
 
 #include "bignum.h"
 
-void *
-xrealloc(void *ptr, size_t size)
-{
-	void *new_ptr = realloc(ptr, size);
-	if (new_ptr == NULL) {
-		fprintf(stderr, "realloc\n");
-		exit(1);
-	}
-	return new_ptr;
-}
-
-static void
-bignat_push(bignat *nat, uint32_t n)
-{
-	size_t new_ndigits = nat->ndigits + 1;
-	nat->digits = xrealloc(nat->digits, new_ndigits);
-	nat->ndigits = new_ndigits;
-	nat->digits[new_ndigits - 1] = n;
-}
-
 void
 bignat_dump(bignat nat)
 {
@@ -41,18 +21,13 @@ bignat_dump(bignat nat)
 bignat
 bignat_from_digit(uint32_t n)
 {
-	bignat nat = {
-		.digits=xrealloc(NULL, sizeof(uint32_t)),
-		.ndigits=1
-	};
-	nat.digits[0] = n;
-	return nat;
+	return dgtvec_new(&n, 1);
 }
 
 void
 bignat_del(bignat n)
 {
-	free(n.digits);
+	dgtvec_del(n);
 }
 
 int
@@ -168,12 +143,12 @@ bignat_add(bignat *sum, bignat x, bignat y)
 	for (size_t i = 1; i < x.ndigits; i++) {
 		uint64_t y_digit = i < y.ndigits ? y.digits[i] : 0;
 		sum_digit = (uint64_t)carry + (uint64_t)x.digits[i] + y_digit;
-		bignat_push(&tmp_sum, sum_digit & (uint64_t)0xffffffff);
+		dgtvec_push(&tmp_sum, sum_digit & (uint64_t)0xffffffff);
 		carry = sum_digit >> 32;
 	}
 
 	if (carry != 0) {
-		bignat_push(&tmp_sum, carry);
+		dgtvec_push(&tmp_sum, carry);
 	}
 
 	*sum = tmp_sum;
@@ -202,7 +177,7 @@ bignat_sub(bignat *diff, bignat x, bignat y)
 		borrow = x.digits[i] < y_digit;
 		diff_digit = ((uint64_t)borrow << 32) +
 			(uint64_t)x.digits[i] - y_digit;
-		bignat_push(&tmp_diff, diff_digit);
+		dgtvec_push(&tmp_diff, diff_digit);
 	}
 
 	/* 末尾0の削除 */
@@ -220,26 +195,20 @@ bignat_sub(bignat *diff, bignat x, bignat y)
 static bignat
 bignat_from_prod_digit(uint64_t prod_digit, size_t start)
 {
-	bool is_2digits = prod_digit & 0xffffffff00000000;
+	uint32_t high = prod_digit >> 32;
+	uint32_t low = prod_digit & 0xffffffff;
 
-	size_t ndigits = start + 1;
-	if (is_2digits) {
-		ndigits++;
-	}
-
-	bignat nat = {
-		.digits=xrealloc(NULL, sizeof(uint32_t) * ndigits),
-		.ndigits=ndigits
-	};
+	bignat nat = dgtvec_new(NULL, 0);
 	for (size_t i = 0; i < start; i++) {
-		nat.digits[i] = 0;
+		dgtvec_push(&nat, 0);
 	}
 
-	nat.digits[start] = prod_digit & 0xffffffff;
-	if (is_2digits) {
-		nat.digits[start + 1] = prod_digit >> 32;
+	dgtvec_push(&nat, low);
+	if (high != 0) {
+		dgtvec_push(&nat, high);
 	}
 
+	/* TODO norm */
 	return nat;
 }
 

@@ -20,10 +20,7 @@ uint32_t dgtvec_pop(dgtvec *v);
 
 /* bignat */
 
-typedef struct bignat {
-	uint32_t *digits;
-	size_t ndigits;
-} bignat;
+typedef dgtvec bignat;
 
 void bignat_dump(bignat nat);
 bignat bignat_from_digit(uint32_t n);
