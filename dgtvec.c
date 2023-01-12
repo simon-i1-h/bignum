@@ -1,3 +1,7 @@
+/* for reallocarray */
+#define _DEFAULT_SOURCE
+
+#include <errno.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,40 +20,45 @@ roundup_pow2(size_t n)
 	return n;
 }
 
-static void *
-xrealloc(void *ptr, size_t size)
+static int
+dgtvec_init(dgtvec *v, uint32_t *digits, size_t ndigits)
 {
-	void *new_ptr = realloc(ptr, size);
-	if (new_ptr == NULL) {
-		fprintf(stderr, "realloc\n");
-		exit(1);
-	}
-	return new_ptr;
-}
-
-dgtvec
-dgtvec_new(uint32_t *digits, size_t ndigits)
-{
-	size_t cap = roundup_pow2(ndigits);
-
-	dgtvec v = {
+	dgtvec tv = {
 		.digits=NULL,
 		.ndigits=ndigits,
-		.cap=cap
+		.cap=roundup_pow2(ndigits)
 	};
 
 	if (ndigits == 0) {
-		return v;
+		*v = tv;
+		return 0;
 	}
 
-	if (cap == 0) {
+	if (tv.cap == 0) {
+		return ENOMEM;
+	}
+
+	tv.digits = reallocarray(NULL, tv.cap, sizeof(*tv.digits));
+	if (tv.digits == NULL) {
+		return ENOMEM;
+	}
+
+	for (size_t i = 0; i < tv.ndigits; i++) {
+		tv.digits[i] = digits[i];
+	}
+
+	*v = tv;
+	return 0;
+}
+
+/* TODO: 削除 */
+dgtvec
+dgtvec_new(uint32_t *digits, size_t ndigits)
+{
+	dgtvec v;
+	if (dgtvec_init(&v, digits, ndigits) != 0) {
 		fprintf(stderr, "dgtvec_new: ENOMEM\n");
 		exit(1);
-	}
-
-	v.digits = xrealloc(NULL, sizeof(*digits) * cap);
-	for (size_t i = 0; i < ndigits; i++) {
-		v.digits[i] = digits[i];
 	}
 
 	return v;
@@ -80,21 +89,38 @@ dgtvec_dump(dgtvec v)
 	printf("--------------------\n");
 }
 
-void
-dgtvec_push(dgtvec *v, uint32_t n)
+
+static int
+dgtvec_mpush(dgtvec *v, uint32_t n)
 {
 	if (v->cap == v->ndigits) {
 		size_t cap = (v->cap + !v->cap) << 1;
 		if (cap == 0) {
-			fprintf(stderr, "dgtvec_push: ENOMEM\n");
-			exit(1);
+			return ENOMEM;
 		}
 
-		v->digits = xrealloc(v->digits, sizeof(*v->digits) * cap);
+		void *digits;
+		digits = reallocarray(v->digits, cap, sizeof(*v->digits));
+		if (digits == NULL) {
+			return ENOMEM;
+		}
+
+		v->digits = digits;
 		v->cap = cap;
 	}
 
 	v->digits[v->ndigits++] = n;
+	return 0;
+}
+
+/* TODO: エラーメッセージの出力とexitをしない */
+void
+dgtvec_push(dgtvec *v, uint32_t n)
+{
+	if (dgtvec_mpush(v, n) != 0) {
+		fprintf(stderr, "dgtvec_push: ENOMEM\n");
+		exit(1);
+	}
 }
 
 uint32_t
