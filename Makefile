@@ -4,7 +4,7 @@ OBJS = dgtvec.o bignat.o bigint.o main.o
 DEPS:=$(OBJS:.o=.d)
 
 CC = gcc
-CFLAGS = -std=c2x -g -Wall -Wextra
+CFLAGS = -std=c2x -g -Wall -Wextra -Og
 
 .PHONY: all test clean bear
 
