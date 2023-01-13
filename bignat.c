@@ -1,3 +1,4 @@
+#include <errno.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -13,15 +14,34 @@ bignat_norm(bignat *nat)
 	}
 }
 
+static int
+bignat_init(bignat *nat, uint32_t *digits, size_t ndigits)
+{
+	if (ndigits > 0 && digits[ndigits - 1] == 0) {
+		return EINVAL;
+	}
+
+	return dgtvec_init(nat, digits, ndigits);
+}
+
 bignat
 bignat_new(uint32_t *digits, size_t ndigits)
 {
-	if (ndigits > 0 && digits[ndigits - 1] == 0) {
+	bignat nat;
+	int err = bignat_init(&nat, digits, ndigits);
+
+	if (err == EINVAL) {
 		fprintf(stderr, "invalid leading zeros\n");
+		exit(1);
+	} else if (err == ENOMEM) {
+		fprintf(stderr, "ENOMEM\n");
+		exit(1);
+	} else if (err != 0) {
+		fprintf(stderr, "unexpected error\n");
 		exit(1);
 	}
 
-	return dgtvec_new(digits, ndigits);
+	return nat;
 }
 
 bignat

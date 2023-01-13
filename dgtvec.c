@@ -20,7 +20,7 @@ roundup_pow2(size_t n)
 	return n;
 }
 
-static int
+int
 dgtvec_init(dgtvec *v, uint32_t *digits, size_t ndigits)
 {
 	dgtvec tv = {
