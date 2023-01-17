@@ -14,7 +14,7 @@ bignat_norm(bignat *nat)
 	}
 }
 
-static int
+int
 bignat_init(bignat *nat, uint32_t *digits, size_t ndigits)
 {
 	if (ndigits > 0 && digits[ndigits - 1] == 0) {
@@ -44,7 +44,7 @@ bignat_new(uint32_t *digits, size_t ndigits)
 	return nat;
 }
 
-bignat
+static bignat
 bignat_from_digit(uint32_t n)
 {
 	if (n == 0) {

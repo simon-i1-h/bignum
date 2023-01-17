@@ -84,8 +84,9 @@ void
 test_bignat_eq(void)
 {
 	{
-		bignat x = bignat_from_digit(1);
-		bignat y = bignat_from_digit(1);
+		bignat x, y;
+		test_assert(bignat_init(&x, (uint32_t[]){1}, 1) == 0);
+		test_assert(bignat_init(&y, (uint32_t[]){1}, 1) == 0);
 
 		test_assert(bignat_eq(x, y));
 
@@ -93,8 +94,9 @@ test_bignat_eq(void)
 		bignat_del(y);
 	}
 	{
-		bignat x = bignat_from_digit(1);
-		bignat y = bignat_from_digit(2);
+		bignat x, y;
+		test_assert(bignat_init(&x, (uint32_t[]){1}, 1) == 0);
+		test_assert(bignat_init(&y, (uint32_t[]){2}, 1) == 0);
 
 		test_assert(!bignat_eq(x, y));
 
@@ -107,8 +109,9 @@ void
 test_bignat_ne(void)
 {
 	{
-		bignat x = bignat_from_digit(1);
-		bignat y = bignat_from_digit(2);
+		bignat x, y;
+		test_assert(bignat_init(&x, (uint32_t[]){1}, 1) == 0);
+		test_assert(bignat_init(&y, (uint32_t[]){2}, 1) == 0);
 
 		test_assert(bignat_ne(x, y));
 
@@ -116,8 +119,9 @@ test_bignat_ne(void)
 		bignat_del(y);
 	}
 	{
-		bignat x = bignat_from_digit(1);
-		bignat y = bignat_from_digit(1);
+		bignat x, y;
+		test_assert(bignat_init(&x, (uint32_t[]){1}, 1) == 0);
+		test_assert(bignat_init(&y, (uint32_t[]){1}, 1) == 0);
 
 		test_assert(!bignat_ne(x, y));
 
@@ -130,8 +134,9 @@ void
 test_bignat_lt(void)
 {
 	{
-		bignat x = bignat_from_digit(1);
-		bignat y = bignat_from_digit(1);
+		bignat x, y;
+		test_assert(bignat_init(&x, (uint32_t[]){1}, 1) == 0);
+		test_assert(bignat_init(&y, (uint32_t[]){1}, 1) == 0);
 
 		test_assert(!bignat_lt(x, y));
 
@@ -139,8 +144,9 @@ test_bignat_lt(void)
 		bignat_del(y);
 	}
 	{
-		bignat x = bignat_from_digit(1);
-		bignat y = bignat_from_digit(2);
+		bignat x, y;
+		test_assert(bignat_init(&x, (uint32_t[]){1}, 1) == 0);
+		test_assert(bignat_init(&y, (uint32_t[]){2}, 1) == 0);
 
 		test_assert(bignat_lt(x, y));
 
@@ -148,8 +154,9 @@ test_bignat_lt(void)
 		bignat_del(y);
 	}
 	{
-		bignat x = bignat_from_digit(2);
-		bignat y = bignat_from_digit(1);
+		bignat x, y;
+		test_assert(bignat_init(&x, (uint32_t[]){2}, 1) == 0);
+		test_assert(bignat_init(&y, (uint32_t[]){1}, 1) == 0);
 
 		test_assert(!bignat_lt(x, y));
 
@@ -162,8 +169,9 @@ void
 test_bignat_gt(void)
 {
 	{
-		bignat x = bignat_from_digit(1);
-		bignat y = bignat_from_digit(1);
+		bignat x, y;
+		test_assert(bignat_init(&x, (uint32_t[]){1}, 1) == 0);
+		test_assert(bignat_init(&y, (uint32_t[]){1}, 1) == 0);
 
 		test_assert(!bignat_gt(x, y));
 
@@ -171,8 +179,9 @@ test_bignat_gt(void)
 		bignat_del(y);
 	}
 	{
-		bignat x = bignat_from_digit(1);
-		bignat y = bignat_from_digit(2);
+		bignat x, y;
+		test_assert(bignat_init(&x, (uint32_t[]){1}, 1) == 0);
+		test_assert(bignat_init(&y, (uint32_t[]){2}, 1) == 0);
 
 		test_assert(!bignat_gt(x, y));
 
@@ -180,8 +189,9 @@ test_bignat_gt(void)
 		bignat_del(y);
 	}
 	{
-		bignat x = bignat_from_digit(2);
-		bignat y = bignat_from_digit(1);
+		bignat x, y;
+		test_assert(bignat_init(&x, (uint32_t[]){2}, 1) == 0);
+		test_assert(bignat_init(&y, (uint32_t[]){1}, 1) == 0);
 
 		test_assert(bignat_gt(x, y));
 
@@ -194,8 +204,9 @@ void
 test_bignat_le(void)
 {
 	{
-		bignat x = bignat_from_digit(1);
-		bignat y = bignat_from_digit(1);
+		bignat x, y;
+		test_assert(bignat_init(&x, (uint32_t[]){1}, 1) == 0);
+		test_assert(bignat_init(&y, (uint32_t[]){1}, 1) == 0);
 
 		test_assert(bignat_le(x, y));
 
@@ -203,8 +214,9 @@ test_bignat_le(void)
 		bignat_del(y);
 	}
 	{
-		bignat x = bignat_from_digit(1);
-		bignat y = bignat_from_digit(2);
+		bignat x, y;
+		test_assert(bignat_init(&x, (uint32_t[]){1}, 1) == 0);
+		test_assert(bignat_init(&y, (uint32_t[]){2}, 1) == 0);
 
 		test_assert(bignat_le(x, y));
 
@@ -212,8 +224,9 @@ test_bignat_le(void)
 		bignat_del(y);
 	}
 	{
-		bignat x = bignat_from_digit(2);
-		bignat y = bignat_from_digit(1);
+		bignat x, y;
+		test_assert(bignat_init(&x, (uint32_t[]){2}, 1) == 0);
+		test_assert(bignat_init(&y, (uint32_t[]){1}, 1) == 0);
 
 		test_assert(!bignat_le(x, y));
 
@@ -226,8 +239,9 @@ void
 test_bignat_ge(void)
 {
 	{
-		bignat x = bignat_from_digit(1);
-		bignat y = bignat_from_digit(1);
+		bignat x, y;
+		test_assert(bignat_init(&x, (uint32_t[]){1}, 1) == 0);
+		test_assert(bignat_init(&y, (uint32_t[]){1}, 1) == 0);
 
 		test_assert(bignat_ge(x, y));
 
@@ -235,8 +249,9 @@ test_bignat_ge(void)
 		bignat_del(y);
 	}
 	{
-		bignat x = bignat_from_digit(1);
-		bignat y = bignat_from_digit(2);
+		bignat x, y;
+		test_assert(bignat_init(&x, (uint32_t[]){1}, 1) == 0);
+		test_assert(bignat_init(&y, (uint32_t[]){2}, 1) == 0);
 
 		test_assert(!bignat_ge(x, y));
 
@@ -244,8 +259,9 @@ test_bignat_ge(void)
 		bignat_del(y);
 	}
 	{
-		bignat x = bignat_from_digit(2);
-		bignat y = bignat_from_digit(1);
+		bignat x, y;
+		test_assert(bignat_init(&x, (uint32_t[]){2}, 1) == 0);
+		test_assert(bignat_init(&y, (uint32_t[]){1}, 1) == 0);
 
 		test_assert(bignat_ge(x, y));
 
@@ -258,24 +274,26 @@ void
 test_bignat_add(void)
 {
 	{
-		bignat x = bignat_from_digit(1);
-		bignat y = bignat_from_digit(2);
-		bignat sum;
+		bignat x, y, sum, expected;
+		test_assert(bignat_init(&x, (uint32_t[]){1}, 1) == 0);
+		test_assert(bignat_init(&y, (uint32_t[]){2}, 1) == 0);
+		test_assert(bignat_init(&expected, (uint32_t[]){3}, 1) == 0);
 
 		test_assert(bignat_add(&sum, x, y) == 0);
-		test_assert(bignat_eq(sum, bignat_from_digit(3)));
+		test_assert(bignat_eq(sum, expected));
 
 		bignat_del(x);
 		bignat_del(y);
 		bignat_del(sum);
 	}
 	{
-		bignat x = bignat_from_digit(2);
-		bignat y = bignat_from_digit(1);
-		bignat sum;
+		bignat x, y, sum, expected;
+		test_assert(bignat_init(&x, (uint32_t[]){2}, 1) == 0);
+		test_assert(bignat_init(&y, (uint32_t[]){1}, 1) == 0);
+		test_assert(bignat_init(&expected, (uint32_t[]){3}, 1) == 0);
 
 		test_assert(bignat_add(&sum, x, y) == 0);
-		test_assert(bignat_eq(sum, bignat_from_digit(3)));
+		test_assert(bignat_eq(sum, expected));
 
 		bignat_del(x);
 		bignat_del(y);
@@ -287,21 +305,22 @@ void
 test_bignat_sub(void)
 {
 	{
-		bignat x = bignat_from_digit(3);
-		bignat y = bignat_from_digit(2);
-		bignat diff;
+		bignat x, y, diff, expected;
+		test_assert(bignat_init(&x, (uint32_t[]){3}, 1) == 0);
+		test_assert(bignat_init(&y, (uint32_t[]){2}, 1) == 0);
+		test_assert(bignat_init(&expected, (uint32_t[]){1}, 1) == 0);
 
 		test_assert(bignat_sub(&diff, x, y) == 0);
-		test_assert(bignat_eq(diff, bignat_from_digit(1)));
+		test_assert(bignat_eq(diff, expected));
 
 		bignat_del(x);
 		bignat_del(y);
 		bignat_del(diff);
 	}
 	{
-		bignat x = bignat_from_digit(2);
-		bignat y = bignat_from_digit(3);
-		bignat diff;
+		bignat x, y, diff;
+		test_assert(bignat_init(&x, (uint32_t[]){2}, 1) == 0);
+		test_assert(bignat_init(&y, (uint32_t[]){3}, 1) == 0);
 
 		test_assert(bignat_sub(&diff, x, y) == 1);
 
@@ -314,24 +333,26 @@ void
 test_bignat_mul(void)
 {
 	{
-		bignat x = bignat_from_digit(3);
-		bignat y = bignat_from_digit(4);
-		bignat prod;
+		bignat x, y, prod, expected;
+		test_assert(bignat_init(&x, (uint32_t[]){3}, 1) == 0);
+		test_assert(bignat_init(&y, (uint32_t[]){4}, 1) == 0);
+		test_assert(bignat_init(&expected, (uint32_t[]){12}, 1) == 0);
 
 		test_assert(bignat_mul(&prod, x, y) == 0);
-		test_assert(bignat_eq(prod, bignat_from_digit(12)));
+		test_assert(bignat_eq(prod, expected));
 
 		bignat_del(x);
 		bignat_del(y);
 		bignat_del(prod);
 	}
 	{
-		bignat x = bignat_from_digit(1);
-		bignat y = bignat_from_digit(0);
-		bignat prod;
+		bignat x, y, prod, expected;
+		test_assert(bignat_init(&x, (uint32_t[]){1}, 1) == 0);
+		test_assert(bignat_init(&y, NULL, 0) == 0);
+		test_assert(bignat_init(&expected, NULL, 0) == 0);
 
 		test_assert(bignat_mul(&prod, x, y) == 0);
-		test_assert(bignat_eq(prod, bignat_from_digit(0)));
+		test_assert(bignat_eq(prod, expected));
 
 		bignat_del(x);
 		bignat_del(y);
@@ -343,21 +364,22 @@ void
 test_bignat_div(void)
 {
 	{
-		bignat x = bignat_from_digit(13);
-		bignat y = bignat_from_digit(3);
-		bignat quot;
+		bignat x, y, quot, expected;
+		test_assert(bignat_init(&x, (uint32_t[]){13}, 1) == 0);
+		test_assert(bignat_init(&y, (uint32_t[]){3}, 1) == 0);
+		test_assert(bignat_init(&expected, (uint32_t[]){4}, 1) == 0);
 
 		test_assert(bignat_div(&quot, x, y) == 0);
-		test_assert(bignat_eq(quot, bignat_from_digit(4)));
+		test_assert(bignat_eq(quot, expected));
 
 		bignat_del(x);
 		bignat_del(y);
 		bignat_del(quot);
 	}
 	{
-		bignat x = bignat_from_digit(1);
-		bignat y = bignat_from_digit(0);
-		bignat quot;
+		bignat x, y, quot;
+		test_assert(bignat_init(&x, (uint32_t[]){1}, 1) == 0);
+		test_assert(bignat_init(&y, NULL, 0) == 0);
 
 		test_assert(bignat_div(&quot, x, y) == 1);
 
