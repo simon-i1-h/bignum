@@ -24,26 +24,6 @@ bignat_init(bignat *nat, uint32_t *digits, size_t ndigits)
 	return dgtvec_init(nat, digits, ndigits);
 }
 
-bignat
-bignat_new(uint32_t *digits, size_t ndigits)
-{
-	bignat nat;
-	int err = bignat_init(&nat, digits, ndigits);
-
-	if (err == EINVAL) {
-		fprintf(stderr, "EINVAL\n");
-		exit(1);
-	} else if (err == ENOMEM) {
-		fprintf(stderr, "ENOMEM\n");
-		exit(1);
-	} else if (err != 0) {
-		fprintf(stderr, "unexpected error\n");
-		exit(1);
-	}
-
-	return nat;
-}
-
 /* TODO: remove? */
 #if 0
 static bignat
