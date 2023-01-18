@@ -45,6 +45,10 @@ int bignat_sub(bignat *diff, bignat x, bignat y);
 int bignat_mul(bignat *prod, bignat x, bignat y);
 int bignat_div(bignat *quot, bignat x, bignat y);
 
+/*
+ * signは-1か0か1となる。absが0であればsignは0を、absが0以外であれば
+ * signも0以外を指定する必要がある。
+ */
 typedef struct bigint {
 	int sign;
 	bignat abs;

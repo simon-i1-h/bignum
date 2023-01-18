@@ -1,28 +1,56 @@
+#include <errno.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "bignum.h"
 
-bigint
-bigint_new(int sign, uint32_t *digits, size_t ndigits)
+static int
+bigint_init(bigint *int_, int sign, uint32_t *digits, size_t ndigits)
 {
+
 	if (ndigits == 0) {
 		if (sign != 0) {
-			fprintf(stderr, "invalid sign\n");
-			exit(1);
+			return EINVAL;
 		}
 	} else {
 		if (sign == 0) {
-			fprintf(stderr, "invalid sign\n");
-			exit(1);
+			return EINVAL;
 		}
 	}
 
-	return (bigint){
+	bignat abs;
+	int err = bignat_init(&abs, digits, ndigits);
+	if (err != 0) {
+		return err;
+	}
+
+	*int_ = (bigint){
 		.sign=sign,
-		.abs=bignat_new(digits, ndigits)
+		.abs=abs
 	};
+
+	return 0;
+}
+
+bigint
+bigint_new(int sign, uint32_t *digits, size_t ndigits)
+{
+	bigint int_;
+	int err = bigint_init(&int_, sign, digits, ndigits);
+
+	if (err == EINVAL) {
+		fprintf(stderr, "EINVAL\n");
+		exit(1);
+	} else if (err == ENOMEM) {
+		fprintf(stderr, "ENOMEM\n");
+		exit(1);
+	} else if (err != 0) {
+		fprintf(stderr, "unexpected error\n");
+		exit(1);
+	}
+
+	return int_;
 }
 
 bigint

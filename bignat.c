@@ -31,7 +31,7 @@ bignat_new(uint32_t *digits, size_t ndigits)
 	int err = bignat_init(&nat, digits, ndigits);
 
 	if (err == EINVAL) {
-		fprintf(stderr, "invalid leading zeros\n");
+		fprintf(stderr, "EINVAL\n");
 		exit(1);
 	} else if (err == ENOMEM) {
 		fprintf(stderr, "ENOMEM\n");
