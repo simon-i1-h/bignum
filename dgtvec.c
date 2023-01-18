@@ -51,6 +51,16 @@ dgtvec_init(dgtvec *v, uint32_t *digits, size_t ndigits)
 	return 0;
 }
 
+dgtvec
+dgtvec_new_empty(void)
+{
+	return (dgtvec){
+		.digits=NULL,
+		.ndigits=0,
+		.cap=0
+	};
+}
+
 /* TODO: 削除 */
 dgtvec
 dgtvec_new(uint32_t *digits, size_t ndigits)

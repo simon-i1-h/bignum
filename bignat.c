@@ -24,6 +24,12 @@ bignat_init(bignat *nat, uint32_t *digits, size_t ndigits)
 	return dgtvec_init(nat, digits, ndigits);
 }
 
+static bignat
+bignat_new_zero(void)
+{
+	return dgtvec_new_empty();
+}
+
 /* TODO: remove? */
 #if 0
 static bignat
@@ -114,8 +120,7 @@ bignat_add(bignat *sum, bignat x, bignat y)
 
 	/* x.ndigits >= y.ndigits */
 
-	bignat tmp_sum;
-	(void)bignat_init(&tmp_sum, NULL, 0);
+	bignat tmp_sum = bignat_new_zero();
 	uint32_t carry = 0;
 
 	for (size_t i = 0; i < x.ndigits; i++) {
@@ -143,8 +148,7 @@ bignat_sub(bignat *diff, bignat x, bignat y)
 
 	/* x >= y */
 
-	bignat tmp_diff;
-	(void)bignat_init(&tmp_diff, NULL, 0);
+	bignat tmp_diff = bignat_new_zero();
 	uint32_t borrow = 0;
 
 	for (size_t i = 0; i < x.ndigits; i++) {
@@ -165,8 +169,7 @@ bignat_sub(bignat *diff, bignat x, bignat y)
 static bignat
 bignat_from_prod_digit(uint64_t prod_digit, size_t start)
 {
-	bignat nat;
-	(void)bignat_init(&nat, NULL, 0);
+	bignat nat = bignat_new_zero();
 
 	if (prod_digit == 0) {
 		return nat;
@@ -190,8 +193,7 @@ bignat_from_prod_digit(uint64_t prod_digit, size_t start)
 int
 bignat_mul(bignat *prod, bignat x, bignat y)
 {
-	bignat tmp_prod;
-	(void)bignat_init(&tmp_prod, NULL, 0);
+	bignat tmp_prod = bignat_new_zero();
 
 	for (size_t ix = 0; ix < x.ndigits; ix++) {
 		for (size_t iy = 0; iy < y.ndigits; iy++) {
