@@ -5,7 +5,7 @@
 
 #include "bignum.h"
 
-static int
+int
 bigint_init(bigint *int_, int sign, uint32_t *digits, size_t ndigits)
 {
 
@@ -53,6 +53,8 @@ bigint_new(int sign, uint32_t *digits, size_t ndigits)
 	return int_;
 }
 
+/* TODO: remove? */
+#if 0
 bigint
 bigint_from_digit(int32_t x)
 {
@@ -64,6 +66,7 @@ bigint_from_digit(int32_t x)
 	uint32_t abs = x < 0 ? (int64_t)x * -1 : x;
 	return bigint_new(sign, &abs, 1);
 }
+#endif
 
 void
 bigint_del(bigint int_)

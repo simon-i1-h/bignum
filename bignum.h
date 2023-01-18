@@ -54,8 +54,8 @@ typedef struct bigint {
 	bignat abs;
 } bigint;
 
+int bigint_init(bigint *int_, int sign, uint32_t *digits, size_t ndigits);
 bigint bigint_new(int sign, uint32_t *digits, size_t ndigits);
-bigint bigint_from_digit(int32_t x);
 void bigint_del(bigint int_);
 
 bool bigint_eq(bigint x, bigint y);

@@ -392,8 +392,13 @@ void
 test_bigint_eq(void)
 {
 	{
-		bigint x = bigint_from_digit(1);
-		bigint y = bigint_from_digit(1);
+		int err;
+		bigint x, y;
+
+		err = bigint_init(&x, 1, (uint32_t[]){1}, 1);
+		test_assert(err == 0);
+		err = bigint_init(&y, 1, (uint32_t[]){1}, 1);
+		test_assert(err == 0);
 
 		test_assert(bigint_eq(x, y));
 
@@ -401,8 +406,13 @@ test_bigint_eq(void)
 		bigint_del(y);
 	}
 	{
-		bigint x = bigint_from_digit(-1);
-		bigint y = bigint_from_digit(-1);
+		int err;
+		bigint x, y;
+
+		err = bigint_init(&x, -1, (uint32_t[]){1}, 1);
+		test_assert(err == 0);
+		err = bigint_init(&y, -1, (uint32_t[]){1}, 1);
+		test_assert(err == 0);
 
 		test_assert(bigint_eq(x, y));
 
@@ -410,8 +420,13 @@ test_bigint_eq(void)
 		bigint_del(y);
 	}
 	{
-		bigint x = bigint_from_digit(0);
-		bigint y = bigint_from_digit(0);
+		int err;
+		bigint x, y;
+
+		err = bigint_init(&x, 0, NULL, 0);
+		test_assert(err == 0);
+		err = bigint_init(&y, 0, NULL, 0);
+		test_assert(err == 0);
 
 		test_assert(bigint_eq(x, y));
 
@@ -419,8 +434,13 @@ test_bigint_eq(void)
 		bigint_del(y);
 	}
 	{
-		bigint x = bigint_from_digit(1);
-		bigint y = bigint_from_digit(2);
+		int err;
+		bigint x, y;
+
+		err = bigint_init(&x, 1, (uint32_t[]){1}, 1);
+		test_assert(err == 0);
+		err = bigint_init(&y, 1, (uint32_t[]){2}, 1);
+		test_assert(err == 0);
 
 		test_assert(!bigint_eq(x, y));
 
@@ -428,8 +448,13 @@ test_bigint_eq(void)
 		bigint_del(y);
 	}
 	{
-		bigint x = bigint_from_digit(-1);
-		bigint y = bigint_from_digit(-2);
+		int err;
+		bigint x, y;
+
+		err = bigint_init(&x, -1, (uint32_t[]){1}, 1);
+		test_assert(err == 0);
+		err = bigint_init(&y, -1, (uint32_t[]){2}, 1);
+		test_assert(err == 0);
 
 		test_assert(!bigint_eq(x, y));
 
@@ -442,8 +467,13 @@ void
 test_bigint_ne(void)
 {
 	{
-		bigint x = bigint_from_digit(1);
-		bigint y = bigint_from_digit(1);
+		int err;
+		bigint x, y;
+
+		err = bigint_init(&x, 1, (uint32_t[]){1}, 1);
+		test_assert(err == 0);
+		err = bigint_init(&y, 1, (uint32_t[]){1}, 1);
+		test_assert(err == 0);
 
 		test_assert(!bigint_ne(x, y));
 
@@ -451,8 +481,13 @@ test_bigint_ne(void)
 		bigint_del(y);
 	}
 	{
-		bigint x = bigint_from_digit(-1);
-		bigint y = bigint_from_digit(-1);
+		int err;
+		bigint x, y;
+
+		err = bigint_init(&x, -1, (uint32_t[]){1}, 1);
+		test_assert(err == 0);
+		err = bigint_init(&y, -1, (uint32_t[]){1}, 1);
+		test_assert(err == 0);
 
 		test_assert(!bigint_ne(x, y));
 
@@ -460,8 +495,13 @@ test_bigint_ne(void)
 		bigint_del(y);
 	}
 	{
-		bigint x = bigint_from_digit(0);
-		bigint y = bigint_from_digit(0);
+		int err;
+		bigint x, y;
+
+		err = bigint_init(&x, 0, NULL, 0);
+		test_assert(err == 0);
+		err = bigint_init(&y, 0, NULL, 0);
+		test_assert(err == 0);
 
 		test_assert(!bigint_ne(x, y));
 
@@ -469,8 +509,13 @@ test_bigint_ne(void)
 		bigint_del(y);
 	}
 	{
-		bigint x = bigint_from_digit(1);
-		bigint y = bigint_from_digit(2);
+		int err;
+		bigint x, y;
+
+		err = bigint_init(&x, 1, (uint32_t[]){1}, 1);
+		test_assert(err == 0);
+		err = bigint_init(&y, 1, (uint32_t[]){2}, 1);
+		test_assert(err == 0);
 
 		test_assert(bigint_ne(x, y));
 
@@ -478,8 +523,13 @@ test_bigint_ne(void)
 		bigint_del(y);
 	}
 	{
-		bigint x = bigint_from_digit(-1);
-		bigint y = bigint_from_digit(-2);
+		int err;
+		bigint x, y;
+
+		err = bigint_init(&x, -1, (uint32_t[]){1}, 1);
+		test_assert(err == 0);
+		err = bigint_init(&y, -1, (uint32_t[]){2}, 1);
+		test_assert(err == 0);
 
 		test_assert(bigint_ne(x, y));
 
