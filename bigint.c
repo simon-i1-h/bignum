@@ -33,6 +33,8 @@ bigint_init(bigint *int_, int sign, uint32_t *digits, size_t ndigits)
 	return 0;
 }
 
+/* TODO: remove? */
+#if 0
 bigint
 bigint_new(int sign, uint32_t *digits, size_t ndigits)
 {
@@ -53,8 +55,6 @@ bigint_new(int sign, uint32_t *digits, size_t ndigits)
 	return int_;
 }
 
-/* TODO: remove? */
-#if 0
 bigint
 bigint_from_digit(int32_t x)
 {
