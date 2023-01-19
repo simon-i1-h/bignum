@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "bignum.h"
@@ -8,23 +9,35 @@
 
 /* dump */
 
+static void
+dgtvec_xinit(dgtvec *v, uint32_t *digits, size_t ndigits)
+{
+	int err = dgtvec_init(v, digits, ndigits);
+	if (err != 0) {
+		fprintf(stderr, "%s: errno: %d\n", __func__, err);
+		exit(1);
+	}
+}
+
 void
 dump_dgtvec(void)
 {
 	{
-		dgtvec v = dgtvec_new(NULL, 0);
+		dgtvec v = dgtvec_new_empty();
 		dgtvec_dump(v);
 		dgtvec_del(v);
 	}
 	{
 		uint32_t digit = 1;
-		dgtvec v = dgtvec_new(&digit, 1);
+		dgtvec v;
+		dgtvec_xinit(&v, &digit, 1);
 		dgtvec_dump(v);
 		dgtvec_del(v);
 	}
 	{
 		uint32_t digits[] = {3, 1, 2};
-		dgtvec v = dgtvec_new(digits, countof(digits));
+		dgtvec v;
+		dgtvec_xinit(&v, digits, countof(digits));
 		dgtvec_dump(v);
 		dgtvec_del(v);
 	}
@@ -49,7 +62,7 @@ int nsuccesses = 0;
 void
 test_dgtvec_push(void)
 {
-	dgtvec v = dgtvec_new(NULL, 0);
+	dgtvec v = dgtvec_new_empty();
 
 	dgtvec_push(&v, 0);
 	dgtvec_push(&v, 0);
@@ -65,7 +78,7 @@ test_dgtvec_push(void)
 void
 test_dgtvec_pop(void)
 {
-	dgtvec v = dgtvec_new(NULL, 0);
+	dgtvec v = dgtvec_new_empty();
 
 	dgtvec_push(&v, 3);
 	dgtvec_push(&v, 2);

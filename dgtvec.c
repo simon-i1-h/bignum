@@ -61,19 +61,6 @@ dgtvec_new_empty(void)
 	};
 }
 
-/* TODO: 削除 */
-dgtvec
-dgtvec_new(uint32_t *digits, size_t ndigits)
-{
-	dgtvec v;
-	if (dgtvec_init(&v, digits, ndigits) != 0) {
-		fprintf(stderr, "dgtvec_new: ENOMEM\n");
-		exit(1);
-	}
-
-	return v;
-}
-
 void
 dgtvec_del(dgtvec v)
 {

@@ -15,7 +15,6 @@ typedef struct dgtvec {
 
 int dgtvec_init(dgtvec *v, uint32_t *digits, size_t ndigits);
 dgtvec dgtvec_new_empty(void);
-dgtvec dgtvec_new(uint32_t *digits, size_t ndigits);
 void dgtvec_del(dgtvec v);
 void dgtvec_dump(dgtvec v);
 void dgtvec_push(dgtvec *v, uint32_t n);
