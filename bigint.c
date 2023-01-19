@@ -33,20 +33,17 @@ bigint_init(bigint *int_, int sign, uint32_t *digits, size_t ndigits)
 	return 0;
 }
 
-/* TODO: remove? */
-#if 0
-bigint
-bigint_from_digit(int32_t x)
+int
+bigint_from_digit(bigint *int_, int32_t x)
 {
 	if (x == 0) {
-		return bigint_new(0, NULL, 0);
+		return bigint_init(int_, 0, NULL, 0);
 	}
 
 	int sign = x < 0 ? -1 : 1;
 	uint32_t abs = x < 0 ? (int64_t)x * -1 : x;
-	return bigint_new(sign, &abs, 1);
+	return bigint_init(int_, sign, &abs, 1);
 }
-#endif
 
 void
 bigint_del(bigint int_)

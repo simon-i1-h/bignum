@@ -56,6 +56,7 @@ typedef struct bigint {
 } bigint;
 
 int bigint_init(bigint *int_, int sign, uint32_t *digits, size_t ndigits);
+int bigint_from_digit(bigint *int_, int32_t x);
 void bigint_del(bigint int_);
 
 bool bigint_eq(bigint x, bigint y);
