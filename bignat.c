@@ -30,18 +30,15 @@ bignat_new_zero(void)
 	return dgtvec_new_empty();
 }
 
-/* TODO: remove? */
-#if 0
-static bignat
-bignat_from_digit(uint32_t n)
+int
+bignat_from_digit(bignat *nat, uint32_t n)
 {
 	if (n == 0) {
-		return dgtvec_new(NULL, 0);
+		return dgtvec_init(nat, NULL, 0);
 	}
 
-	return dgtvec_new(&n, 1);
+	return dgtvec_init(nat, &n, 1);
 }
-#endif
 
 void
 bignat_del(bignat n)

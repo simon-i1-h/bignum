@@ -30,6 +30,7 @@ uint32_t dgtvec_pop(dgtvec *v);
 typedef dgtvec bignat;
 
 int bignat_init(bignat *nat, uint32_t *digits, size_t ndigits);
+int bignat_from_digit(bignat *nat, uint32_t n);
 void bignat_del(bignat n);
 
 int bignat_cmp(bignat x, bignat y);
