@@ -140,7 +140,7 @@ int
 bignat_sub(bignat *diff, bignat x, bignat y)
 {
 	if (bignat_lt(x, y)) {
-		return 1;
+		return EDOM;
 	}
 
 	/* x >= y */
@@ -215,7 +215,7 @@ int
 bignat_div(bignat *quot, bignat x, bignat y)
 {
 	if (y.ndigits == 0) {
-		return 1;
+		return EDOM;
 	}
 
 	return bignat_init(quot, (uint32_t[]){x.digits[0] / y.digits[0]}, 1);

@@ -1,3 +1,4 @@
+#include <errno.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -335,7 +336,7 @@ test_bignat_sub(void)
 		test_assert(bignat_from_digit(&x, 2) == 0);
 		test_assert(bignat_from_digit(&y, 3) == 0);
 
-		test_assert(bignat_sub(&diff, x, y) == 1);
+		test_assert(bignat_sub(&diff, x, y) == EDOM);
 
 		bignat_del(x);
 		bignat_del(y);
@@ -394,7 +395,7 @@ test_bignat_div(void)
 		test_assert(bignat_from_digit(&x, 1) == 0);
 		test_assert(bignat_from_digit(&y, 0) == 0);
 
-		test_assert(bignat_div(&quot, x, y) == 1);
+		test_assert(bignat_div(&quot, x, y) == EDOM);
 
 		bignat_del(x);
 		bignat_del(y);
