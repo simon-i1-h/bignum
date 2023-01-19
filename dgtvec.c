@@ -86,7 +86,6 @@ dgtvec_dump(dgtvec v)
 	printf("--------------------\n");
 }
 
-
 static int
 dgtvec_mpush(dgtvec *v, uint32_t n)
 {
