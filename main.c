@@ -449,6 +449,7 @@ test_bignat_add(void)
 		bignat_del(x);
 		bignat_del(y);
 		bignat_del(sum);
+		bignat_del(expected);
 	}
 	{
 		bignat x, y, sum, expected;
@@ -462,6 +463,7 @@ test_bignat_add(void)
 		bignat_del(x);
 		bignat_del(y);
 		bignat_del(sum);
+		bignat_del(expected);
 	}
 }
 
@@ -480,6 +482,7 @@ test_bignat_sub(void)
 		bignat_del(x);
 		bignat_del(y);
 		bignat_del(diff);
+		bignat_del(expected);
 	}
 	{
 		bignat x, y, diff;
@@ -508,6 +511,7 @@ test_bignat_mul(void)
 		bignat_del(x);
 		bignat_del(y);
 		bignat_del(prod);
+		bignat_del(expected);
 	}
 	{
 		bignat x, y, prod, expected;
@@ -521,6 +525,7 @@ test_bignat_mul(void)
 		bignat_del(x);
 		bignat_del(y);
 		bignat_del(prod);
+		bignat_del(expected);
 	}
 }
 
@@ -539,6 +544,7 @@ test_bignat_div(void)
 		bignat_del(x);
 		bignat_del(y);
 		bignat_del(quot);
+		bignat_del(expected);
 	}
 	{
 		bignat x, y, quot;
