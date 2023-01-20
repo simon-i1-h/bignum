@@ -559,6 +559,101 @@ test_bignat_div(void)
 }
 
 void
+test_bigint_init(void)
+{
+	{
+		bigint i;
+		test_assert(bigint_init(&i, 0, NULL, 0) == 0);
+		test_assert(i.sign == 0);
+		test_assert(i.abs.ndigits == 0);
+		test_assert(i.abs.digits == NULL);
+	}
+	{
+		bigint i;
+		test_assert(bigint_init(&i, 1, (uint32_t[]){1}, 1) == 0);
+		test_assert(i.sign == 1);
+		test_assert(i.abs.ndigits == 1);
+		test_assert(i.abs.digits[0] == 1);
+		free(i.abs.digits);
+	}
+	{
+		bigint i;
+		test_assert(bigint_init(&i, -1, (uint32_t[]){1}, 1) == 0);
+		test_assert(i.sign == -1);
+		test_assert(i.abs.ndigits == 1);
+		test_assert(i.abs.digits[0] == 1);
+		free(i.abs.digits);
+	}
+	{
+		bigint i;
+		test_assert(bigint_init(&i, 1, NULL, 0) == EINVAL);
+	}
+	{
+		bigint i;
+		test_assert(bigint_init(&i, -1, NULL, 0) == EINVAL);
+	}
+	{
+		bigint i;
+		test_assert(bigint_init(&i, 0, (uint32_t[]){1}, 1) == EINVAL);
+	}
+	{
+		bigint i;
+		uint32_t ds[] = {0, 0, 5};
+		test_assert(bigint_init(&i, -1, ds, countof(ds)) == 0);
+		test_assert(i.sign == -1);
+		test_assert(i.abs.ndigits == 3);
+		test_assert(i.abs.digits[0] == 0);
+		test_assert(i.abs.digits[1] == 0);
+		test_assert(i.abs.digits[2] == 5);
+		free(i.abs.digits);
+	}
+	{
+		bigint i;
+		uint32_t ds[] = {0};
+		test_assert(bigint_init(&i, 0, ds, countof(ds)) == EINVAL);
+	}
+}
+
+void
+test_bigint_from_digit(void)
+{
+	{
+		bigint i;
+		test_assert(bigint_from_digit(&i, 0) == 0);
+		test_assert(i.sign == 0);
+		test_assert(i.abs.ndigits == 0);
+		test_assert(i.abs.digits == NULL);
+	}
+	{
+		bigint i;
+		test_assert(bigint_from_digit(&i, 1) == 0);
+		test_assert(i.sign == 1);
+		test_assert(i.abs.ndigits == 1);
+		test_assert(i.abs.digits[0] == 1);
+		free(i.abs.digits);
+	}
+	{
+		bigint i;
+		test_assert(bigint_from_digit(&i, -1) == 0);
+		test_assert(i.sign == -1);
+		test_assert(i.abs.ndigits == 1);
+		test_assert(i.abs.digits[0] == 1);
+		free(i.abs.digits);
+	}
+}
+
+void
+test_bigint_del(void)
+{
+	bigint i;
+	test_assert(bigint_from_digit(&i, 1) == 0);
+	test_assert(i.sign == 1);
+	test_assert(i.abs.ndigits == 1);
+	test_assert(i.abs.digits[0] == 1);
+	bigint_del(i);
+}
+
+void
 test_bigint_eq(void)
 {
 	{
@@ -700,6 +795,9 @@ main(int argc, char **argv)
 	test_bignat_div();
 
 	/* bigint */
+	test_bigint_init();
+	test_bigint_from_digit();
+	test_bigint_del();
 	test_bigint_eq();
 	test_bigint_ne();
 
