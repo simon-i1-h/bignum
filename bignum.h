@@ -17,7 +17,7 @@ int dgtvec_init(dgtvec *v, uint32_t *digits, size_t ndigits);
 dgtvec dgtvec_new_empty(void);
 void dgtvec_del(dgtvec v);
 void dgtvec_dump(dgtvec v);
-int dgtvec_mpush(dgtvec *v, uint32_t n);
+int dgtvec_push(dgtvec *v, uint32_t n);
 uint32_t dgtvec_pop(dgtvec *v);
 
 /* bignat */

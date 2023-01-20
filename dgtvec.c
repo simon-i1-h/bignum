@@ -87,7 +87,7 @@ dgtvec_dump(dgtvec v)
 }
 
 int
-dgtvec_mpush(dgtvec *v, uint32_t n)
+dgtvec_push(dgtvec *v, uint32_t n)
 {
 	if (v->cap == v->ndigits) {
 		size_t cap = (v->cap + !v->cap) << 1;

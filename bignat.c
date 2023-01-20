@@ -127,7 +127,7 @@ bignat_add(bignat *sum, bignat x, bignat y)
 		uint64_t sum_digit = (uint64_t)carry +
 			(uint64_t)x.digits[i] + (uint64_t)y_digit;
 
-		err = dgtvec_mpush(&tmp_sum, sum_digit & (uint64_t)0xffffffff);
+		err = dgtvec_push(&tmp_sum, sum_digit & (uint64_t)0xffffffff);
 		if (err != 0) {
 			goto fail;
 		}
@@ -136,7 +136,7 @@ bignat_add(bignat *sum, bignat x, bignat y)
 	}
 
 	if (carry != 0) {
-		err = dgtvec_mpush(&tmp_sum, carry);
+		err = dgtvec_push(&tmp_sum, carry);
 		if (err != 0) {
 			goto fail;
 		}
@@ -171,7 +171,7 @@ bignat_sub(bignat *diff, bignat x, bignat y)
 		uint32_t diff_digit = ((uint64_t)borrow << 32) +
 			(uint64_t)x.digits[i] - y_digit;
 
-		err = dgtvec_mpush(&tmp_diff, diff_digit);
+		err = dgtvec_push(&tmp_diff, diff_digit);
 		if (err != 0) {
 			bignat_del(tmp_diff);
 			return err;
@@ -196,7 +196,7 @@ bignat_from_prod_digit(bignat *nat, uint64_t prod_digit, size_t start)
 	}
 
 	for (size_t i = 0; i < start; i++) {
-		err = dgtvec_mpush(&tmp_nat, 0);
+		err = dgtvec_push(&tmp_nat, 0);
 		if (err != 0) {
 			goto fail;
 		}
@@ -205,13 +205,13 @@ bignat_from_prod_digit(bignat *nat, uint64_t prod_digit, size_t start)
 	uint32_t low = prod_digit & 0xffffffff;
 	uint32_t high = prod_digit >> 32;
 
-	err = dgtvec_mpush(&tmp_nat, low);
+	err = dgtvec_push(&tmp_nat, low);
 	if (err != 0) {
 		goto fail;
 	}
 
 	if (high != 0) {
-		err = dgtvec_mpush(&tmp_nat, high);
+		err = dgtvec_push(&tmp_nat, high);
 		if (err != 0) {
 			goto fail;
 		}
