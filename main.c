@@ -62,13 +62,13 @@ int nsuccesses = 0;
 	} while (0)
 
 void
-test_dgtvec_push(void)
+test_dgtvec_mpush(void)
 {
 	dgtvec v = dgtvec_new_empty();
 
-	dgtvec_push(&v, 0);
-	dgtvec_push(&v, 0);
-	dgtvec_push(&v, 1);
+	test_assert(dgtvec_mpush(&v, 0) == 0);
+	test_assert(dgtvec_mpush(&v, 0) == 0);
+	test_assert(dgtvec_mpush(&v, 1) == 0);
 	test_assert(v.ndigits == 3);
 	test_assert(v.digits[0] == 0);
 	test_assert(v.digits[1] == 0);
@@ -82,9 +82,9 @@ test_dgtvec_pop(void)
 {
 	dgtvec v = dgtvec_new_empty();
 
-	dgtvec_push(&v, 3);
-	dgtvec_push(&v, 2);
-	dgtvec_push(&v, 1);
+	test_assert(dgtvec_mpush(&v, 3) == 0);
+	test_assert(dgtvec_mpush(&v, 2) == 0);
+	test_assert(dgtvec_mpush(&v, 1) == 0);
 	test_assert(dgtvec_pop(&v) == 1);
 	test_assert(v.ndigits == 2);
 	test_assert(dgtvec_pop(&v) == 2);
@@ -522,7 +522,7 @@ main(int argc, char **argv)
 	}
 
 	/* dgtvec */
-	test_dgtvec_push();
+	test_dgtvec_mpush();
 	test_dgtvec_pop();
 
 	/* bignat */

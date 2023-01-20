@@ -86,7 +86,7 @@ dgtvec_dump(dgtvec v)
 	printf("--------------------\n");
 }
 
-static int
+int
 dgtvec_mpush(dgtvec *v, uint32_t n)
 {
 	if (v->cap == v->ndigits) {
@@ -107,16 +107,6 @@ dgtvec_mpush(dgtvec *v, uint32_t n)
 
 	v->digits[v->ndigits++] = n;
 	return 0;
-}
-
-/* TODO: エラーメッセージの出力とexitをしない */
-void
-dgtvec_push(dgtvec *v, uint32_t n)
-{
-	if (dgtvec_mpush(v, n) != 0) {
-		fprintf(stderr, "dgtvec_push: ENOMEM\n");
-		exit(1);
-	}
 }
 
 uint32_t

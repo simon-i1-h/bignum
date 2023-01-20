@@ -117,6 +117,8 @@ bignat_add(bignat *sum, bignat x, bignat y)
 
 	/* x.ndigits >= y.ndigits */
 
+	int err = -1;
+
 	bignat tmp_sum = bignat_new_zero();
 	uint32_t carry = 0;
 
@@ -124,16 +126,28 @@ bignat_add(bignat *sum, bignat x, bignat y)
 		uint32_t y_digit = i < y.ndigits ? y.digits[i] : 0;
 		uint64_t sum_digit = (uint64_t)carry +
 			(uint64_t)x.digits[i] + (uint64_t)y_digit;
-		dgtvec_push(&tmp_sum, sum_digit & (uint64_t)0xffffffff);
+
+		err = dgtvec_mpush(&tmp_sum, sum_digit & (uint64_t)0xffffffff);
+		if (err != 0) {
+			goto fail;
+		}
+
 		carry = sum_digit >> 32;
 	}
 
 	if (carry != 0) {
-		dgtvec_push(&tmp_sum, carry);
+		err = dgtvec_mpush(&tmp_sum, carry);
+		if (err != 0) {
+			goto fail;
+		}
 	}
 
 	*sum = tmp_sum;
 	return 0;
+
+fail:
+	bignat_del(tmp_sum);
+	return err;
 }
 
 int
@@ -145,6 +159,8 @@ bignat_sub(bignat *diff, bignat x, bignat y)
 
 	/* x >= y */
 
+	int err = -1;
+
 	bignat tmp_diff = bignat_new_zero();
 	uint32_t borrow = 0;
 
@@ -154,7 +170,12 @@ bignat_sub(bignat *diff, bignat x, bignat y)
 		borrow = x.digits[i] < y_digit;
 		uint32_t diff_digit = ((uint64_t)borrow << 32) +
 			(uint64_t)x.digits[i] - y_digit;
-		dgtvec_push(&tmp_diff, diff_digit);
+
+		err = dgtvec_mpush(&tmp_diff, diff_digit);
+		if (err != 0) {
+			bignat_del(tmp_diff);
+			return err;
+		}
 	}
 
 	bignat_norm(&tmp_diff);
@@ -163,43 +184,73 @@ bignat_sub(bignat *diff, bignat x, bignat y)
 	return 0;
 }
 
-static bignat
-bignat_from_prod_digit(uint64_t prod_digit, size_t start)
+static int
+bignat_from_prod_digit(bignat *nat, uint64_t prod_digit, size_t start)
 {
-	bignat nat = bignat_new_zero();
+	int err = -1;
+	bignat tmp_nat = bignat_new_zero();
 
 	if (prod_digit == 0) {
-		return nat;
+		*nat = tmp_nat;
+		return 0;
 	}
 
 	for (size_t i = 0; i < start; i++) {
-		dgtvec_push(&nat, 0);
+		err = dgtvec_mpush(&tmp_nat, 0);
+		if (err != 0) {
+			goto fail;
+		}
 	}
 
 	uint32_t low = prod_digit & 0xffffffff;
 	uint32_t high = prod_digit >> 32;
 
-	dgtvec_push(&nat, low);
-	if (high != 0) {
-		dgtvec_push(&nat, high);
+	err = dgtvec_mpush(&tmp_nat, low);
+	if (err != 0) {
+		goto fail;
 	}
 
-	return nat;
+	if (high != 0) {
+		err = dgtvec_mpush(&tmp_nat, high);
+		if (err != 0) {
+			goto fail;
+		}
+	}
+
+	*nat = tmp_nat;
+	return 0;
+
+fail:
+	bignat_del(tmp_nat);
+	return err;
 }
 
 int
 bignat_mul(bignat *prod, bignat x, bignat y)
 {
+	int err = -1;
 	bignat tmp_prod = bignat_new_zero();
 
 	for (size_t ix = 0; ix < x.ndigits; ix++) {
 		for (size_t iy = 0; iy < y.ndigits; iy++) {
 			uint64_t prod_digit = (uint64_t)x.digits[ix] *
 				(uint64_t)y.digits[iy];
+
+			bignat p;
+			err = bignat_from_prod_digit(&p, prod_digit, ix + iy);
+			if (err != 0) {
+				bignat_del(tmp_prod);
+				return err;
+			}
+
 			bignat new_tmp_prod;
-			bignat p = bignat_from_prod_digit(
-				prod_digit, ix + iy);
-			bignat_add(&new_tmp_prod, tmp_prod, p);
+			err = bignat_add(&new_tmp_prod, tmp_prod, p);
+			if (err != 0) {
+				bignat_del(p);
+				bignat_del(tmp_prod);
+				return err;
+			}
+
 			bignat_del(tmp_prod);
 			bignat_del(p);
 			tmp_prod = new_tmp_prod;
