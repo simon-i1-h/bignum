@@ -96,6 +96,102 @@ test_dgtvec_pop(void)
 }
 
 void
+test_bignat_init(void)
+{
+	{
+		bignat n;
+		test_assert(bignat_init(&n, NULL, 0) == 0);
+		test_assert(n.ndigits == 0);
+		test_assert(n.digits == NULL);
+	}
+	{
+		bignat n;
+		test_assert(bignat_init(&n, (uint32_t[]){42}, 1) == 0);
+		test_assert(n.ndigits == 1);
+		test_assert(n.digits[0] == 42);
+		free(n.digits);
+	}
+	{
+		bignat n;
+		uint32_t ds[] = {3, 55};
+		test_assert(bignat_init(&n, ds, countof(ds)) == 0);
+		test_assert(n.ndigits == 2);
+		test_assert(n.digits[0] == 3);
+		test_assert(n.digits[1] == 55);
+		free(n.digits);
+	}
+	{
+		bignat n;
+		uint32_t ds[] = {3, 55, 0};
+		test_assert(bignat_init(&n, ds, countof(ds)) == EINVAL);
+	}
+	{
+		bignat n;
+		uint32_t ds[] = {3, 55, 0, 0, 0};
+		test_assert(bignat_init(&n, ds, countof(ds)) == EINVAL);
+	}
+}
+
+void
+test_bignat_from_digit(void)
+{
+	{
+		bignat n;
+		test_assert(bignat_from_digit(&n, 0) == 0);
+		test_assert(n.ndigits == 0);
+		test_assert(n.digits == NULL);
+	}
+	{
+		bignat n;
+		test_assert(bignat_from_digit(&n, 9) == 0);
+		test_assert(n.ndigits == 1);
+		test_assert(n.digits[0] == 9);
+		free(n.digits);
+	}
+}
+
+void
+test_bignat_del(void)
+{
+	{
+		bignat n;
+		test_assert(bignat_from_digit(&n, 1) == 0);
+		test_assert(n.ndigits == 1);
+		test_assert(n.digits[0] == 1);
+		bignat_del(n);
+	}
+}
+
+void
+test_bignat_cmp(void)
+{
+	{
+		bignat x, y;
+		test_assert(bignat_from_digit(&x, 1) == 0);
+		test_assert(bignat_from_digit(&y, 1) == 0);
+		test_assert(bignat_cmp(x, y) == 0);
+		bignat_del(x);
+		bignat_del(y);
+	}
+	{
+		bignat x, y;
+		test_assert(bignat_from_digit(&x, 1) == 0);
+		test_assert(bignat_from_digit(&y, 2) == 0);
+		test_assert(bignat_cmp(x, y) == -1);
+		bignat_del(x);
+		bignat_del(y);
+	}
+	{
+		bignat x, y;
+		test_assert(bignat_from_digit(&x, 2) == 0);
+		test_assert(bignat_from_digit(&y, 1) == 0);
+		test_assert(bignat_cmp(x, y) == 1);
+		bignat_del(x);
+		bignat_del(y);
+	}
+}
+
+void
 test_bignat_eq(void)
 {
 	{
@@ -526,6 +622,10 @@ main(int argc, char **argv)
 	test_dgtvec_pop();
 
 	/* bignat */
+	test_bignat_init();
+	test_bignat_from_digit();
+	test_bignat_del();
+	test_bignat_cmp();
 	test_bignat_eq();
 	test_bignat_ne();
 	test_bignat_lt();
