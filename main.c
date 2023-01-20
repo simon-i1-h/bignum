@@ -62,6 +62,61 @@ int nsuccesses = 0;
 	} while (0)
 
 void
+test_dgtvec_init(void)
+{
+	{
+		dgtvec v;
+		test_assert(dgtvec_init(&v, NULL, 0) == 0);
+		test_assert(v.ndigits == 0);
+		test_assert(v.digits == NULL);
+	}
+	{
+		dgtvec v;
+		test_assert(dgtvec_init(&v, (uint32_t[]){5}, 1) == 0);
+		test_assert(v.ndigits == 1);
+		test_assert(v.digits[0] == 5);
+		free(v.digits);
+	}
+	{
+		dgtvec v;
+		uint32_t ds[] = {0, 9};
+		test_assert(dgtvec_init(&v, ds, countof(ds)) == 0);
+		test_assert(v.ndigits == 2);
+		test_assert(v.digits[0] == 0);
+		test_assert(v.digits[1] == 9);
+		free(v.digits);
+	}
+	{
+		dgtvec v;
+		uint32_t ds[] = {0, 9, 0};
+		test_assert(dgtvec_init(&v, ds, countof(ds)) == 0);
+		test_assert(v.ndigits == 3);
+		test_assert(v.digits[0] == 0);
+		test_assert(v.digits[1] == 9);
+		test_assert(v.digits[2] == 0);
+		free(v.digits);
+	}
+}
+
+void
+test_dgtvec_new_empty(void)
+{
+	dgtvec v = dgtvec_new_empty();
+	test_assert(v.ndigits == 0);
+	test_assert(v.digits == NULL);
+}
+
+void
+test_dgtvec_del(void)
+{
+	dgtvec v;
+	test_assert(dgtvec_init(&v, (uint32_t[]){1}, 1) == 0);
+	test_assert(v.ndigits == 1);
+	test_assert(v.digits[0] == 1);
+	dgtvec_del(v);
+}
+
+void
 test_dgtvec_push(void)
 {
 	dgtvec v = dgtvec_new_empty();
@@ -153,13 +208,11 @@ test_bignat_from_digit(void)
 void
 test_bignat_del(void)
 {
-	{
-		bignat n;
-		test_assert(bignat_from_digit(&n, 1) == 0);
-		test_assert(n.ndigits == 1);
-		test_assert(n.digits[0] == 1);
-		bignat_del(n);
-	}
+	bignat n;
+	test_assert(bignat_from_digit(&n, 1) == 0);
+	test_assert(n.ndigits == 1);
+	test_assert(n.digits[0] == 1);
+	bignat_del(n);
 }
 
 void
@@ -618,6 +671,9 @@ main(int argc, char **argv)
 	}
 
 	/* dgtvec */
+	test_dgtvec_init();
+	test_dgtvec_new_empty();
+	test_dgtvec_del();
 	test_dgtvec_push();
 	test_dgtvec_pop();
 
