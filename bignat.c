@@ -203,7 +203,7 @@ bignat_from_prod_digit(bignat *nat, uint64_t prod_digit, size_t start)
 		}
 	}
 
-	uint32_t low = prod_digit & 0xffffffff;
+	uint32_t low = prod_digit & ~(uint32_t)0;
 	uint32_t high = prod_digit >> 32;
 
 	err = dgtvec_push(&tmp_nat, low);
