@@ -439,6 +439,20 @@ test_bignat_add(void)
 {
 	{
 		bignat x, y, sum, expected;
+		test_assert(bignat_from_digit(&x, 0) == 0);
+		test_assert(bignat_from_digit(&y, 0) == 0);
+		test_assert(bignat_from_digit(&expected, 0) == 0);
+
+		test_assert(bignat_add(&sum, x, y) == 0);
+		test_assert(bignat_eq(sum, expected));
+
+		bignat_del(x);
+		bignat_del(y);
+		bignat_del(sum);
+		bignat_del(expected);
+	}
+	{
+		bignat x, y, sum, expected;
 		test_assert(bignat_from_digit(&x, 1) == 0);
 		test_assert(bignat_from_digit(&y, 2) == 0);
 		test_assert(bignat_from_digit(&expected, 3) == 0);
@@ -472,9 +486,37 @@ test_bignat_sub(void)
 {
 	{
 		bignat x, y, diff, expected;
+		test_assert(bignat_from_digit(&x, 0) == 0);
+		test_assert(bignat_from_digit(&y, 0) == 0);
+		test_assert(bignat_from_digit(&expected, 0) == 0);
+
+		test_assert(bignat_sub(&diff, x, y) == 0);
+		test_assert(bignat_eq(diff, expected));
+
+		bignat_del(x);
+		bignat_del(y);
+		bignat_del(diff);
+		bignat_del(expected);
+	}
+	{
+		bignat x, y, diff, expected;
 		test_assert(bignat_from_digit(&x, 3) == 0);
 		test_assert(bignat_from_digit(&y, 2) == 0);
 		test_assert(bignat_from_digit(&expected, 1) == 0);
+
+		test_assert(bignat_sub(&diff, x, y) == 0);
+		test_assert(bignat_eq(diff, expected));
+
+		bignat_del(x);
+		bignat_del(y);
+		bignat_del(diff);
+		bignat_del(expected);
+	}
+	{
+		bignat x, y, diff, expected;
+		test_assert(bignat_from_digit(&x, 3) == 0);
+		test_assert(bignat_from_digit(&y, 3) == 0);
+		test_assert(bignat_from_digit(&expected, 0) == 0);
 
 		test_assert(bignat_sub(&diff, x, y) == 0);
 		test_assert(bignat_eq(diff, expected));
