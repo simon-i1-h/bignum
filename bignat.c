@@ -118,21 +118,21 @@ bignat_add(bignat *sum, bignat x, bignat y)
 	/* x.ndigits >= y.ndigits */
 
 	int err = -1;
-
 	bignat tmp_sum = bignat_new_zero();
 	uint32_t carry = 0;
+	uint32_t y_digit;
+	uint64_t sum_digit;
 
 	for (size_t i = 0; i < x.ndigits; i++) {
-		uint32_t y_digit = i < y.ndigits ? y.digits[i] : 0;
-		uint64_t sum_digit = (uint64_t)carry +
-			(uint64_t)x.digits[i] + (uint64_t)y_digit;
+		y_digit = i < y.ndigits ? y.digits[i] : 0;
+		sum_digit = (uint64_t)x.digits[i] + (uint64_t)y_digit +
+			(uint64_t)carry;
+		carry = sum_digit >> 32;
 
-		err = dgtvec_push(&tmp_sum, sum_digit & (uint64_t)0xffffffff);
+		err = dgtvec_push(&tmp_sum, sum_digit & ~(uint32_t)0);
 		if (err != 0) {
 			goto fail;
 		}
-
-		carry = sum_digit >> 32;
 	}
 
 	if (carry != 0) {
@@ -160,15 +160,16 @@ bignat_sub(bignat *diff, bignat x, bignat y)
 	/* x >= y */
 
 	int err = -1;
-
 	bignat tmp_diff = bignat_new_zero();
 	uint32_t borrow = 0;
+	uint64_t y_digit;
+	uint32_t diff_digit;
 
 	for (size_t i = 0; i < x.ndigits; i++) {
-		uint64_t y_digit = (uint64_t)borrow +
-			(uint64_t)(i < y.ndigits ? y.digits[i] : 0);
+		y_digit = (uint64_t)(i < y.ndigits ? y.digits[i] : 0) +
+			(uint64_t)borrow;
 		borrow = x.digits[i] < y_digit;
-		uint32_t diff_digit = ((uint64_t)borrow << 32) +
+		diff_digit = ((uint64_t)borrow << 32) +
 			(uint64_t)x.digits[i] - y_digit;
 
 		err = dgtvec_push(&tmp_diff, diff_digit);
