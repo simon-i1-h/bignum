@@ -6,7 +6,7 @@ DEPS:=$(OBJS:.o=.d)
 CC = gcc
 CFLAGS = -std=c2x -g -Wall -Wextra -Og
 
-.PHONY: all test clean bear
+.PHONY: all test clean bear valgrind
 
 all: test_bignum
 
@@ -16,6 +16,9 @@ test: all
 
 bear: clean
 	bear -- make
+
+valgrind: all
+	valgrind ./$(PROG)
 
 test_bignum: $(OBJS)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
