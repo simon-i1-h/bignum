@@ -40,6 +40,12 @@ bignat_from_digit(bignat *nat, uint32_t n)
 	return dgtvec_init(nat, &n, 1);
 }
 
+int
+bignat_copy(bignat *dst, bignat src)
+{
+	return bignat_init(dst, src.digits, src.ndigits);
+}
+
 void
 bignat_del(bignat n)
 {

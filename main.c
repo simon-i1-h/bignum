@@ -206,6 +206,29 @@ test_bignat_from_digit(void)
 }
 
 void
+test_bignat_copy(void)
+{
+	{
+		bignat src, dst;
+		test_assert(bignat_init(&src, NULL, 0) == 0);
+		test_assert(bignat_copy(&dst, src) == 0);
+		test_assert(dst.ndigits == 0);
+		test_assert(dst.digits == NULL);
+	}
+	{
+		bignat src, dst;
+		test_assert(bignat_init(&src, (uint32_t[]){95, 3}, 2) == 0);
+		test_assert(bignat_copy(&dst, src) == 0);
+		test_assert(dst.ndigits == 2);
+		test_assert(dst.digits[0] == 95);
+		test_assert(dst.digits[1] == 3);
+		bignat_del(src);
+		bignat_del(dst);
+	}
+}
+
+/* for memory leak detection */
+void
 test_bignat_del(void)
 {
 	bignat n;
@@ -823,6 +846,7 @@ main(int argc, char **argv)
 	/* bignat */
 	test_bignat_init();
 	test_bignat_from_digit();
+	test_bignat_copy();
 	test_bignat_del();
 	test_bignat_cmp();
 	test_bignat_eq();
