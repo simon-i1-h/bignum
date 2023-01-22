@@ -116,46 +116,72 @@ bignat_ge(bignat x, bignat y)
 	return bignat_cmp(x, y) >= 0;
 }
 
-int
-bignat_add(bignat *sum, bignat x, bignat y)
+/* 処理が失敗した場合、dstを解放する。 */
+static int
+bignat_acc(bignat *dst, bignat src)
 {
-	if (x.ndigits < y.ndigits) {
-		return bignat_add(sum, y, x);
-	}
-
-	/* x.ndigits >= y.ndigits */
-
 	int err = -1;
-	bignat tmp_sum = bignat_new_zero();
 	uint32_t carry = 0;
-	uint32_t y_digit;
+	uint32_t dst_digit, src_digit, digit;
 	uint64_t sum_digit;
 
-	for (size_t i = 0; i < x.ndigits; i++) {
-		y_digit = i < y.ndigits ? y.digits[i] : 0;
-		sum_digit = (uint64_t)x.digits[i] + (uint64_t)y_digit +
+	size_t ndigits;
+	if (dst->ndigits > src.ndigits) {
+		ndigits = dst->ndigits;
+	} else {
+		ndigits = src.ndigits;
+	}
+
+	for (size_t i = 0; i < ndigits; i++) {
+		dst_digit = i < dst->ndigits ? dst->digits[i] : 0;
+		src_digit = i < src.ndigits ? src.digits[i] : 0;
+		sum_digit = (uint64_t)dst_digit + (uint64_t)src_digit +
 			(uint64_t)carry;
+		digit = sum_digit & ~(uint32_t)0;
 		carry = sum_digit >> 32;
 
-		err = dgtvec_push(&tmp_sum, sum_digit & ~(uint32_t)0);
-		if (err != 0) {
-			goto fail;
+		if (i < dst->ndigits) {
+			dst->digits[i] = digit;
+		} else {
+			err = dgtvec_push(dst, digit);
+			if (err != 0) {
+				goto fail;
+			}
 		}
 	}
 
 	if (carry != 0) {
-		err = dgtvec_push(&tmp_sum, carry);
+		err = dgtvec_push(dst, carry);
 		if (err != 0) {
 			goto fail;
 		}
 	}
 
-	*sum = tmp_sum;
 	return 0;
 
 fail:
-	bignat_del(tmp_sum);
+	bignat_del(*dst);
 	return err;
+}
+
+int
+bignat_add(bignat *sum, bignat x, bignat y)
+{
+	int err = -1;
+
+	bignat tmp_sum;
+	err = bignat_copy(&tmp_sum, x);
+	if (err != 0) {
+		return err;
+	}
+
+	err = bignat_acc(&tmp_sum, y);
+	if (err != 0) {
+		return err;
+	}
+
+	*sum = tmp_sum;
+	return 0;
 }
 
 int
@@ -262,17 +288,11 @@ bignat_mul(bignat *prod, bignat x, bignat y)
 				return err;
 			}
 
-			bignat new_tmp_prod;
-			err = bignat_add(&new_tmp_prod, tmp_prod, p);
+			err = bignat_acc(&tmp_prod, p);
+			bignat_del(p);
 			if (err != 0) {
-				bignat_del(p);
-				bignat_del(tmp_prod);
 				return err;
 			}
-
-			bignat_del(tmp_prod);
-			bignat_del(p);
-			tmp_prod = new_tmp_prod;
 		}
 	}
 
