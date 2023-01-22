@@ -118,23 +118,27 @@ bignat_ge(bignat x, bignat y)
 
 /* 処理が失敗した場合、dstを解放する。 */
 static int
-bignat_acc(bignat *dst, bignat src)
+bignat_acc(bignat *dst, uint32_t *src_digits, size_t src_ndigits,
+	    size_t src_exp)
 {
 	int err = -1;
+	if (src_ndigits > 0 && src_digits[src_ndigits - 1] == 0) {
+		err = EINVAL;
+		goto fail;
+	}
+
 	uint32_t carry = 0;
 	uint32_t dst_digit, src_digit, digit;
 	uint64_t sum_digit;
+	size_t ndigits = dst->ndigits > src_ndigits
+		? dst->ndigits
+		: src_ndigits;
 
-	size_t ndigits;
-	if (dst->ndigits > src.ndigits) {
-		ndigits = dst->ndigits;
-	} else {
-		ndigits = src.ndigits;
-	}
-
-	for (size_t i = 0; i < ndigits; i++) {
+	for (size_t i = src_exp; i < ndigits; i++) {
 		dst_digit = i < dst->ndigits ? dst->digits[i] : 0;
-		src_digit = i < src.ndigits ? src.digits[i] : 0;
+		src_digit = i - src_exp < src_ndigits
+			? src_digits[i - src_exp]
+			: 0;
 		sum_digit = (uint64_t)dst_digit + (uint64_t)src_digit +
 			(uint64_t)carry;
 		digit = sum_digit & ~(uint32_t)0;
@@ -175,7 +179,7 @@ bignat_add(bignat *sum, bignat x, bignat y)
 		return err;
 	}
 
-	err = bignat_acc(&tmp_sum, y);
+	err = bignat_acc(&tmp_sum, y.digits, y.ndigits, 0);
 	if (err != 0) {
 		return err;
 	}
@@ -219,44 +223,6 @@ bignat_sub(bignat *diff, bignat x, bignat y)
 	return 0;
 }
 
-static int
-bignat_with_exp(bignat *nat, uint32_t *digits, size_t ndigits, size_t exp)
-{
-	int err = -1;
-	bignat tmp_nat = bignat_new_zero();
-
-	if (ndigits == 0) {
-		*nat = tmp_nat;
-		return 0;
-	}
-
-	if (ndigits > 0 && digits[ndigits - 1] == 0) {
-		err = EINVAL;
-		goto fail;
-	}
-
-	for (size_t i = 0; i < exp; i++) {
-		err = dgtvec_push(&tmp_nat, 0);
-		if (err != 0) {
-			goto fail;
-		}
-	}
-
-	for (size_t i = 0; i < ndigits; i++) {
-		err = dgtvec_push(&tmp_nat, digits[i]);
-		if (err != 0) {
-			goto fail;
-		}
-	}
-
-	*nat = tmp_nat;
-	return 0;
-
-fail:
-	bignat_del(tmp_nat);
-	return err;
-}
-
 int
 bignat_mul(bignat *prod, bignat x, bignat y)
 {
@@ -281,15 +247,7 @@ bignat_mul(bignat *prod, bignat x, bignat y)
 				}
 			}
 
-			bignat p;
-			err = bignat_with_exp(&p, digits, ndigits, ix + iy);
-			if (err != 0) {
-				bignat_del(tmp_prod);
-				return err;
-			}
-
-			err = bignat_acc(&tmp_prod, p);
-			bignat_del(p);
+			err = bignat_acc(&tmp_prod, digits, ndigits, ix + iy);
 			if (err != 0) {
 				return err;
 			}
