@@ -194,7 +194,7 @@ bignat_sub(bignat *diff, bignat x, bignat y)
 }
 
 static int
-bignat_init_exp(bignat *nat, uint32_t *digits, size_t ndigits, size_t exp)
+bignat_with_exp(bignat *nat, uint32_t *digits, size_t ndigits, size_t exp)
 {
 	int err = -1;
 	bignat tmp_nat = bignat_new_zero();
@@ -256,7 +256,7 @@ bignat_mul(bignat *prod, bignat x, bignat y)
 			}
 
 			bignat p;
-			err = bignat_init_exp(&p, digits, ndigits, ix + iy);
+			err = bignat_with_exp(&p, digits, ndigits, ix + iy);
 			if (err != 0) {
 				bignat_del(tmp_prod);
 				return err;
