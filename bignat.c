@@ -118,7 +118,7 @@ bignat_ge(bignat x, bignat y)
 
 /* 処理が失敗した場合、dstを解放する。 */
 static int
-bignat_acc(bignat *dst, uint32_t *src_digits, size_t src_ndigits,
+bignat_accadd(bignat *dst, uint32_t *src_digits, size_t src_ndigits,
 	    size_t src_exp)
 {
 	int err = -1;
@@ -179,7 +179,7 @@ bignat_add(bignat *sum, bignat x, bignat y)
 		return err;
 	}
 
-	err = bignat_acc(&tmp_sum, y.digits, y.ndigits, 0);
+	err = bignat_accadd(&tmp_sum, y.digits, y.ndigits, 0);
 	if (err != 0) {
 		return err;
 	}
@@ -247,7 +247,8 @@ bignat_mul(bignat *prod, bignat x, bignat y)
 				}
 			}
 
-			err = bignat_acc(&tmp_prod, digits, ndigits, ix + iy);
+			err = bignat_accadd(&tmp_prod, digits, ndigits,
+					    ix + iy);
 			if (err != 0) {
 				return err;
 			}
