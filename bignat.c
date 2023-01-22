@@ -6,6 +6,8 @@
 
 #include "bignum.h"
 
+#define countof(a) (sizeof(a) / sizeof((a)[0]))
+
 static void
 bignat_norm(bignat *nat)
 {
@@ -192,33 +194,30 @@ bignat_sub(bignat *diff, bignat x, bignat y)
 }
 
 static int
-bignat_from_prod_digit(bignat *nat, uint64_t prod_digit, size_t start)
+bignat_init_exp(bignat *nat, uint32_t *digits, size_t ndigits, size_t exp)
 {
 	int err = -1;
 	bignat tmp_nat = bignat_new_zero();
 
-	if (prod_digit == 0) {
+	if (ndigits == 0) {
 		*nat = tmp_nat;
 		return 0;
 	}
 
-	for (size_t i = 0; i < start; i++) {
+	if (ndigits > 0 && digits[ndigits - 1] == 0) {
+		err = EINVAL;
+		goto fail;
+	}
+
+	for (size_t i = 0; i < exp; i++) {
 		err = dgtvec_push(&tmp_nat, 0);
 		if (err != 0) {
 			goto fail;
 		}
 	}
 
-	uint32_t low = prod_digit & ~(uint32_t)0;
-	uint32_t high = prod_digit >> 32;
-
-	err = dgtvec_push(&tmp_nat, low);
-	if (err != 0) {
-		goto fail;
-	}
-
-	if (high != 0) {
-		err = dgtvec_push(&tmp_nat, high);
+	for (size_t i = 0; i < ndigits; i++) {
+		err = dgtvec_push(&tmp_nat, digits[i]);
 		if (err != 0) {
 			goto fail;
 		}
@@ -242,9 +241,22 @@ bignat_mul(bignat *prod, bignat x, bignat y)
 		for (size_t iy = 0; iy < y.ndigits; iy++) {
 			uint64_t prod_digit = (uint64_t)x.digits[ix] *
 				(uint64_t)y.digits[iy];
+			uint32_t ds[2] = {
+				prod_digit & ~(uint32_t)0,
+				prod_digit >> 32
+			};
+
+			uint32_t *digits = NULL;
+			size_t ndigits = countof(ds);
+			for (; ndigits > 0; ndigits--) {
+				if (ds[ndigits - 1] != 0) {
+					digits = &ds[ndigits - 1];
+					break;
+				}
+			}
 
 			bignat p;
-			err = bignat_from_prod_digit(&p, prod_digit, ix + iy);
+			err = bignat_init_exp(&p, digits, ndigits, ix + iy);
 			if (err != 0) {
 				bignat_del(tmp_prod);
 				return err;
