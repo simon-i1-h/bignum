@@ -265,6 +265,33 @@ test_bignat_cmp(void)
 		bignat_del(x);
 		bignat_del(y);
 	}
+	{
+		bignat x, y;
+		uint32_t xds[] = {0, 9, 1}, yds[] = {0, 9, 1};
+		test_assert(bignat_init(&x, xds, countof(xds)) == 0);
+		test_assert(bignat_init(&y, yds, countof(yds)) == 0);
+		test_assert(bignat_cmp(x, y) == 0);
+		bignat_del(x);
+		bignat_del(y);
+	}
+	{
+		bignat x, y;
+		uint32_t xds[] = {0, 9, 1}, yds[] = {0, 0, 2};
+		test_assert(bignat_init(&x, xds, countof(xds)) == 0);
+		test_assert(bignat_init(&y, yds, countof(yds)) == 0);
+		test_assert(bignat_cmp(x, y) == -1);
+		bignat_del(x);
+		bignat_del(y);
+	}
+	{
+		bignat x, y;
+		uint32_t xds[] = {1, 0, 3}, yds[] = {2, 9, 2};
+		test_assert(bignat_init(&x, xds, countof(xds)) == 0);
+		test_assert(bignat_init(&y, yds, countof(yds)) == 0);
+		test_assert(bignat_cmp(x, y) == 1);
+		bignat_del(x);
+		bignat_del(y);
+	}
 }
 
 void
@@ -502,6 +529,55 @@ test_bignat_add(void)
 		bignat_del(sum);
 		bignat_del(expected);
 	}
+	{
+		bignat x, y, sum, expected;
+		uint32_t xds[] = {1, 2, 3}, yds[] = {4, 5, 6},
+			eds[] = {5, 7, 9};
+		test_assert(bignat_init(&x, xds, countof(xds)) == 0);
+		test_assert(bignat_init(&y, yds, countof(yds)) == 0);
+		test_assert(bignat_init(&expected, eds, countof(eds)) == 0);
+
+		test_assert(bignat_add(&sum, x, y) == 0);
+		test_assert(bignat_eq(sum, expected));
+
+		bignat_del(x);
+		bignat_del(y);
+		bignat_del(sum);
+		bignat_del(expected);
+	}
+	{
+		bignat x, y, sum, expected;
+		uint32_t xds[] = {0, 10, 1}, yds[] = {0, UINT32_MAX - 4, 1},
+			eds[] = {0, 5, 3};
+		test_assert(bignat_init(&x, xds, countof(xds)) == 0);
+		test_assert(bignat_init(&y, yds, countof(yds)) == 0);
+		test_assert(bignat_init(&expected, eds, countof(eds)) == 0);
+
+		test_assert(bignat_add(&sum, x, y) == 0);
+		test_assert(bignat_eq(sum, expected));
+
+		bignat_del(x);
+		bignat_del(y);
+		bignat_del(sum);
+		bignat_del(expected);
+	}
+	{
+		bignat x, y, sum, expected;
+		uint32_t xds[] = {0, 1},
+			yds[] = {0, UINT32_MAX, UINT32_MAX},
+			eds[] = {0, 0, 0, 1};
+		test_assert(bignat_init(&x, xds, countof(xds)) == 0);
+		test_assert(bignat_init(&y, yds, countof(yds)) == 0);
+		test_assert(bignat_init(&expected, eds, countof(eds)) == 0);
+
+		test_assert(bignat_add(&sum, x, y) == 0);
+		test_assert(bignat_eq(sum, expected));
+
+		bignat_del(x);
+		bignat_del(y);
+		bignat_del(sum);
+		bignat_del(expected);
+	}
 }
 
 void
@@ -559,6 +635,82 @@ test_bignat_sub(void)
 		bignat_del(x);
 		bignat_del(y);
 	}
+	{
+		bignat x, y, diff, expected;
+		uint32_t xds[] = {9, 8, 7}, yds[] = {1, 2, 3},
+			eds[] = {8, 6, 4};
+		test_assert(bignat_init(&x, xds, countof(xds)) == 0);
+		test_assert(bignat_init(&y, yds, countof(yds)) == 0);
+		test_assert(bignat_init(&expected, eds, countof(eds)) == 0);
+
+		test_assert(bignat_sub(&diff, x, y) == 0);
+		test_assert(bignat_eq(diff, expected));
+
+		bignat_del(x);
+		bignat_del(y);
+		bignat_del(diff);
+		bignat_del(expected);
+	}
+	{
+		bignat x, y, diff, expected;
+		uint32_t xds[] = {0, 0, 2}, yds[] = {0, 2},
+			eds[] = {0, UINT32_MAX - 1, 1};
+		test_assert(bignat_init(&x, xds, countof(xds)) == 0);
+		test_assert(bignat_init(&y, yds, countof(yds)) == 0);
+		test_assert(bignat_init(&expected, eds, countof(eds)) == 0);
+
+		test_assert(bignat_sub(&diff, x, y) == 0);
+		test_assert(bignat_eq(diff, expected));
+
+		bignat_del(x);
+		bignat_del(y);
+		bignat_del(diff);
+		bignat_del(expected);
+	}
+	{
+		bignat x, y, diff, expected;
+		uint32_t xds[] = {0, 0, 1}, yds[] = {0, 2},
+			eds[] = {0, UINT32_MAX - 1};
+		test_assert(bignat_init(&x, xds, countof(xds)) == 0);
+		test_assert(bignat_init(&y, yds, countof(yds)) == 0);
+		test_assert(bignat_init(&expected, eds, countof(eds)) == 0);
+
+		test_assert(bignat_sub(&diff, x, y) == 0);
+		test_assert(bignat_eq(diff, expected));
+
+		bignat_del(x);
+		bignat_del(y);
+		bignat_del(diff);
+		bignat_del(expected);
+	}
+	{
+		bignat x, y, diff, expected;
+		uint32_t xds[] = {UINT32_MAX - 1, 1, UINT32_MAX},
+			yds[] = {UINT32_MAX - 1, 1, UINT32_MAX};
+		test_assert(bignat_init(&x, xds, countof(xds)) == 0);
+		test_assert(bignat_init(&y, yds, countof(yds)) == 0);
+		test_assert(bignat_from_digit(&expected, 0) == 0);
+
+		test_assert(bignat_sub(&diff, x, y) == 0);
+		test_assert(bignat_eq(diff, expected));
+
+		bignat_del(x);
+		bignat_del(y);
+		bignat_del(diff);
+		bignat_del(expected);
+	}
+	{
+		bignat x, y, diff;
+		uint32_t xds[] = {UINT32_MAX, UINT32_MAX, 1},
+			yds[] = {0, 0, UINT32_MAX};
+		test_assert(bignat_init(&x, xds, countof(xds)) == 0);
+		test_assert(bignat_init(&y, yds, countof(yds)) == 0);
+
+		test_assert(bignat_sub(&diff, x, y) == EDOM);
+
+		bignat_del(x);
+		bignat_del(y);
+	}
 }
 
 void
@@ -580,7 +732,35 @@ test_bignat_mul(void)
 	}
 	{
 		bignat x, y, prod, expected;
+		test_assert(bignat_from_digit(&x, 4) == 0);
+		test_assert(bignat_from_digit(&y, 3) == 0);
+		test_assert(bignat_from_digit(&expected, 12) == 0);
+
+		test_assert(bignat_mul(&prod, x, y) == 0);
+		test_assert(bignat_eq(prod, expected));
+
+		bignat_del(x);
+		bignat_del(y);
+		bignat_del(prod);
+		bignat_del(expected);
+	}
+	{
+		bignat x, y, prod, expected;
 		test_assert(bignat_from_digit(&x, 1) == 0);
+		test_assert(bignat_from_digit(&y, 0) == 0);
+		test_assert(bignat_from_digit(&expected, 0) == 0);
+
+		test_assert(bignat_mul(&prod, x, y) == 0);
+		test_assert(bignat_eq(prod, expected));
+
+		bignat_del(x);
+		bignat_del(y);
+		bignat_del(prod);
+		bignat_del(expected);
+	}
+	{
+		bignat x, y, prod, expected;
+		test_assert(bignat_from_digit(&x, 0) == 0);
 		test_assert(bignat_from_digit(&y, 0) == 0);
 		test_assert(bignat_from_digit(&expected, 0) == 0);
 
