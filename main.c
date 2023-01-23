@@ -292,6 +292,24 @@ test_bignat_cmp(void)
 		bignat_del(x);
 		bignat_del(y);
 	}
+	{
+		bignat x, y;
+		uint32_t xds[] = {0, 2}, yds[] = {0, 0, 1};
+		test_assert(bignat_init(&x, xds, countof(xds)) == 0);
+		test_assert(bignat_init(&y, yds, countof(yds)) == 0);
+		test_assert(bignat_cmp(x, y) == -1);
+		bignat_del(x);
+		bignat_del(y);
+	}
+	{
+		bignat x, y;
+		uint32_t xds[] = {0, 0, 1}, yds[] = {0, 2};
+		test_assert(bignat_init(&x, xds, countof(xds)) == 0);
+		test_assert(bignat_init(&y, yds, countof(yds)) == 0);
+		test_assert(bignat_cmp(x, y) == 1);
+		bignat_del(x);
+		bignat_del(y);
+	}
 }
 
 void
