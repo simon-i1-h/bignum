@@ -16,14 +16,19 @@ bignat_norm(bignat *nat)
 	}
 }
 
-static bignat
-bignat_view(uint32_t *digits, size_t ndigits)
+static int
+bignat_view(bignat *nat, uint32_t *digits, size_t ndigits)
 {
-	return (bignat){
+	if (ndigits > 0 && digits[ndigits - 1] == 0) {
+		return EINVAL;
+	}
+
+	*nat = (bignat){
 		.digits=digits,
 		.ndigits=ndigits,
 		.cap=0
 	};
+	return 0;
 }
 
 int
@@ -255,7 +260,8 @@ bignat_mul(bignat *prod, bignat x, bignat y)
 					break;
 				}
 			}
-			bignat view = bignat_view(digits, ndigits);
+			bignat view;
+			(void)bignat_view(&view, digits, ndigits);
 
 			err = bignat_accadd(&tmp_prod, view, ix + iy);
 			if (err != 0) {
