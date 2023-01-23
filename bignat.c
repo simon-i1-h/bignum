@@ -16,6 +16,16 @@ bignat_norm(bignat *nat)
 	}
 }
 
+static bignat
+bignat_view(uint32_t *digits, size_t ndigits)
+{
+	return (bignat){
+		.digits=digits,
+		.ndigits=ndigits,
+		.cap=0
+	};
+}
+
 int
 bignat_init(bignat *nat, uint32_t *digits, size_t ndigits)
 {
@@ -118,11 +128,10 @@ bignat_ge(bignat x, bignat y)
 
 /* 処理が失敗した場合、dstを解放する。 */
 static int
-bignat_accadd(bignat *dst, uint32_t *src_digits, size_t src_ndigits,
-	    size_t src_exp)
+bignat_accadd(bignat *dst, bignat src, size_t src_exp)
 {
 	int err = -1;
-	if (src_ndigits > 0 && src_digits[src_ndigits - 1] == 0) {
+	if (src.ndigits > 0 && src.digits[src.ndigits - 1] == 0) {
 		err = EINVAL;
 		goto fail;
 	}
@@ -130,14 +139,14 @@ bignat_accadd(bignat *dst, uint32_t *src_digits, size_t src_ndigits,
 	uint32_t carry = 0;
 	uint32_t dst_digit, src_digit, digit;
 	uint64_t sum_digit;
-	size_t ndigits = dst->ndigits > src_ndigits
+	size_t ndigits = dst->ndigits > src.ndigits
 		? dst->ndigits
-		: src_ndigits;
+		: src.ndigits;
 
 	for (size_t i = src_exp; i < ndigits; i++) {
 		dst_digit = i < dst->ndigits ? dst->digits[i] : 0;
-		src_digit = i - src_exp < src_ndigits
-			? src_digits[i - src_exp]
+		src_digit = i - src_exp < src.ndigits
+			? src.digits[i - src_exp]
 			: 0;
 		sum_digit = (uint64_t)dst_digit + (uint64_t)src_digit +
 			(uint64_t)carry;
@@ -179,7 +188,7 @@ bignat_add(bignat *sum, bignat x, bignat y)
 		return err;
 	}
 
-	err = bignat_accadd(&tmp_sum, y.digits, y.ndigits, 0);
+	err = bignat_accadd(&tmp_sum, y, 0);
 	if (err != 0) {
 		return err;
 	}
@@ -246,9 +255,9 @@ bignat_mul(bignat *prod, bignat x, bignat y)
 					break;
 				}
 			}
+			bignat view = bignat_view(digits, ndigits);
 
-			err = bignat_accadd(&tmp_prod, digits, ndigits,
-					    ix + iy);
+			err = bignat_accadd(&tmp_prod, view, ix + iy);
 			if (err != 0) {
 				return err;
 			}
