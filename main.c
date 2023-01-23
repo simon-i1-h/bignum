@@ -821,6 +821,22 @@ test_bignat_mul(void)
 		bignat_del(prod);
 		bignat_del(expected);
 	}
+	{
+		bignat x, y, prod, expected;
+		uint32_t xds[] = {1, 2}, yds[] = {4, 5},
+			eds[] = {4, 13, 10};
+		test_assert(bignat_init(&x, xds, countof(xds)) == 0);
+		test_assert(bignat_init(&y, yds, countof(yds)) == 0);
+		test_assert(bignat_init(&expected, eds, countof(eds)) == 0);
+
+		test_assert(bignat_mul(&prod, x, y) == 0);
+		test_assert(bignat_eq(prod, expected));
+
+		bignat_del(x);
+		bignat_del(y);
+		bignat_del(prod);
+		bignat_del(expected);
+	}
 }
 
 void

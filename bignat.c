@@ -144,13 +144,13 @@ bignat_accadd(bignat *dst, bignat src, size_t src_exp)
 	uint32_t carry = 0;
 	uint32_t dst_digit, src_digit, digit;
 	uint64_t sum_digit;
-	size_t ndigits = dst->ndigits > src.ndigits
+	size_t ndigits = dst->ndigits > src.ndigits + src_exp
 		? dst->ndigits
-		: src.ndigits;
+		: src.ndigits + src_exp;
 
-	for (size_t i = src_exp; i < ndigits; i++) {
+	for (size_t i = 0; i < ndigits; i++) {
 		dst_digit = i < dst->ndigits ? dst->digits[i] : 0;
-		src_digit = i - src_exp < src.ndigits
+		src_digit = i >= src_exp && i - src_exp < src.ndigits
 			? src.digits[i - src_exp]
 			: 0;
 		sum_digit = (uint64_t)dst_digit + (uint64_t)src_digit +
