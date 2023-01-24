@@ -2,6 +2,7 @@
 #define _DEFAULT_SOURCE
 
 #include <errno.h>
+#include <inttypes.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -75,9 +76,9 @@ dgtvec_dump(dgtvec v)
 	if (v.ndigits == 0) {
 		printf("(none)");
 	} else {
-		printf("%d", v.digits[0]);
+		printf("%" PRIu32, v.digits[0]);
 		for (size_t i = 1; i < v.ndigits; i++) {
-			printf(", %d", v.digits[i]);
+			printf(", %" PRIu32, v.digits[i]);
 		}
 	}
 	printf("\n");

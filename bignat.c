@@ -252,16 +252,12 @@ bignat_mul(bignat *prod, bignat x, bignat y)
 				prod_digit >> 32
 			};
 
-			uint32_t *digits = NULL;
 			size_t ndigits = countof(ds);
-			for (; ndigits > 0; ndigits--) {
-				if (ds[ndigits - 1] != 0) {
-					digits = &ds[ndigits - 1];
-					break;
-				}
+			while (ndigits > 0 && ds[ndigits - 1] == 0) {
+				ndigits--;
 			}
 			bignat view;
-			(void)bignat_view(&view, digits, ndigits);
+			(void)bignat_view(&view, ds, ndigits);
 
 			err = bignat_accadd(&tmp_prod, view, ix + iy);
 			if (err != 0) {
