@@ -247,11 +247,11 @@ bignat_mul(bignat *prod, bignat x, bignat y)
 		for (size_t iy = 0; iy < y.ndigits; iy++) {
 			uint64_t prod_digit = (uint64_t)x.digits[ix] *
 				(uint64_t)y.digits[iy];
+
 			uint32_t ds[2] = {
 				prod_digit & ~(uint32_t)0,
 				prod_digit >> 32
 			};
-
 			size_t ndigits = countof(ds);
 			while (ndigits > 0 && ds[ndigits - 1] == 0) {
 				ndigits--;
