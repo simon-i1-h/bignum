@@ -272,11 +272,28 @@ bignat_mul(bignat *prod, bignat x, bignat y)
 
 /* TODO: 多倍長 */
 int
-bignat_div(bignat *quot, bignat x, bignat y)
+bignat_divmod(bignat *quot, bignat *rem, bignat x, bignat y)
 {
 	if (y.ndigits == 0) {
 		return EDOM;
 	}
 
-	return bignat_init(quot, (uint32_t[]){x.digits[0] / y.digits[0]}, 1);
+	bignat tmp_quot;
+	bignat tmp_rem;
+	int err = -1;
+
+	err = bignat_from_digit(&tmp_quot, x.digits[0] / y.digits[0]);
+	if (err != 0) {
+		return err;
+	}
+
+	err = bignat_from_digit(&tmp_rem, x.digits[0] % y.digits[0]);
+	if (err != 0) {
+		bignat_del(tmp_quot);
+		return err;
+	}
+
+	*quot = tmp_quot;
+	*rem = tmp_rem;
+	return 0;
 }

@@ -888,28 +888,32 @@ test_bignat_mul(void)
 }
 
 void
-test_bignat_div(void)
+test_bignat_divmod(void)
 {
 	{
-		bignat x, y, quot, expected;
+		bignat x, y, quot, rem, expected_q, expected_r;
 		test_assert(bignat_from_digit(&x, 13) == 0);
 		test_assert(bignat_from_digit(&y, 3) == 0);
-		test_assert(bignat_from_digit(&expected, 4) == 0);
+		test_assert(bignat_from_digit(&expected_q, 4) == 0);
+		test_assert(bignat_from_digit(&expected_r, 1) == 0);
 
-		test_assert(bignat_div(&quot, x, y) == 0);
-		test_assert(bignat_eq(quot, expected));
+		test_assert(bignat_divmod(&quot, &rem, x, y) == 0);
+		test_assert(bignat_eq(quot, expected_q));
+		test_assert(bignat_eq(rem, expected_r));
 
 		bignat_del(x);
 		bignat_del(y);
 		bignat_del(quot);
-		bignat_del(expected);
+		bignat_del(rem);
+		bignat_del(expected_q);
+		bignat_del(expected_r);
 	}
 	{
-		bignat x, y, quot;
+		bignat x, y, quot, rem;
 		test_assert(bignat_from_digit(&x, 1) == 0);
 		test_assert(bignat_from_digit(&y, 0) == 0);
 
-		test_assert(bignat_div(&quot, x, y) == EDOM);
+		test_assert(bignat_divmod(&quot, &rem, x, y) == EDOM);
 
 		bignat_del(x);
 		bignat_del(y);
@@ -1151,7 +1155,7 @@ main(int argc, char **argv)
 	test_bignat_add();
 	test_bignat_sub();
 	test_bignat_mul();
-	test_bignat_div();
+	test_bignat_divmod();
 
 	/* bigint */
 	test_bigint_init();

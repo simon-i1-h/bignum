@@ -44,7 +44,7 @@ bool bignat_ge(bignat x, bignat y);
 int bignat_add(bignat *sum, bignat x, bignat y);
 int bignat_sub(bignat *diff, bignat x, bignat y);
 int bignat_mul(bignat *prod, bignat x, bignat y);
-int bignat_div(bignat *quot, bignat x, bignat y);
+int bignat_divmod(bignat *quot, bignat *rem, bignat x, bignat y);
 
 /*
  * signは-1か0か1となる。absが0であればsignは0を、absが0以外であれば
