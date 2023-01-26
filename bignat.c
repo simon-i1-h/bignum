@@ -198,21 +198,42 @@ bignat_add(bignat *sum, bignat x, bignat y)
 }
 
 static int
-bignat_accsub(bignat *dst, bignat src /* TODO size_t src_exp */)
+bignat_accsub(bignat *dst, bignat src, size_t src_exp)
 {
-	if (bignat_lt(*dst, src)) {
+	if (dst->ndigits < src.ndigits + src_exp) {
 		return EDOM;
+	}
+
+	if (dst->ndigits > src.ndigits + src_exp) {
+		goto start;
+	}
+
+	for (size_t i = dst->ndigits - 1; i < dst->ndigits; i--) {
+		uint32_t src_digit = i >= src_exp
+			? src.digits[i - src_exp]
+			: 0;
+
+		if (dst->digits[i] < src_digit) {
+			return EDOM;
+		}
+
+		if (dst->digits[i] > src_digit) {
+			goto start;
+		}
 	}
 
 	/* x >= y */
 
+start:;
 	uint32_t borrow = 0;
 	uint64_t src_digit;
 	uint32_t diff_digit;
 
 	for (size_t i = 0; i < dst->ndigits; i++) {
-		src_digit = (uint64_t)(i < src.ndigits ? src.digits[i] : 0) +
-			(uint64_t)borrow;
+		src_digit = i >= src_exp && i - src_exp < src.ndigits
+			? src.digits[i - src_exp]
+			: 0;
+		src_digit += borrow;
 		borrow = dst->digits[i] < src_digit;
 		diff_digit = ((uint64_t)borrow << 32) +
 			(uint64_t)dst->digits[i] - src_digit;
@@ -234,7 +255,7 @@ bignat_sub(bignat *diff, bignat x, bignat y)
 		return err;
 	}
 
-	err = bignat_accsub(&tmp_diff, y);
+	err = bignat_accsub(&tmp_diff, y, 0);
 	if (err != 0) {
 		bignat_del(tmp_diff);
 		return err;
