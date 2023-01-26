@@ -197,34 +197,46 @@ bignat_add(bignat *sum, bignat x, bignat y)
 	return 0;
 }
 
+static bool
+bignat_lt_exp(bignat x, bignat y, size_t y_exp)
+{
+	if (x.ndigits < y.ndigits + y_exp) {
+		return true;
+	}
+
+	if (x.ndigits > y.ndigits + y_exp) {
+		return false;
+	}
+
+	/* x.ndigits == y.ndigits */
+
+	uint32_t y_digit;
+	for (size_t i = x.ndigits - 1; i < x.ndigits; i--) {
+		y_digit = i >= y_exp
+			? y.digits[i - y_exp]
+			: 0;
+
+		if (x.digits[i] < y_digit) {
+			return true;
+		}
+
+		if (x.digits[i] > y_digit) {
+			return false;
+		}
+	}
+
+	return false;
+}
+
 static int
 bignat_accsub(bignat *dst, bignat src, size_t src_exp)
 {
-	if (dst->ndigits < src.ndigits + src_exp) {
+	if (bignat_lt_exp(*dst, src, src_exp)) {
 		return EDOM;
 	}
 
-	if (dst->ndigits > src.ndigits + src_exp) {
-		goto start;
-	}
+	/* *dst >= src * ((2 ** 32) ** src_exp) */
 
-	for (size_t i = dst->ndigits - 1; i < dst->ndigits; i--) {
-		uint32_t src_digit = i >= src_exp
-			? src.digits[i - src_exp]
-			: 0;
-
-		if (dst->digits[i] < src_digit) {
-			return EDOM;
-		}
-
-		if (dst->digits[i] > src_digit) {
-			goto start;
-		}
-	}
-
-	/* x >= y */
-
-start:;
 	uint32_t borrow = 0;
 	uint64_t src_digit;
 	uint32_t diff_digit;
