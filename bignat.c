@@ -310,7 +310,6 @@ bignat_mul(bignat *prod, bignat x, bignat y)
 	return 0;
 }
 
-/* TODO: 多倍長 */
 int
 bignat_divmod(bignat *quot, bignat *rem, bignat x, bignat y)
 {
@@ -318,22 +317,76 @@ bignat_divmod(bignat *quot, bignat *rem, bignat x, bignat y)
 		return EDOM;
 	}
 
-	bignat tmp_quot;
-	bignat tmp_rem;
 	int err = -1;
 
-	err = bignat_from_digit(&tmp_quot, x.digits[0] / y.digits[0]);
+	bignat tmp_quot = bignat_new_zero();
+	bignat tmp_rem = bignat_new_zero();
+
+	err = bignat_copy(&tmp_rem, x);
 	if (err != 0) {
-		return err;
+		goto fail;
 	}
 
-	err = bignat_from_digit(&tmp_rem, x.digits[0] % y.digits[0]);
-	if (err != 0) {
-		bignat_del(tmp_quot);
-		return err;
+	for (size_t currem_ndigits = tmp_rem.ndigits;
+	     currem_ndigits >= y.ndigits;
+	     currem_ndigits--) {
+		if ((currem_ndigits == tmp_rem.ndigits) &&
+		    /* TODO ここ削れるかも */
+		    (tmp_rem.digits[currem_ndigits - 1] <
+		     y.digits[y.ndigits - 1])) {
+			continue;
+		}
+
+		uint64_t x_digit = currem_ndigits == tmp_rem.ndigits
+			? 0
+			: (uint64_t)tmp_rem.digits[currem_ndigits] << 32;
+		x_digit += tmp_rem.digits[currem_ndigits - 1];
+		/* 仮の商(の一部) */
+		// TODO refactor
+		uint64_t quot_digit = x_digit / y.digits[y.ndigits - 1];
+		if (quot_digit > UINT32_MAX) {
+			quot_digit = UINT32_MAX;
+		}
+
+		bignat prod_digit; /* TODO: naming: prod? other? */
+		bignat quot_digit_view;
+		size_t y_exp;
+	asymp:
+		/* TODO: refactor */
+		if (quot_digit != 0) {
+			(void)bignat_view(&quot_digit_view,
+					  (uint32_t[]){quot_digit},
+					  1);
+		} else {
+			quot_digit_view = bignat_new_zero();
+		}
+		err = bignat_mul(&prod_digit, y, quot_digit_view);
+		if (err != 0) {
+			goto fail;
+		}
+
+		y_exp = currem_ndigits - y.ndigits;
+		err = bignat_accsub(&tmp_rem, prod_digit, y_exp);
+		bignat_del(prod_digit);
+		if (err == EDOM) {
+			quot_digit--;
+			goto asymp;
+		} else if (err != 0) {
+			goto fail;
+		}
+
+		err = bignat_accadd(&tmp_quot, quot_digit_view, y_exp);
+		if (err != 0) {
+			goto fail;
+		}
 	}
 
 	*quot = tmp_quot;
 	*rem = tmp_rem;
 	return 0;
+
+fail:
+	bignat_del(tmp_quot);
+	bignat_del(tmp_rem);
+	return err;
 }
