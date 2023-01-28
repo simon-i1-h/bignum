@@ -91,12 +91,14 @@ int
 dgtvec_push(dgtvec *v, uint32_t n)
 {
 	if (v->cap == v->ndigits) {
-		size_t cap = (v->cap + !v->cap) << 1;
+		size_t cap;
+		void *digits;
+
+		cap = (v->cap + !v->cap) << 1;
 		if (cap == 0) {
 			return ENOMEM;
 		}
 
-		void *digits;
 		digits = reallocarray(v->digits, cap, sizeof(*v->digits));
 		if (digits == NULL) {
 			return ENOMEM;
