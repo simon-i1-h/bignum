@@ -25,4 +25,5 @@ cap: 4
 EOF
 ./test_bignum --dumper > "$actual_file"
 diff -u "$expected_file" "$actual_file"
+
 echo done
