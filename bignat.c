@@ -7,6 +7,7 @@
 #include "bignum.h"
 
 #define countof(a) (sizeof(a) / sizeof((a)[0]))
+#define min(x, y) ((x) < (y) ? (x) : (y))
 
 static void
 bignat_norm(bignat *nat)
@@ -45,6 +46,16 @@ static bignat
 bignat_new_zero(void)
 {
 	return dgtvec_new_empty();
+}
+
+static int
+bignat_view_from_digit(bignat *nat, uint32_t *n)
+{
+	if (*n == 0) {
+		return bignat_view(nat, NULL, 0);
+	}
+
+	return bignat_view(nat, n, 1);
 }
 
 int
@@ -321,6 +332,11 @@ bignat_divmod(bignat *quot, bignat *rem, bignat x, bignat y)
 
 	bignat tmp_quot = bignat_new_zero();
 	bignat tmp_rem = bignat_new_zero();
+	uint64_t x_digit;
+	uint32_t quot_digit;
+	bignat prod;
+	bignat quot_digit_view;
+	size_t y_exp;
 
 	err = bignat_copy(&tmp_rem, x);
 	if (err != 0) {
@@ -330,44 +346,23 @@ bignat_divmod(bignat *quot, bignat *rem, bignat x, bignat y)
 	for (size_t currem_ndigits = tmp_rem.ndigits;
 	     currem_ndigits >= y.ndigits;
 	     currem_ndigits--) {
-		if ((currem_ndigits == tmp_rem.ndigits) &&
-		    /* TODO ここ削れるかも */
-		    (tmp_rem.digits[currem_ndigits - 1] <
-		     y.digits[y.ndigits - 1])) {
-			continue;
+		x_digit = tmp_rem.digits[currem_ndigits - 1];
+		if (currem_ndigits < tmp_rem.ndigits) {
+			x_digit = (uint64_t)tmp_rem.digits[currem_ndigits] << 32;
 		}
 
-		uint64_t x_digit = currem_ndigits == tmp_rem.ndigits
-			? 0
-			: (uint64_t)tmp_rem.digits[currem_ndigits] << 32;
-		x_digit += tmp_rem.digits[currem_ndigits - 1];
-		/* 仮の商(の一部) */
-		// TODO refactor
-		uint64_t quot_digit = x_digit / y.digits[y.ndigits - 1];
-		if (quot_digit > UINT32_MAX) {
-			quot_digit = UINT32_MAX;
-		}
+		quot_digit = min(x_digit / y.digits[y.ndigits - 1], UINT32_MAX);
 
-		bignat prod_digit; /* TODO: naming: prod? other? */
-		bignat quot_digit_view;
-		size_t y_exp;
 	asymp:
-		/* TODO: refactor */
-		if (quot_digit != 0) {
-			(void)bignat_view(&quot_digit_view,
-					  (uint32_t[]){quot_digit},
-					  1);
-		} else {
-			quot_digit_view = bignat_new_zero();
-		}
-		err = bignat_mul(&prod_digit, y, quot_digit_view);
+		(void)bignat_view_from_digit(&quot_digit_view, &quot_digit);
+		err = bignat_mul(&prod, y, quot_digit_view);
 		if (err != 0) {
 			goto fail;
 		}
 
 		y_exp = currem_ndigits - y.ndigits;
-		err = bignat_accsub(&tmp_rem, prod_digit, y_exp);
-		bignat_del(prod_digit);
+		err = bignat_accsub(&tmp_rem, prod, y_exp);
+		bignat_del(prod);
 		if (err == EDOM) {
 			quot_digit--;
 			goto asymp;
