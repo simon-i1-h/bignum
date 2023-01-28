@@ -148,13 +148,14 @@ bignat_accadd(bignat *dst, bignat src, size_t src_exp)
 {
 	int err = -1;
 	uint32_t carry = 0;
-	uint32_t dst_digit, src_digit, digit;
-	uint64_t sum_digit;
 	size_t ndigits = dst->ndigits > src.ndigits + src_exp
 		? dst->ndigits
 		: src.ndigits + src_exp;
 
 	for (size_t i = 0; i < ndigits; i++) {
+		uint32_t dst_digit, src_digit, digit;
+		uint64_t sum_digit;
+
 		dst_digit = i < dst->ndigits ? dst->digits[i] : 0;
 		src_digit = i >= src_exp && i - src_exp < src.ndigits
 			? src.digits[i - src_exp]
@@ -221,11 +222,8 @@ bignat_lt_exp(bignat x, bignat y, size_t y_exp)
 
 	/* x.ndigits == y.ndigits */
 
-	uint32_t y_digit;
 	for (size_t i = x.ndigits - 1; i < x.ndigits; i--) {
-		y_digit = i >= y_exp
-			? y.digits[i - y_exp]
-			: 0;
+		uint32_t y_digit = i >= y_exp ? y.digits[i - y_exp] : 0;
 
 		if (x.digits[i] < y_digit) {
 			return true;
@@ -249,17 +247,18 @@ bignat_accsub(bignat *dst, bignat src, size_t src_exp)
 	/* *dst >= src * ((2 ** 32) ** src_exp) */
 
 	uint32_t borrow = 0;
-	uint64_t src_digit;
-	uint32_t diff_digit;
 
 	for (size_t i = 0; i < dst->ndigits; i++) {
+		uint64_t src_digit;
+		uint32_t diff_digit;
+
 		src_digit = i >= src_exp && i - src_exp < src.ndigits
 			? src.digits[i - src_exp]
 			: 0;
 		src_digit += borrow;
 		borrow = dst->digits[i] < src_digit;
-		diff_digit = ((uint64_t)borrow << 32) +
-			(uint64_t)dst->digits[i] - src_digit;
+		diff_digit = ((uint64_t)borrow << 32) + (uint64_t)dst->digits[i]
+			- src_digit;
 		dst->digits[i] = diff_digit;
 	}
 
@@ -296,21 +295,22 @@ bignat_mul(bignat *prod, bignat x, bignat y)
 
 	for (size_t ix = 0; ix < x.ndigits; ix++) {
 		for (size_t iy = 0; iy < y.ndigits; iy++) {
-			uint64_t prod_digit = (uint64_t)x.digits[ix] *
-				(uint64_t)y.digits[iy];
+			uint64_t p;
+			uint32_t prod_digit[2];
+			size_t num_prod_digit = countof(prod_digit);
+			bignat prod_digit_view;
 
-			uint32_t ds[2] = {
-				prod_digit & ~(uint32_t)0,
-				prod_digit >> 32
-			};
-			size_t ndigits = countof(ds);
-			while (ndigits > 0 && ds[ndigits - 1] == 0) {
-				ndigits--;
+			p = (uint64_t)x.digits[ix] * (uint64_t)y.digits[iy];
+
+			prod_digit[0] = p & ~(uint32_t)0;
+			prod_digit[1] = p >> 32;
+			while (num_prod_digit > 0 &&
+			       prod_digit[num_prod_digit - 1] == 0) {
+				num_prod_digit--;
 			}
-			bignat view;
-			(void)bignat_view(&view, ds, ndigits);
+			(void)bignat_view(&prod_digit_view, prod_digit, num_prod_digit);
 
-			err = bignat_accadd(&tmp_prod, view, ix + iy);
+			err = bignat_accadd(&tmp_prod, prod_digit_view, ix + iy);
 			if (err != 0) {
 				return err;
 			}
@@ -329,30 +329,30 @@ bignat_divmod(bignat *quot, bignat *rem, bignat x, bignat y)
 	}
 
 	int err = -1;
-
 	bignat tmp_quot = bignat_new_zero();
 	bignat tmp_rem = bignat_new_zero();
-	uint64_t x_digit;
-	uint32_t quot_digit;
-	bignat prod;
-	bignat quot_digit_view;
-	size_t y_exp;
 
 	err = bignat_copy(&tmp_rem, x);
 	if (err != 0) {
 		goto fail;
 	}
 
-	for (size_t currem_ndigits = tmp_rem.ndigits;
-	     currem_ndigits >= y.ndigits;
-	     currem_ndigits--) {
-		x_digit = tmp_rem.digits[currem_ndigits - 1];
-		if (currem_ndigits < tmp_rem.ndigits) {
-			x_digit = (uint64_t)tmp_rem.digits[currem_ndigits] << 32;
+	for (size_t cur_rem_ndigits = tmp_rem.ndigits;
+	     cur_rem_ndigits >= y.ndigits;
+	     cur_rem_ndigits--) {
+		uint64_t x_digit;
+		uint32_t quot_digit;
+
+		x_digit = tmp_rem.digits[cur_rem_ndigits - 1];
+		if (cur_rem_ndigits < tmp_rem.ndigits) {
+			x_digit = (uint64_t)tmp_rem.digits[cur_rem_ndigits] << 32;
 		}
 
 		quot_digit = min(x_digit / y.digits[y.ndigits - 1], UINT32_MAX);
 
+		bignat quot_digit_view;
+		bignat prod;
+		size_t y_exp;
 	asymp:
 		(void)bignat_view_from_digit(&quot_digit_view, &quot_digit);
 		err = bignat_mul(&prod, y, quot_digit_view);
@@ -360,7 +360,7 @@ bignat_divmod(bignat *quot, bignat *rem, bignat x, bignat y)
 			goto fail;
 		}
 
-		y_exp = currem_ndigits - y.ndigits;
+		y_exp = cur_rem_ndigits - y.ndigits;
 		err = bignat_accsub(&tmp_rem, prod, y_exp);
 		bignat_del(prod);
 		if (err == EDOM) {
