@@ -193,8 +193,8 @@ int
 bignat_add(bignat *sum, bignat x, bignat y)
 {
 	int err = -1;
-
 	bignat tmp_sum;
+
 	err = bignat_copy(&tmp_sum, x);
 	if (err != 0) {
 		return err;
@@ -270,8 +270,8 @@ int
 bignat_sub(bignat *diff, bignat x, bignat y)
 {
 	int err = -1;
-
 	bignat tmp_diff;
+
 	err = bignat_copy(&tmp_diff, x);
 	if (err != 0) {
 		return err;
