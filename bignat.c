@@ -295,13 +295,14 @@ bignat_mul(bignat *prod, bignat x, bignat y)
 		for (size_t iy = 0; iy < y.ndigits; iy++) {
 			uint64_t p;
 			uint32_t prod_digit[2];
-			size_t num_prod_digit = countof(prod_digit);
+			size_t num_prod_digit;
 			bignat prod_digit_view;
 
 			p = (uint64_t)x.digits[ix] * (uint64_t)y.digits[iy];
 
 			prod_digit[0] = p & ~(uint32_t)0;
 			prod_digit[1] = p >> 32;
+			num_prod_digit = countof(prod_digit);
 			while (num_prod_digit > 0 &&
 			       prod_digit[num_prod_digit - 1] == 0) {
 				num_prod_digit--;
