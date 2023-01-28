@@ -46,14 +46,16 @@ bignat_new_zero(void)
 	return dgtvec_new_empty();
 }
 
-static int
-bignat_view_from_digit(bignat *nat, uint32_t *n)
+static bignat
+bignat_view_from_digit(uint32_t *n)
 {
 	if (*n == 0) {
-		return bignat_view(nat, NULL, 0);
+		return bignat_new_zero();
 	}
 
-	return bignat_view(nat, n, 1);
+	bignat nat;
+	(void)bignat_view(&nat, n, 1);
+	return nat;
 }
 
 int
@@ -353,7 +355,7 @@ bignat_divmod(bignat *quot, bignat *rem, bignat x, bignat y)
 		bignat prod;
 		size_t y_exp;
 	asymp:
-		(void)bignat_view_from_digit(&quot_digit_view, &quot_digit);
+		quot_digit_view = bignat_view_from_digit(&quot_digit);
 		err = bignat_mul(&prod, y, quot_digit_view);
 		if (err != 0) {
 			goto fail;

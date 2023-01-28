@@ -3,8 +3,8 @@
 set -ue
 
 mkdir -p tmp
-expected_file="tmp/expected.txt"
-actual_file="tmp/actual.txt"
+expected_file="tmp/test_dumper_expected.txt"
+actual_file="tmp/test_dumper_actual.txt"
 
 cat > "$expected_file" <<EOF
 dump dgtvec---------
