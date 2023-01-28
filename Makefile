@@ -1,5 +1,5 @@
 PROG = test_bignum
-#OBJS = dgtvec.o bignat.o bigint.o bigrat.o main.o
+#OBJS = dgtvec.o bignat.o bigint.o bigrat.o main.o # TODO
 OBJS = dgtvec.o bignat.o bigint.o main.o
 DEPS:=$(OBJS:.o=.d)
 
