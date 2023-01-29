@@ -337,10 +337,10 @@ bignat_divmod(bignat *quot, bignat *rem, bignat x, bignat y)
 		uint64_t x_digit;
 		uint32_t quot_digit;
 
-		x_digit = tmp_rem.digits[cur_rem_ndigits - 1];
-		if (cur_rem_ndigits < tmp_rem.ndigits) {
-			x_digit += (uint64_t)tmp_rem.digits[cur_rem_ndigits] << 32;
-		}
+		x_digit = cur_rem_ndigits < tmp_rem.ndigits
+			? (uint64_t)tmp_rem.digits[cur_rem_ndigits] << 32
+			: 0;
+		x_digit += tmp_rem.digits[cur_rem_ndigits - 1];
 
 		quot_digit = min(x_digit / y.digits[y.ndigits - 1], UINT32_MAX);
 
