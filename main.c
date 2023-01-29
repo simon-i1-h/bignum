@@ -933,8 +933,7 @@ test_bignat_divmod(void)
 			edsq[] = {0, 1};
 		test_assert(bignat_init(&x, xds, countof(xds)) == 0);
 		test_assert(bignat_init(&y, yds, countof(yds)) == 0);
-		test_assert(bignat_init(&expected_q, edsq, countof(edsq)) ==
-			    0);
+		test_assert(bignat_init(&expected_q, edsq, countof(edsq)) == 0);
 		test_assert(bignat_from_digit(&expected_r, 0) == 0);
 
 		test_assert(bignat_divmod(&quot, &rem, x, y) == 0);
@@ -955,8 +954,7 @@ test_bignat_divmod(void)
 			edsq[] = {((uint64_t)1 << 32) / 2};
 		test_assert(bignat_init(&x, xds, countof(xds)) == 0);
 		test_assert(bignat_init(&y, yds, countof(yds)) == 0);
-		test_assert(bignat_init(&expected_q, edsq, countof(edsq)) ==
-			    0);
+		test_assert(bignat_init(&expected_q, edsq, countof(edsq)) == 0);
 		test_assert(bignat_from_digit(&expected_r, 0) == 0);
 
 		test_assert(bignat_divmod(&quot, &rem, x, y) == 0);
@@ -978,8 +976,7 @@ test_bignat_divmod(void)
 		test_assert(bignat_init(&x, xds, countof(xds)) == 0);
 		test_assert(bignat_init(&y, yds, countof(yds)) == 0);
 		test_assert(bignat_from_digit(&expected_q, 0) == 0);
-		test_assert(bignat_init(&expected_r, edsr, countof(edsr)) ==
-			    0);
+		test_assert(bignat_init(&expected_r, edsr, countof(edsr)) == 0);
 
 		test_assert(bignat_divmod(&quot, &rem, x, y) == 0);
 		test_assert(bignat_eq(quot, expected_q));
@@ -1000,10 +997,8 @@ test_bignat_divmod(void)
 			edsr[] = {1};
 		test_assert(bignat_init(&x, xds, countof(xds)) == 0);
 		test_assert(bignat_init(&y, yds, countof(yds)) == 0);
-		test_assert(bignat_init(&expected_q, edsq, countof(edsq)) ==
-			    0);
-		test_assert(bignat_init(&expected_r, edsr, countof(edsr)) ==
-			    0);
+		test_assert(bignat_init(&expected_q, edsq, countof(edsq)) == 0);
+		test_assert(bignat_init(&expected_r, edsr, countof(edsr)) == 0);
 
 		test_assert(bignat_divmod(&quot, &rem, x, y) == 0);
 		test_assert(bignat_eq(quot, expected_q));
@@ -1024,10 +1019,8 @@ test_bignat_divmod(void)
 			edsr[] = {1};
 		test_assert(bignat_init(&x, xds, countof(xds)) == 0);
 		test_assert(bignat_init(&y, yds, countof(yds)) == 0);
-		test_assert(bignat_init(&expected_q, edsq, countof(edsq)) ==
-			    0);
-		test_assert(bignat_init(&expected_r, edsr, countof(edsr)) ==
-			    0);
+		test_assert(bignat_init(&expected_q, edsq, countof(edsq)) == 0);
+		test_assert(bignat_init(&expected_r, edsr, countof(edsr)) == 0);
 
 		test_assert(bignat_divmod(&quot, &rem, x, y) == 0);
 		test_assert(bignat_eq(quot, expected_q));
@@ -1048,10 +1041,8 @@ test_bignat_divmod(void)
 			edsr[] = {9, 1};
 		test_assert(bignat_init(&x, xds, countof(xds)) == 0);
 		test_assert(bignat_init(&y, yds, countof(yds)) == 0);
-		test_assert(bignat_init(&expected_q, edsq, countof(edsq)) ==
-			    0);
-		test_assert(bignat_init(&expected_r, edsr, countof(edsr)) ==
-			    0);
+		test_assert(bignat_init(&expected_q, edsq, countof(edsq)) == 0);
+		test_assert(bignat_init(&expected_r, edsr, countof(edsr)) == 0);
 
 		test_assert(bignat_divmod(&quot, &rem, x, y) == 0);
 		test_assert(bignat_eq(quot, expected_q));
@@ -1072,10 +1063,8 @@ test_bignat_divmod(void)
 			edsr[] = {3};
 		test_assert(bignat_init(&x, xds, countof(xds)) == 0);
 		test_assert(bignat_init(&y, yds, countof(yds)) == 0);
-		test_assert(bignat_init(&expected_q, edsq, countof(edsq)) ==
-			    0);
-		test_assert(bignat_init(&expected_r, edsr, countof(edsr)) ==
-			    0);
+		test_assert(bignat_init(&expected_q, edsq, countof(edsq)) == 0);
+		test_assert(bignat_init(&expected_r, edsr, countof(edsr)) == 0);
 
 		test_assert(bignat_divmod(&quot, &rem, x, y) == 0);
 		test_assert(bignat_eq(quot, expected_q));
@@ -1096,10 +1085,8 @@ test_bignat_divmod(void)
 			edsr[] = {0, 1};
 		test_assert(bignat_init(&x, xds, countof(xds)) == 0);
 		test_assert(bignat_init(&y, yds, countof(yds)) == 0);
-		test_assert(bignat_init(&expected_q, edsq, countof(edsq)) ==
-			    0);
-		test_assert(bignat_init(&expected_r, edsr, countof(edsr)) ==
-			    0);
+		test_assert(bignat_init(&expected_q, edsq, countof(edsq)) == 0);
+		test_assert(bignat_init(&expected_r, edsr, countof(edsr)) == 0);
 
 		test_assert(bignat_divmod(&quot, &rem, x, y) == 0);
 		test_assert(bignat_eq(quot, expected_q));
