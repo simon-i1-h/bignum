@@ -286,15 +286,15 @@ bignat_mul(bignat *prod, bignat x, bignat y)
 	for (size_t ix = 0; ix < x.ndigits; ix++) {
 		for (size_t iy = 0; iy < y.ndigits; iy++) {
 			int err = -1;
-			uint64_t p;
+			uint64_t pd;
 			uint32_t prod_digit[2];
 			size_t num_prod_digit;
 			bignat prod_digit_view;
 
-			p = (uint64_t)x.digits[ix] * (uint64_t)y.digits[iy];
+			pd = (uint64_t)x.digits[ix] * (uint64_t)y.digits[iy];
 
-			prod_digit[0] = p & ~(uint32_t)0;
-			prod_digit[1] = p >> 32;
+			prod_digit[0] = pd & ~(uint32_t)0;
+			prod_digit[1] = pd >> 32;
 			num_prod_digit = countof(prod_digit);
 			while (num_prod_digit > 0 &&
 			       prod_digit[num_prod_digit - 1] == 0) {
@@ -334,7 +334,7 @@ bignat_divmod(bignat *quot, bignat *rem, bignat x, bignat y)
 	for (size_t cur_rem_ndigits = tmp_rem.ndigits;
 	     cur_rem_ndigits >= y.ndigits;
 	     cur_rem_ndigits--) {
-		uint64_t x_digit;
+		uint64_t x_digit, qd;
 		uint32_t quot_digit;
 
 		x_digit = cur_rem_ndigits < tmp_rem.ndigits
@@ -342,7 +342,8 @@ bignat_divmod(bignat *quot, bignat *rem, bignat x, bignat y)
 			: 0;
 		x_digit += tmp_rem.digits[cur_rem_ndigits - 1];
 
-		quot_digit = min(x_digit / y.digits[y.ndigits - 1], UINT32_MAX);
+		qd = x_digit / y.digits[y.ndigits - 1];
+		quot_digit = min(qd, UINT32_MAX);
 
 		bignat quot_digit_view;
 		bignat prod;
