@@ -239,7 +239,6 @@ bignat_accsub(bignat *dst, bignat src, size_t src_exp)
 	/* *dst >= src * ((2 ** 32) ** src_exp) */
 
 	uint32_t borrow = 0;
-
 	for (size_t i = 0; i < dst->ndigits; i++) {
 		uint64_t src_digit;
 		uint32_t diff_digit;
