@@ -142,7 +142,6 @@ bignat_ge(bignat x, bignat y)
 	return bignat_cmp(x, y) >= 0;
 }
 
-/* 処理が失敗した場合、dstを解放する。 */
 static int
 bignat_accadd(bignat *dst, bignat src, size_t src_exp)
 {
@@ -186,6 +185,7 @@ bignat_accadd(bignat *dst, bignat src, size_t src_exp)
 
 fail:
 	bignat_del(*dst);
+	*dst = bignat_new_zero();
 	return err;
 }
 
@@ -202,6 +202,7 @@ bignat_add(bignat *sum, bignat x, bignat y)
 
 	err = bignat_accadd(&tmp_sum, y, 0);
 	if (err != 0) {
+		bignat_del(tmp_sum);
 		return err;
 	}
 
@@ -314,6 +315,7 @@ bignat_mul(bignat *prod, bignat x, bignat y)
 
 			err = bignat_accadd(&tmp_prod, prod_digit_view, ix + iy);
 			if (err != 0) {
+				bignat_del(tmp_prod);
 				return err;
 			}
 		}
