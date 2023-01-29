@@ -145,13 +145,21 @@ bignat_ge(bignat x, bignat y)
 static int
 bignat_accadd(bignat *dst, bignat src, size_t src_exp)
 {
-	int err = -1;
-	uint32_t carry = 0;
 	size_t ndigits = dst->ndigits > src.ndigits + src_exp
 		? dst->ndigits
 		: src.ndigits + src_exp;
+	for (size_t i = dst->ndigits; i < ndigits + 1; i++) {
+		int err = dgtvec_push(dst, 0);
+		if (err != 0) {
+			bignat_del(*dst);
+			*dst = bignat_new_zero();
+			return err;
+		}
+	}
 
-	for (size_t i = 0; i < ndigits; i++) {
+	uint32_t carry = 0;
+	size_t i;
+	for (i = 0; i < dst->ndigits - 1; i++) {
 		uint32_t dst_digit, src_digit, digit;
 		uint64_t sum_digit;
 
@@ -164,29 +172,12 @@ bignat_accadd(bignat *dst, bignat src, size_t src_exp)
 		digit = sum_digit & ~(uint32_t)0;
 		carry = sum_digit >> 32;
 
-		if (i < dst->ndigits) {
-			dst->digits[i] = digit;
-		} else {
-			err = dgtvec_push(dst, digit);
-			if (err != 0) {
-				goto fail;
-			}
-		}
+		dst->digits[i] = digit;
 	}
+	dst->digits[i] = carry;
 
-	if (carry != 0) {
-		err = dgtvec_push(dst, carry);
-		if (err != 0) {
-			goto fail;
-		}
-	}
-
+	bignat_norm(dst);
 	return 0;
-
-fail:
-	bignat_del(*dst);
-	*dst = bignat_new_zero();
-	return err;
 }
 
 int
