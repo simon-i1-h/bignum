@@ -309,6 +309,7 @@ bignat_mul(bignat *prod, bignat x, bignat y)
 			       prod_digit[num_prod_digit - 1] == 0) {
 				num_prod_digit--;
 			}
+
 			(void)bignat_view(&prod_digit_view, prod_digit, num_prod_digit);
 
 			err = bignat_accadd(&tmp_prod, prod_digit_view, ix + iy);
