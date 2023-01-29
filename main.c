@@ -1089,6 +1089,30 @@ test_bignat_divmod(void)
 		bignat_del(expected_r);
 	}
 	{
+		bignat x, y, quot, rem, expected_q, expected_r;
+		uint32_t xds[] = {0, 3, 1},
+			yds[] = {0, 2},
+			edsq[] = {((uint32_t)1 << 31) + 1},
+			edsr[] = {0, 1};
+		test_assert(bignat_init(&x, xds, countof(xds)) == 0);
+		test_assert(bignat_init(&y, yds, countof(yds)) == 0);
+		test_assert(bignat_init(&expected_q, edsq, countof(edsq)) ==
+			    0);
+		test_assert(bignat_init(&expected_r, edsr, countof(edsr)) ==
+			    0);
+
+		test_assert(bignat_divmod(&quot, &rem, x, y) == 0);
+		test_assert(bignat_eq(quot, expected_q));
+		test_assert(bignat_eq(rem, expected_r));
+
+		bignat_del(x);
+		bignat_del(y);
+		bignat_del(quot);
+		bignat_del(rem);
+		bignat_del(expected_q);
+		bignat_del(expected_r);
+	}
+	{
 		bignat x, y, quot, rem;
 		test_assert(bignat_from_digit(&x, 1) == 0);
 		test_assert(bignat_from_digit(&y, 0) == 0);
