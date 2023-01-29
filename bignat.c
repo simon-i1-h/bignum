@@ -281,11 +281,11 @@ bignat_sub(bignat *diff, bignat x, bignat y)
 int
 bignat_mul(bignat *prod, bignat x, bignat y)
 {
-	int err = -1;
 	bignat tmp_prod = bignat_new_zero();
 
 	for (size_t ix = 0; ix < x.ndigits; ix++) {
 		for (size_t iy = 0; iy < y.ndigits; iy++) {
+			int err = -1;
 			uint64_t p;
 			uint32_t prod_digit[2];
 			size_t num_prod_digit;
