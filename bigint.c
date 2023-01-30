@@ -86,3 +86,27 @@ bigint_ne(bigint x, bigint y)
 {
 	return bigint_cmp(x, y) != 0;
 }
+
+bool
+bigint_lt(bigint x, bigint y)
+{
+	return bigint_cmp(x, y) < 0;
+}
+
+bool
+bigint_gt(bigint x, bigint y)
+{
+	return bigint_cmp(x, y) > 0;
+}
+
+bool
+bigint_le(bigint x, bigint y)
+{
+	return bigint_cmp(x, y) <= 0;
+}
+
+bool
+bigint_ge(bigint x, bigint y)
+{
+	return bigint_cmp(x, y) >= 0;
+}

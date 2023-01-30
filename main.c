@@ -1326,6 +1326,346 @@ test_bigint_ne(void)
 	}
 }
 
+void
+test_bigint_lt(void)
+{
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, 1) == 0);
+		test_assert(bigint_from_digit(&y, 1) == 0);
+
+		test_assert(!bigint_lt(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, -1) == 0);
+		test_assert(bigint_from_digit(&y, -1) == 0);
+
+		test_assert(!bigint_lt(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, 0) == 0);
+		test_assert(bigint_from_digit(&y, 0) == 0);
+
+		test_assert(!bigint_lt(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, 1) == 0);
+		test_assert(bigint_from_digit(&y, 2) == 0);
+
+		test_assert(bigint_lt(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, -1) == 0);
+		test_assert(bigint_from_digit(&y, -2) == 0);
+
+		test_assert(!bigint_lt(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, -1) == 0);
+		test_assert(bigint_from_digit(&y, 1) == 0);
+
+		test_assert(bigint_lt(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, -1) == 0);
+		test_assert(bigint_from_digit(&y, 0) == 0);
+
+		test_assert(bigint_lt(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, 0) == 0);
+		test_assert(bigint_from_digit(&y, 1) == 0);
+
+		test_assert(bigint_lt(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+}
+
+void
+test_bigint_gt(void)
+{
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, 1) == 0);
+		test_assert(bigint_from_digit(&y, 1) == 0);
+
+		test_assert(!bigint_gt(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, -1) == 0);
+		test_assert(bigint_from_digit(&y, -1) == 0);
+
+		test_assert(!bigint_gt(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, 0) == 0);
+		test_assert(bigint_from_digit(&y, 0) == 0);
+
+		test_assert(!bigint_gt(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, 2) == 0);
+		test_assert(bigint_from_digit(&y, 1) == 0);
+
+		test_assert(bigint_gt(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, -2) == 0);
+		test_assert(bigint_from_digit(&y, -1) == 0);
+
+		test_assert(!bigint_gt(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, 1) == 0);
+		test_assert(bigint_from_digit(&y, -1) == 0);
+
+		test_assert(bigint_gt(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, 0) == 0);
+		test_assert(bigint_from_digit(&y, -1) == 0);
+
+		test_assert(bigint_gt(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, 1) == 0);
+		test_assert(bigint_from_digit(&y, 0) == 0);
+
+		test_assert(bigint_gt(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+}
+
+void
+test_bigint_le(void)
+{
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, 1) == 0);
+		test_assert(bigint_from_digit(&y, 1) == 0);
+
+		test_assert(bigint_le(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, -1) == 0);
+		test_assert(bigint_from_digit(&y, -1) == 0);
+
+		test_assert(bigint_le(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, 0) == 0);
+		test_assert(bigint_from_digit(&y, 0) == 0);
+
+		test_assert(bigint_le(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, 1) == 0);
+		test_assert(bigint_from_digit(&y, 2) == 0);
+
+		test_assert(bigint_le(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, -1) == 0);
+		test_assert(bigint_from_digit(&y, -2) == 0);
+
+		test_assert(!bigint_le(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, -1) == 0);
+		test_assert(bigint_from_digit(&y, 1) == 0);
+
+		test_assert(bigint_le(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, -1) == 0);
+		test_assert(bigint_from_digit(&y, 0) == 0);
+
+		test_assert(bigint_le(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, 0) == 0);
+		test_assert(bigint_from_digit(&y, 1) == 0);
+
+		test_assert(bigint_le(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+}
+
+void
+test_bigint_ge(void)
+{
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, 1) == 0);
+		test_assert(bigint_from_digit(&y, 1) == 0);
+
+		test_assert(bigint_ge(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, -1) == 0);
+		test_assert(bigint_from_digit(&y, -1) == 0);
+
+		test_assert(bigint_ge(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, 0) == 0);
+		test_assert(bigint_from_digit(&y, 0) == 0);
+
+		test_assert(bigint_ge(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, 2) == 0);
+		test_assert(bigint_from_digit(&y, 1) == 0);
+
+		test_assert(bigint_ge(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, -2) == 0);
+		test_assert(bigint_from_digit(&y, -1) == 0);
+
+		test_assert(!bigint_ge(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, 1) == 0);
+		test_assert(bigint_from_digit(&y, -1) == 0);
+
+		test_assert(bigint_ge(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, 0) == 0);
+		test_assert(bigint_from_digit(&y, -1) == 0);
+
+		test_assert(bigint_ge(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, 1) == 0);
+		test_assert(bigint_from_digit(&y, 0) == 0);
+
+		test_assert(bigint_ge(x, y));
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+}
+
 int
 main(int argc, char **argv)
 {
@@ -1364,6 +1704,10 @@ main(int argc, char **argv)
 	test_bigint_del();
 	test_bigint_eq();
 	test_bigint_ne();
+	test_bigint_lt();
+	test_bigint_gt();
+	test_bigint_le();
+	test_bigint_ge();
 
 	printf("successes: %d\n", nsuccesses);
 	printf("failures: %d\n", nfailures);

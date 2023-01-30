@@ -61,5 +61,9 @@ void bigint_del(bigint int_);
 
 bool bigint_eq(bigint x, bigint y);
 bool bigint_ne(bigint x, bigint y);
+bool bigint_lt(bigint x, bigint y);
+bool bigint_gt(bigint x, bigint y);
+bool bigint_le(bigint x, bigint y);
+bool bigint_ge(bigint x, bigint y);
 
 #endif /* BIGNUM_H */
