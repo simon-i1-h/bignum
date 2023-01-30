@@ -1206,6 +1206,40 @@ test_bigint_from_digit(void)
 }
 
 void
+test_bigint_copy(void)
+{
+	{
+		bigint src, dst;
+		test_assert(bigint_init(&src, 0, NULL, 0) == 0);
+		test_assert(bigint_copy(&dst, src) == 0);
+		test_assert(dst.sign == 0);
+		test_assert(dst.abs.ndigits == 0);
+		test_assert(dst.abs.digits == NULL);
+	}
+	{
+		bigint src, dst;
+		test_assert(bigint_init(&src, 1, (uint32_t[]){42}, 1) == 0);
+		test_assert(bigint_copy(&dst, src) == 0);
+		test_assert(dst.sign == 1);
+		test_assert(dst.abs.ndigits == 1);
+		test_assert(dst.abs.digits[0] == 42);
+		bigint_del(src);
+		bigint_del(dst);
+	}
+	{
+		bigint src, dst;
+		test_assert(bigint_init(&src, -1, (uint32_t[]){95, 3}, 2) == 0);
+		test_assert(bigint_copy(&dst, src) == 0);
+		test_assert(dst.sign == -1);
+		test_assert(dst.abs.ndigits == 2);
+		test_assert(dst.abs.digits[0] == 95);
+		test_assert(dst.abs.digits[1] == 3);
+		bigint_del(src);
+		bigint_del(dst);
+	}
+}
+
+void
 test_bigint_del(void)
 {
 	bigint i;
@@ -1701,6 +1735,7 @@ main(int argc, char **argv)
 	/* bigint */
 	test_bigint_init();
 	test_bigint_from_digit();
+	test_bigint_copy();
 	test_bigint_del();
 	test_bigint_eq();
 	test_bigint_ne();

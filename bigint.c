@@ -43,6 +43,12 @@ bigint_from_digit(bigint *int_, int32_t x)
 	return bigint_init(int_, sign, &abs, 1);
 }
 
+int
+bigint_copy(bigint *dst, bigint src)
+{
+	return bigint_init(dst, src.sign, src.abs.digits, src.abs.ndigits);
+}
+
 void
 bigint_del(bigint int_)
 {
