@@ -116,3 +116,57 @@ bigint_ge(bigint x, bigint y)
 {
 	return bigint_cmp(x, y) >= 0;
 }
+
+int
+bigint_add(bigint *sum, bigint x, bigint y)
+{
+	int err = -1;
+	bignat abs;
+
+	if (x.sign == y.sign) {
+		err = bignat_add(&abs, x.abs, y.abs);
+		if (err != 0) {
+			return err;
+		}
+
+		*sum = (bigint){
+			.sign=x.sign,
+			.abs=abs
+		};
+		return 0;
+	}
+
+	int cmpabs = bignat_cmp(x.abs, y.abs);
+
+	if (cmpabs < 0) {
+		err = bignat_sub(&abs, y.abs, x.abs);
+		if (err != 0) {
+			return err;
+		}
+
+		*sum = (bigint){
+			.sign=y.sign,
+			.abs=abs
+		};
+		return 0;
+	}
+
+	if (cmpabs > 0) {
+		err = bignat_sub(&abs, x.abs, y.abs);
+		if (err != 0) {
+			return 0;
+		}
+
+		*sum = (bigint){
+			.sign=x.sign,
+			.abs=abs
+		};
+		return 0;
+	}
+
+	*sum = (bigint){
+		.sign=0,
+		.abs=bignat_new_zero()
+	};
+	return 0;
+}

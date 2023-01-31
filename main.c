@@ -188,6 +188,14 @@ test_bignat_init(void)
 }
 
 void
+test_bignat_new_zero(void)
+{
+	bignat zero = bignat_new_zero();
+	test_assert(zero.ndigits == 0);
+	test_assert(zero.digits == NULL);
+}
+
+void
 test_bignat_from_digit(void)
 {
 	{
@@ -1700,6 +1708,193 @@ test_bigint_ge(void)
 	}
 }
 
+void
+test_bigint_add(void)
+{
+	{
+		bigint x, y, sum, expected;
+		test_assert(bigint_from_digit(&x, 0) == 0);
+		test_assert(bigint_from_digit(&y, 0) == 0);
+		test_assert(bigint_from_digit(&expected, 0) == 0);
+
+		test_assert(bigint_add(&sum, x, y) == 0);
+		test_assert(bigint_eq(sum, expected));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(sum);
+		bigint_del(expected);
+	}
+	{
+		bigint x, y, sum, expected;
+		test_assert(bigint_from_digit(&x, 0) == 0);
+		test_assert(bigint_from_digit(&y, 1) == 0);
+		test_assert(bigint_from_digit(&expected, 1) == 0);
+
+		test_assert(bigint_add(&sum, x, y) == 0);
+		test_assert(bigint_eq(sum, expected));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(sum);
+		bigint_del(expected);
+	}
+	{
+		bigint x, y, sum, expected;
+		test_assert(bigint_from_digit(&x, 1) == 0);
+		test_assert(bigint_from_digit(&y, 0) == 0);
+		test_assert(bigint_from_digit(&expected, 1) == 0);
+
+		test_assert(bigint_add(&sum, x, y) == 0);
+		test_assert(bigint_eq(sum, expected));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(sum);
+		bigint_del(expected);
+	}
+	{
+		bigint x, y, sum, expected;
+		test_assert(bigint_from_digit(&x, 1) == 0);
+		test_assert(bigint_from_digit(&y, 2) == 0);
+		test_assert(bigint_from_digit(&expected, 3) == 0);
+
+		test_assert(bigint_add(&sum, x, y) == 0);
+		test_assert(bigint_eq(sum, expected));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(sum);
+		bigint_del(expected);
+	}
+	{
+		bigint x, y, sum, expected;
+		test_assert(bigint_from_digit(&x, 2) == 0);
+		test_assert(bigint_from_digit(&y, 1) == 0);
+		test_assert(bigint_from_digit(&expected, 3) == 0);
+
+		test_assert(bigint_add(&sum, x, y) == 0);
+		test_assert(bigint_eq(sum, expected));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(sum);
+		bigint_del(expected);
+	}
+	{
+		bigint x, y, sum, expected;
+		test_assert(bigint_from_digit(&x, -1) == 0);
+		test_assert(bigint_from_digit(&y, -2) == 0);
+		test_assert(bigint_from_digit(&expected, -3) == 0);
+
+		test_assert(bigint_add(&sum, x, y) == 0);
+		test_assert(bigint_eq(sum, expected));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(sum);
+		bigint_del(expected);
+	}
+	{
+		bigint x, y, sum, expected;
+		test_assert(bigint_from_digit(&x, -2) == 0);
+		test_assert(bigint_from_digit(&y, -1) == 0);
+		test_assert(bigint_from_digit(&expected, -3) == 0);
+
+		test_assert(bigint_add(&sum, x, y) == 0);
+		test_assert(bigint_eq(sum, expected));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(sum);
+		bigint_del(expected);
+	}
+	{
+		bigint x, y, sum, expected;
+		test_assert(bigint_from_digit(&x, 1) == 0);
+		test_assert(bigint_from_digit(&y, -3) == 0);
+		test_assert(bigint_from_digit(&expected, -2) == 0);
+
+		test_assert(bigint_add(&sum, x, y) == 0);
+		test_assert(bigint_eq(sum, expected));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(sum);
+		bigint_del(expected);
+	}
+	{
+		bigint x, y, sum, expected;
+		test_assert(bigint_from_digit(&x, -3) == 0);
+		test_assert(bigint_from_digit(&y, 1) == 0);
+		test_assert(bigint_from_digit(&expected, -2) == 0);
+
+		test_assert(bigint_add(&sum, x, y) == 0);
+		test_assert(bigint_eq(sum, expected));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(sum);
+		bigint_del(expected);
+	}
+	{
+		bigint x, y, sum, expected;
+		test_assert(bigint_from_digit(&x, -1) == 0);
+		test_assert(bigint_from_digit(&y, 3) == 0);
+		test_assert(bigint_from_digit(&expected, 2) == 0);
+
+		test_assert(bigint_add(&sum, x, y) == 0);
+		test_assert(bigint_eq(sum, expected));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(sum);
+		bigint_del(expected);
+	}
+	{
+		bigint x, y, sum, expected;
+		test_assert(bigint_from_digit(&x, 3) == 0);
+		test_assert(bigint_from_digit(&y, -1) == 0);
+		test_assert(bigint_from_digit(&expected, 2) == 0);
+
+		test_assert(bigint_add(&sum, x, y) == 0);
+		test_assert(bigint_eq(sum, expected));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(sum);
+		bigint_del(expected);
+	}
+	{
+		bigint x, y, sum, expected;
+		test_assert(bigint_from_digit(&x, -1) == 0);
+		test_assert(bigint_from_digit(&y, 1) == 0);
+		test_assert(bigint_from_digit(&expected, 0) == 0);
+
+		test_assert(bigint_add(&sum, x, y) == 0);
+		test_assert(bigint_eq(sum, expected));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(sum);
+		bigint_del(expected);
+	}
+	{
+		bigint x, y, sum, expected;
+		test_assert(bigint_from_digit(&x, 1) == 0);
+		test_assert(bigint_from_digit(&y, -1) == 0);
+		test_assert(bigint_from_digit(&expected, 0) == 0);
+
+		test_assert(bigint_add(&sum, x, y) == 0);
+		test_assert(bigint_eq(sum, expected));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(sum);
+		bigint_del(expected);
+	}
+}
+
 int
 main(int argc, char **argv)
 {
@@ -1717,6 +1912,7 @@ main(int argc, char **argv)
 
 	/* bignat */
 	test_bignat_init();
+	test_bignat_new_zero();
 	test_bignat_from_digit();
 	test_bignat_copy();
 	test_bignat_del();
@@ -1743,6 +1939,7 @@ main(int argc, char **argv)
 	test_bigint_gt();
 	test_bigint_le();
 	test_bigint_ge();
+	test_bigint_add();
 
 	printf("successes: %d\n", nsuccesses);
 	printf("failures: %d\n", nfailures);

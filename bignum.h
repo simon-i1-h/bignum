@@ -56,6 +56,7 @@ typedef struct bigint {
 } bigint;
 
 int bigint_init(bigint *int_, int sign, uint32_t *digits, size_t ndigits);
+bignat bignat_new_zero(void);
 int bigint_from_digit(bigint *int_, int32_t x);
 int bigint_copy(bigint *dst, bigint src);
 void bigint_del(bigint int_);
@@ -66,5 +67,7 @@ bool bigint_lt(bigint x, bigint y);
 bool bigint_gt(bigint x, bigint y);
 bool bigint_le(bigint x, bigint y);
 bool bigint_ge(bigint x, bigint y);
+
+int bigint_add(bigint *sum, bigint x, bigint y);
 
 #endif /* BIGNUM_H */

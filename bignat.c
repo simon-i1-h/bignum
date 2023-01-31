@@ -40,7 +40,7 @@ bignat_init(bignat *nat, uint32_t *digits, size_t ndigits)
 	return dgtvec_init(nat, digits, ndigits);
 }
 
-static bignat
+bignat
 bignat_new_zero(void)
 {
 	return dgtvec_new_empty();
