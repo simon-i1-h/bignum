@@ -181,3 +181,21 @@ bigint_sub(bigint *diff, bigint x, bigint y)
 
 	return bigint_add(diff, x, neg_y);
 }
+
+int
+bigint_mul(bigint *prod, bigint x, bigint y)
+{
+	int err;
+	bignat abs;
+
+	err = bignat_mul(&abs, x.abs, y.abs);
+	if (err != 0) {
+		return err;
+	}
+
+	*prod = (bigint){
+		.sign=x.sign * y.sign,
+		.abs=abs
+	};
+	return 0;
+}

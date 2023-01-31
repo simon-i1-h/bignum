@@ -2082,6 +2082,193 @@ test_bigint_sub(void)
 	}
 }
 
+void
+test_bigint_mul(void)
+{
+	{
+		bigint x, y, prod, expected;
+		test_assert(bigint_from_digit(&x, 0) == 0);
+		test_assert(bigint_from_digit(&y, 0) == 0);
+		test_assert(bigint_from_digit(&expected, 0) == 0);
+
+		test_assert(bigint_mul(&prod, x, y) == 0);
+		test_assert(bigint_eq(prod, expected));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(prod);
+		bigint_del(expected);
+	}
+	{
+		bigint x, y, prod, expected;
+		test_assert(bigint_from_digit(&x, 0) == 0);
+		test_assert(bigint_from_digit(&y, 1) == 0);
+		test_assert(bigint_from_digit(&expected, 0) == 0);
+
+		test_assert(bigint_mul(&prod, x, y) == 0);
+		test_assert(bigint_eq(prod, expected));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(prod);
+		bigint_del(expected);
+	}
+	{
+		bigint x, y, prod, expected;
+		test_assert(bigint_from_digit(&x, 1) == 0);
+		test_assert(bigint_from_digit(&y, 0) == 0);
+		test_assert(bigint_from_digit(&expected, 0) == 0);
+
+		test_assert(bigint_mul(&prod, x, y) == 0);
+		test_assert(bigint_eq(prod, expected));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(prod);
+		bigint_del(expected);
+	}
+	{
+		bigint x, y, prod, expected;
+		test_assert(bigint_from_digit(&x, 0) == 0);
+		test_assert(bigint_from_digit(&y, -1) == 0);
+		test_assert(bigint_from_digit(&expected, 0) == 0);
+
+		test_assert(bigint_mul(&prod, x, y) == 0);
+		test_assert(bigint_eq(prod, expected));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(prod);
+		bigint_del(expected);
+	}
+	{
+		bigint x, y, prod, expected;
+		test_assert(bigint_from_digit(&x, -1) == 0);
+		test_assert(bigint_from_digit(&y, 0) == 0);
+		test_assert(bigint_from_digit(&expected, 0) == 0);
+
+		test_assert(bigint_mul(&prod, x, y) == 0);
+		test_assert(bigint_eq(prod, expected));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(prod);
+		bigint_del(expected);
+	}
+	{
+		bigint x, y, prod, expected;
+		test_assert(bigint_from_digit(&x, 2) == 0);
+		test_assert(bigint_from_digit(&y, 3) == 0);
+		test_assert(bigint_from_digit(&expected, 6) == 0);
+
+		test_assert(bigint_mul(&prod, x, y) == 0);
+		test_assert(bigint_eq(prod, expected));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(prod);
+		bigint_del(expected);
+	}
+	{
+		bigint x, y, prod, expected;
+		test_assert(bigint_from_digit(&x, 3) == 0);
+		test_assert(bigint_from_digit(&y, 2) == 0);
+		test_assert(bigint_from_digit(&expected, 6) == 0);
+
+		test_assert(bigint_mul(&prod, x, y) == 0);
+		test_assert(bigint_eq(prod, expected));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(prod);
+		bigint_del(expected);
+	}
+	{
+		bigint x, y, prod, expected;
+		test_assert(bigint_from_digit(&x, -2) == 0);
+		test_assert(bigint_from_digit(&y, -3) == 0);
+		test_assert(bigint_from_digit(&expected, 6) == 0);
+
+		test_assert(bigint_mul(&prod, x, y) == 0);
+		test_assert(bigint_eq(prod, expected));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(prod);
+		bigint_del(expected);
+	}
+	{
+		bigint x, y, prod, expected;
+		test_assert(bigint_from_digit(&x, -3) == 0);
+		test_assert(bigint_from_digit(&y, -2) == 0);
+		test_assert(bigint_from_digit(&expected, 6) == 0);
+
+		test_assert(bigint_mul(&prod, x, y) == 0);
+		test_assert(bigint_eq(prod, expected));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(prod);
+		bigint_del(expected);
+	}
+	{
+		bigint x, y, prod, expected;
+		test_assert(bigint_from_digit(&x, 2) == 0);
+		test_assert(bigint_from_digit(&y, -3) == 0);
+		test_assert(bigint_from_digit(&expected, -6) == 0);
+
+		test_assert(bigint_mul(&prod, x, y) == 0);
+		test_assert(bigint_eq(prod, expected));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(prod);
+		bigint_del(expected);
+	}
+	{
+		bigint x, y, prod, expected;
+		test_assert(bigint_from_digit(&x, -3) == 0);
+		test_assert(bigint_from_digit(&y, 2) == 0);
+		test_assert(bigint_from_digit(&expected, -6) == 0);
+
+		test_assert(bigint_mul(&prod, x, y) == 0);
+		test_assert(bigint_eq(prod, expected));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(prod);
+		bigint_del(expected);
+	}
+	{
+		bigint x, y, prod, expected;
+		test_assert(bigint_from_digit(&x, -2) == 0);
+		test_assert(bigint_from_digit(&y, 3) == 0);
+		test_assert(bigint_from_digit(&expected, -6) == 0);
+
+		test_assert(bigint_mul(&prod, x, y) == 0);
+		test_assert(bigint_eq(prod, expected));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(prod);
+		bigint_del(expected);
+	}
+	{
+		bigint x, y, prod, expected;
+		test_assert(bigint_from_digit(&x, 3) == 0);
+		test_assert(bigint_from_digit(&y, -2) == 0);
+		test_assert(bigint_from_digit(&expected, -6) == 0);
+
+		test_assert(bigint_mul(&prod, x, y) == 0);
+		test_assert(bigint_eq(prod, expected));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(prod);
+		bigint_del(expected);
+	}
+}
+
 int
 main(int argc, char **argv)
 {
@@ -2128,6 +2315,7 @@ main(int argc, char **argv)
 	test_bigint_ge();
 	test_bigint_add();
 	test_bigint_sub();
+	test_bigint_mul();
 
 	printf("successes: %d\n", nsuccesses);
 	printf("failures: %d\n", nfailures);
