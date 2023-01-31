@@ -170,3 +170,14 @@ bigint_add(bigint *sum, bigint x, bigint y)
 	};
 	return 0;
 }
+
+int
+bigint_sub(bigint *diff, bigint x, bigint y)
+{
+	bigint neg_y = {
+		.sign=y.sign * -1,
+		.abs=y.abs
+	};
+
+	return bigint_add(diff, x, neg_y);
+}
