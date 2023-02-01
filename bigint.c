@@ -3,10 +3,37 @@
 
 #include "bignum.h"
 
+static int
+bigint_view(bigint *int_, int sign, uint32_t *digits, size_t ndigits)
+{
+	if (ndigits == 0) {
+		if (sign != 0) {
+			return EINVAL;
+		}
+	} else {
+		if (sign == 0) {
+			return EINVAL;
+		}
+	}
+
+	int err;
+	bignat abs;
+
+	err = bignat_view(&abs, digits, ndigits);
+	if (err != 0) {
+		return err;
+	}
+
+	*int_ = (bigint){
+		.sign=sign,
+		.abs=abs
+	};
+	return 0;
+}
+
 int
 bigint_init(bigint *int_, int sign, uint32_t *digits, size_t ndigits)
 {
-
 	if (ndigits == 0) {
 		if (sign != 0) {
 			return EINVAL;
@@ -29,6 +56,27 @@ bigint_init(bigint *int_, int sign, uint32_t *digits, size_t ndigits)
 	};
 
 	return 0;
+}
+
+bigint
+bigint_new_zero(void)
+{
+	return (bigint){
+		.sign=0,
+		.abs=bignat_new_zero()
+	};
+}
+
+bigint
+bigint_pos_view_from_digit(uint32_t *n)
+{
+	if (*n == 0) {
+		return bigint_new_zero();
+	}
+
+	bigint int_;
+	(void)bigint_view(&int_, 1, n, 1);
+	return int_;
 }
 
 int
@@ -164,10 +212,7 @@ bigint_add(bigint *sum, bigint x, bigint y)
 		return 0;
 	}
 
-	*sum = (bigint){
-		.sign=0,
-		.abs=bignat_new_zero()
-	};
+	*sum = bigint_new_zero();
 	return 0;
 }
 
@@ -222,4 +267,50 @@ bigint_divtrn(bigint *quot, bigint *rem, bigint x, bigint y)
 	};
 
 	return 0;
+}
+
+int
+bigint_divflr(bigint *quot, bigint *rem, bigint x, bigint y)
+{
+	int err = -1;
+	bigint tmp_quot = bigint_new_zero();
+	bigint tmp_rem = bigint_new_zero();
+	bigint adj_quot = bigint_new_zero();
+	bigint adj_rem = bigint_new_zero();
+
+	err = bigint_divtrn(&tmp_quot, &tmp_rem, x, y);
+	if (err != 0) {
+		goto fail;
+	}
+
+	if ((tmp_rem.sign == -1 && y.sign == 1) ||
+	    (tmp_rem.sign == 1 && y.sign == -1)) {
+		bigint one = bigint_pos_view_from_digit((uint32_t[]){1});
+		err = bigint_sub(&adj_quot, tmp_quot, one);
+		if (err != 0) {
+			goto fail;
+		}
+
+		err = bigint_add(&adj_rem, tmp_rem, y);
+		if (err != 0) {
+			goto fail;
+		}
+
+		bigint_del(tmp_quot);
+		bigint_del(tmp_rem);
+	} else {
+		adj_quot = tmp_quot;
+		adj_rem = tmp_rem;
+	}
+
+	*quot = adj_quot;
+	*rem = adj_rem;
+	return 0;
+
+fail:
+	bigint_del(tmp_quot);
+	bigint_del(tmp_rem);
+	bigint_del(adj_quot);
+	bigint_del(adj_rem);
+	return err;
 }

@@ -28,6 +28,7 @@ uint32_t dgtvec_pop(dgtvec *v);
  */
 typedef dgtvec bignat;
 
+int bignat_view(bignat *nat, uint32_t *digits, size_t ndigits);
 int bignat_init(bignat *nat, uint32_t *digits, size_t ndigits);
 int bignat_from_digit(bignat *nat, uint32_t n);
 int bignat_copy(bignat *dst, bignat src);
@@ -72,5 +73,6 @@ int bigint_add(bigint *sum, bigint x, bigint y);
 int bigint_sub(bigint *diff, bigint x, bigint y);
 int bigint_mul(bigint *prod, bigint x, bigint y);
 int bigint_divtrn(bigint *quot, bigint *rem, bigint x, bigint y);
+int bigint_divflr(bigint *quot, bigint *rem, bigint x, bigint y);
 
 #endif /* BIGNUM_H */

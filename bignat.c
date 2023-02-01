@@ -15,7 +15,7 @@ bignat_norm(bignat *nat)
 	}
 }
 
-static int
+int
 bignat_view(bignat *nat, uint32_t *digits, size_t ndigits)
 {
 	if (ndigits > 0 && digits[ndigits - 1] == 0) {
