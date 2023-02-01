@@ -199,3 +199,27 @@ bigint_mul(bigint *prod, bigint x, bigint y)
 	};
 	return 0;
 }
+
+int
+bigint_divtrn(bigint *quot, bigint *rem, bigint x, bigint y)
+{
+	int err;
+	bignat absq, absr;
+
+	err = bignat_divmod(&absq, &absr, x.abs, y.abs);
+	if (err != 0) {
+		return err;
+	}
+
+	*quot = (bigint){
+		.sign=absq.ndigits != 0 ? x.sign * y.sign : 0,
+		.abs=absq
+	};
+
+	*rem = (bigint){
+		.sign=absr.ndigits != 0 ? x.sign : 0,
+		.abs=absr
+	};
+
+	return 0;
+}

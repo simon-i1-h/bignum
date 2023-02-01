@@ -2269,6 +2269,193 @@ test_bigint_mul(void)
 	}
 }
 
+void
+test_bigint_divtrn(void)
+{
+	{
+		bigint x, y, quot, rem, expected_q, expected_r;
+		test_assert(bigint_from_digit(&x, 0) == 0);
+		test_assert(bigint_from_digit(&y, 1) == 0);
+		test_assert(bigint_from_digit(&expected_q, 0) == 0);
+		test_assert(bigint_from_digit(&expected_r, 0) == 0);
+
+		test_assert(bigint_divtrn(&quot, &rem, x, y) == 0);
+		test_assert(bigint_eq(quot, expected_q));
+		test_assert(bigint_eq(rem, expected_r));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(quot);
+		bigint_del(rem);
+		bigint_del(expected_q);
+		bigint_del(expected_r);
+	}
+	{
+		bigint x, y, quot, rem, expected_q, expected_r;
+		test_assert(bigint_from_digit(&x, 2) == 0);
+		test_assert(bigint_from_digit(&y, 2) == 0);
+		test_assert(bigint_from_digit(&expected_q, 1) == 0);
+		test_assert(bigint_from_digit(&expected_r, 0) == 0);
+
+		test_assert(bigint_divtrn(&quot, &rem, x, y) == 0);
+		test_assert(bigint_eq(quot, expected_q));
+		test_assert(bigint_eq(rem, expected_r));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(quot);
+		bigint_del(rem);
+		bigint_del(expected_q);
+		bigint_del(expected_r);
+	}
+	{
+		bigint x, y, quot, rem, expected_q, expected_r;
+		test_assert(bigint_from_digit(&x, 4) == 0);
+		test_assert(bigint_from_digit(&y, 1) == 0);
+		test_assert(bigint_from_digit(&expected_q, 4) == 0);
+		test_assert(bigint_from_digit(&expected_r, 0) == 0);
+
+		test_assert(bigint_divtrn(&quot, &rem, x, y) == 0);
+		test_assert(bigint_eq(quot, expected_q));
+		test_assert(bigint_eq(rem, expected_r));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(quot);
+		bigint_del(rem);
+		bigint_del(expected_q);
+		bigint_del(expected_r);
+	}
+	{
+		bigint x, y, quot, rem, expected_q, expected_r;
+		test_assert(bigint_from_digit(&x, 6) == 0);
+		test_assert(bigint_from_digit(&y, 2) == 0);
+		test_assert(bigint_from_digit(&expected_q, 3) == 0);
+		test_assert(bigint_from_digit(&expected_r, 0) == 0);
+
+		test_assert(bigint_divtrn(&quot, &rem, x, y) == 0);
+		test_assert(bigint_eq(quot, expected_q));
+		test_assert(bigint_eq(rem, expected_r));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(quot);
+		bigint_del(rem);
+		bigint_del(expected_q);
+		bigint_del(expected_r);
+	}
+	{
+		bigint x, y, quot, rem, expected_q, expected_r;
+		test_assert(bigint_from_digit(&x, 7) == 0);
+		test_assert(bigint_from_digit(&y, 10) == 0);
+		test_assert(bigint_from_digit(&expected_q, 0) == 0);
+		test_assert(bigint_from_digit(&expected_r, 7) == 0);
+
+		test_assert(bigint_divtrn(&quot, &rem, x, y) == 0);
+		test_assert(bigint_eq(quot, expected_q));
+		test_assert(bigint_eq(rem, expected_r));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(quot);
+		bigint_del(rem);
+		bigint_del(expected_q);
+		bigint_del(expected_r);
+	}
+	{
+		bigint x, y, quot, rem, expected_q, expected_r;
+		test_assert(bigint_from_digit(&x, 5) == 0);
+		test_assert(bigint_from_digit(&y, 2) == 0);
+		test_assert(bigint_from_digit(&expected_q, 2) == 0);
+		test_assert(bigint_from_digit(&expected_r, 1) == 0);
+
+		test_assert(bigint_divtrn(&quot, &rem, x, y) == 0);
+		test_assert(bigint_eq(quot, expected_q));
+		test_assert(bigint_eq(rem, expected_r));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(quot);
+		bigint_del(rem);
+		bigint_del(expected_q);
+		bigint_del(expected_r);
+	}
+	{
+		bigint x, y, quot, rem, expected_q, expected_r;
+		test_assert(bigint_from_digit(&x, -5) == 0);
+		test_assert(bigint_from_digit(&y, -2) == 0);
+		test_assert(bigint_from_digit(&expected_q, 2) == 0);
+		test_assert(bigint_from_digit(&expected_r, -1) == 0);
+
+		test_assert(bigint_divtrn(&quot, &rem, x, y) == 0);
+		test_assert(bigint_eq(quot, expected_q));
+		test_assert(bigint_eq(rem, expected_r));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(quot);
+		bigint_del(rem);
+		bigint_del(expected_q);
+		bigint_del(expected_r);
+	}
+	{
+		bigint x, y, quot, rem, expected_q, expected_r;
+		test_assert(bigint_from_digit(&x, 5) == 0);
+		test_assert(bigint_from_digit(&y, -2) == 0);
+		test_assert(bigint_from_digit(&expected_q, -2) == 0);
+		test_assert(bigint_from_digit(&expected_r, 1) == 0);
+
+		test_assert(bigint_divtrn(&quot, &rem, x, y) == 0);
+		test_assert(bigint_eq(quot, expected_q));
+		test_assert(bigint_eq(rem, expected_r));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(quot);
+		bigint_del(rem);
+		bigint_del(expected_q);
+		bigint_del(expected_r);
+	}
+	{
+		bigint x, y, quot, rem, expected_q, expected_r;
+		test_assert(bigint_from_digit(&x, -5) == 0);
+		test_assert(bigint_from_digit(&y, 2) == 0);
+		test_assert(bigint_from_digit(&expected_q, -2) == 0);
+		test_assert(bigint_from_digit(&expected_r, -1) == 0);
+
+		test_assert(bigint_divtrn(&quot, &rem, x, y) == 0);
+		test_assert(bigint_eq(quot, expected_q));
+		test_assert(bigint_eq(rem, expected_r));
+
+		bigint_del(x);
+		bigint_del(y);
+		bigint_del(quot);
+		bigint_del(rem);
+		bigint_del(expected_q);
+		bigint_del(expected_r);
+	}
+	{
+		bigint x, y, quot, rem;
+		test_assert(bigint_from_digit(&x, 1) == 0);
+		test_assert(bigint_from_digit(&y, 0) == 0);
+
+		test_assert(bigint_divtrn(&quot, &rem, x, y) == EDOM);
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y, quot, rem;
+		test_assert(bigint_from_digit(&x, 0) == 0);
+		test_assert(bigint_from_digit(&y, 0) == 0);
+
+		test_assert(bigint_divtrn(&quot, &rem, x, y) == EDOM);
+
+		bigint_del(x);
+		bigint_del(y);
+	}
+}
+
 int
 main(int argc, char **argv)
 {
@@ -2316,6 +2503,7 @@ main(int argc, char **argv)
 	test_bigint_add();
 	test_bigint_sub();
 	test_bigint_mul();
+	test_bigint_divtrn();
 
 	printf("successes: %d\n", nsuccesses);
 	printf("failures: %d\n", nfailures);

@@ -71,5 +71,6 @@ bool bigint_ge(bigint x, bigint y);
 int bigint_add(bigint *sum, bigint x, bigint y);
 int bigint_sub(bigint *diff, bigint x, bigint y);
 int bigint_mul(bigint *prod, bigint x, bigint y);
+int bigint_divtrn(bigint *quot, bigint *rem, bigint x, bigint y);
 
 #endif /* BIGNUM_H */
