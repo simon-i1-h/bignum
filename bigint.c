@@ -314,3 +314,61 @@ fail:
 	bigint_del(adj_rem);
 	return err;
 }
+
+int
+bigint_diveuc(bigint *quot, bigint *rem, bigint x, bigint y)
+{
+	int err = -1;
+	bigint tmp_quot = bigint_new_zero();
+	bigint tmp_rem = bigint_new_zero();
+	bigint adj_quot = bigint_new_zero();
+	bigint adj_rem = bigint_new_zero();
+
+	err = bigint_divtrn(&tmp_quot, &tmp_rem, x, y);
+	if (err != 0) {
+		goto fail;
+	}
+
+	if (tmp_rem.sign == -1) {
+		bigint one = bigint_pos_view_from_digit((uint32_t[]){1});
+
+		if (y.sign == -1) {
+			err = bigint_add(&adj_quot, tmp_quot, one);
+			if (err != 0) {
+				goto fail;
+			}
+
+			err = bigint_sub(&adj_rem, tmp_rem, y);
+			if (err != 0) {
+				goto fail;
+			}
+		} else {
+			err = bigint_sub(&adj_quot, tmp_quot, one);
+			if (err != 0) {
+				goto fail;
+			}
+
+			err = bigint_add(&adj_rem, tmp_rem, y);
+			if (err != 0) {
+				goto fail;
+			}
+		}
+
+		bigint_del(tmp_quot);
+		bigint_del(tmp_rem);
+	} else {
+		adj_quot = tmp_quot;
+		adj_rem = tmp_rem;
+	}
+
+	*quot = adj_quot;
+	*rem = adj_rem;
+	return 0;
+
+fail:
+	bigint_del(tmp_quot);
+	bigint_del(tmp_rem);
+	bigint_del(adj_quot);
+	bigint_del(adj_rem);
+	return err;
+}

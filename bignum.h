@@ -74,5 +74,6 @@ int bigint_sub(bigint *diff, bigint x, bigint y);
 int bigint_mul(bigint *prod, bigint x, bigint y);
 int bigint_divtrn(bigint *quot, bigint *rem, bigint x, bigint y);
 int bigint_divflr(bigint *quot, bigint *rem, bigint x, bigint y);
+int bigint_diveuc(bigint *quot, bigint *rem, bigint x, bigint y);
 
 #endif /* BIGNUM_H */
