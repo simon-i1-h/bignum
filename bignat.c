@@ -380,3 +380,55 @@ fail:
 	bignat_del(tmp_rem);
 	return err;
 }
+
+/* Euclidean algorithm */
+int
+bignat_gcd(bignat *gcd, bignat x, bignat y)
+{
+	if (bignat_lt(x, y)) {
+		return bignat_gcd(gcd, y, x);
+	}
+
+	int err;
+	bignat tmp_x = bignat_new_zero();
+	bignat tmp_y = bignat_new_zero();
+	bignat tmp_quot = bignat_new_zero();
+	bignat tmp_rem = bignat_new_zero();
+
+	err = bignat_copy(&tmp_x, x);
+	if (err != 0) {
+		goto fail;
+	}
+
+	err = bignat_copy(&tmp_y, y);
+	if (err != 0) {
+		goto fail;
+	}
+
+	while (tmp_y.ndigits != 0) {
+		err = bignat_divmod(&tmp_quot, &tmp_rem, tmp_x, tmp_y);
+		if (err != 0) {
+			goto fail;
+		}
+		bignat_del(tmp_quot);
+		tmp_quot = bignat_new_zero();
+
+		bignat_del(tmp_x);
+		tmp_x = tmp_y;
+		tmp_y = tmp_rem;
+		tmp_rem = bignat_new_zero();
+	}
+
+	bignat_del(tmp_y);
+	bignat_del(tmp_quot);
+	bignat_del(tmp_rem);
+	*gcd = tmp_x;
+	return 0;
+
+fail:
+	bignat_del(tmp_x);
+	bignat_del(tmp_y);
+	bignat_del(tmp_quot);
+	bignat_del(tmp_rem);
+	return err;
+}

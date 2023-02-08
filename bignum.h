@@ -47,6 +47,10 @@ int bignat_sub(bignat *diff, bignat x, bignat y);
 int bignat_mul(bignat *prod, bignat x, bignat y);
 int bignat_divmod(bignat *quot, bignat *rem, bignat x, bignat y);
 
+int bignat_gcd(bignat *gcd, bignat x, bignat y);
+
+/* bigint */
+
 /*
  * signは-1か0か1となる。absが0であればsignは0を、absが0以外であれば
  * signも0以外を指定する必要がある。

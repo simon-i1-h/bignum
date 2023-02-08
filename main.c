@@ -1155,6 +1155,137 @@ test_bignat_divmod(void)
 }
 
 void
+test_bignat_gcd(void)
+{
+	{
+		bignat x, y, gcd, expected;
+		test_assert(bignat_from_digit(&x, 0) == 0);
+		test_assert(bignat_from_digit(&y, 0) == 0);
+		test_assert(bignat_from_digit(&expected, 0) == 0);
+
+		test_assert(bignat_gcd(&gcd, x, y) == 0);
+		test_assert(bignat_eq(gcd, expected));
+
+		bignat_del(x);
+		bignat_del(y);
+		bignat_del(gcd);
+		bignat_del(expected);
+	}
+	{
+		bignat x, y, gcd, expected;
+		test_assert(bignat_from_digit(&x, 0) == 0);
+		test_assert(bignat_from_digit(&y, 1) == 0);
+		test_assert(bignat_from_digit(&expected, 1) == 0);
+
+		test_assert(bignat_gcd(&gcd, x, y) == 0);
+		test_assert(bignat_eq(gcd, expected));
+
+		bignat_del(x);
+		bignat_del(y);
+		bignat_del(gcd);
+		bignat_del(expected);
+	}
+	{
+		bignat x, y, gcd, expected;
+		test_assert(bignat_from_digit(&x, 1) == 0);
+		test_assert(bignat_from_digit(&y, 0) == 0);
+		test_assert(bignat_from_digit(&expected, 1) == 0);
+
+		test_assert(bignat_gcd(&gcd, x, y) == 0);
+		test_assert(bignat_eq(gcd, expected));
+
+		bignat_del(x);
+		bignat_del(y);
+		bignat_del(gcd);
+		bignat_del(expected);
+	}
+	{
+		bignat x, y, gcd, expected;
+		test_assert(bignat_from_digit(&x, 12) == 0);
+		test_assert(bignat_from_digit(&y, 30) == 0);
+		test_assert(bignat_from_digit(&expected, 6) == 0);
+
+		test_assert(bignat_gcd(&gcd, x, y) == 0);
+		test_assert(bignat_eq(gcd, expected));
+
+		bignat_del(x);
+		bignat_del(y);
+		bignat_del(gcd);
+		bignat_del(expected);
+	}
+	{
+		bignat x, y, gcd, expected;
+		test_assert(bignat_from_digit(&x, 30) == 0);
+		test_assert(bignat_from_digit(&y, 12) == 0);
+		test_assert(bignat_from_digit(&expected, 6) == 0);
+
+		test_assert(bignat_gcd(&gcd, x, y) == 0);
+		test_assert(bignat_eq(gcd, expected));
+
+		bignat_del(x);
+		bignat_del(y);
+		bignat_del(gcd);
+		bignat_del(expected);
+	}
+	{
+		bignat x, y, gcd, expected;
+		test_assert(bignat_from_digit(&x, 3) == 0);
+		test_assert(bignat_from_digit(&y, 7) == 0);
+		test_assert(bignat_from_digit(&expected, 1) == 0);
+
+		test_assert(bignat_gcd(&gcd, x, y) == 0);
+		test_assert(bignat_eq(gcd, expected));
+
+		bignat_del(x);
+		bignat_del(y);
+		bignat_del(gcd);
+		bignat_del(expected);
+	}
+	{
+		bignat x, y, gcd, expected;
+		test_assert(bignat_from_digit(&x, 7) == 0);
+		test_assert(bignat_from_digit(&y, 3) == 0);
+		test_assert(bignat_from_digit(&expected, 1) == 0);
+
+		test_assert(bignat_gcd(&gcd, x, y) == 0);
+		test_assert(bignat_eq(gcd, expected));
+
+		bignat_del(x);
+		bignat_del(y);
+		bignat_del(gcd);
+		bignat_del(expected);
+	}
+	{
+		bignat x, y, gcd, expected;
+		test_assert(bignat_from_digit(&x, 1) == 0);
+		test_assert(bignat_from_digit(&y, 5) == 0);
+		test_assert(bignat_from_digit(&expected, 1) == 0);
+
+		test_assert(bignat_gcd(&gcd, x, y) == 0);
+		test_assert(bignat_eq(gcd, expected));
+
+		bignat_del(x);
+		bignat_del(y);
+		bignat_del(gcd);
+		bignat_del(expected);
+	}
+	{
+		bignat x, y, gcd, expected;
+		test_assert(bignat_from_digit(&x, 5) == 0);
+		test_assert(bignat_from_digit(&y, 1) == 0);
+		test_assert(bignat_from_digit(&expected, 1) == 0);
+
+		test_assert(bignat_gcd(&gcd, x, y) == 0);
+		test_assert(bignat_eq(gcd, expected));
+
+		bignat_del(x);
+		bignat_del(y);
+		bignat_del(gcd);
+		bignat_del(expected);
+	}
+}
+
+void
 test_bigint_init(void)
 {
 	{
@@ -3104,6 +3235,7 @@ main(int argc, char **argv)
 	test_bignat_sub();
 	test_bignat_mul();
 	test_bignat_divmod();
+	test_bignat_gcd();
 
 	/* bigint */
 	test_bigint_init();
