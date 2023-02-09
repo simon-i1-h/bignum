@@ -84,6 +84,13 @@ int bigint_diveuc(bigint *quot, bigint *rem, bigint x, bigint y);
 
 /* bigrat */
 
+/*
+ * denoは0にできない。
+ *
+ * numeとdenoは互いに素になるように正規化される。また、denoは正の整数
+ * になるように正規化される。これらの正規化は必須ではないが、bigratの
+ * APIは常に正規化されたbigrat型の値を返す。
+ */
 typedef struct bigrat {
 	bigint nume;
 	bigint deno;
