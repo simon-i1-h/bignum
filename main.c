@@ -1286,6 +1286,53 @@ test_bignat_gcd(void)
 }
 
 void
+test_bigint_view()
+{
+	{
+		bigint int_;
+		test_assert(bigint_view(&int_, 0, NULL, 0) == 0);
+		test_assert(int_.sign == 0);
+		test_assert(int_.abs.ndigits == 0);
+		test_assert(int_.abs.digits == NULL);
+	}
+	{
+		bigint int_;
+		uint32_t ds[] = {0, 42};
+		test_assert(bigint_view(&int_, 1, ds, countof(ds)) == 0);
+		test_assert(int_.sign == 1);
+		test_assert(int_.abs.ndigits == 2);
+		test_assert(int_.abs.digits == ds);
+		test_assert(int_.abs.digits[0] == 0);
+		test_assert(int_.abs.digits[1] == 42);
+	}
+	{
+		bigint int_;
+		uint32_t ds[] = {0, 42};
+		test_assert(bigint_view(&int_, -1, ds, countof(ds)) == 0);
+		test_assert(int_.sign == -1);
+		test_assert(int_.abs.ndigits == 2);
+		test_assert(int_.abs.digits == ds);
+		test_assert(int_.abs.digits[0] == 0);
+		test_assert(int_.abs.digits[1] == 42);
+	}
+	{
+		bigint int_;
+		uint32_t ds[] = {42, 0};
+		test_assert(bigint_view(&int_, 1, ds, countof(ds)) == EINVAL);
+	}
+	{
+		bigint int_;
+		uint32_t ds[] = {0, 42};
+		test_assert(bigint_view(&int_, 0, ds, countof(ds)) == EINVAL);
+	}
+	{
+		bigint int_;
+		uint32_t ds[] = {0};
+		test_assert(bigint_view(&int_, 1, ds, countof(ds)) == EINVAL);
+	}
+}
+
+void
 test_bigint_init(void)
 {
 	{
@@ -1339,6 +1386,15 @@ test_bigint_init(void)
 		uint32_t ds[] = {0};
 		test_assert(bigint_init(&i, 0, ds, countof(ds)) == EINVAL);
 	}
+}
+
+void
+test_bigint_new_zero(void)
+{
+	bigint zero = bigint_new_zero();
+	test_assert(zero.sign == 0);
+	test_assert(zero.abs.ndigits == 0);
+	test_assert(zero.abs.digits == NULL);
 }
 
 void
@@ -3202,6 +3258,161 @@ test_bigint_diveuc(void)
 	}
 }
 
+void
+test_bigrat_init(void)
+{
+	{
+		bigrat rat;
+		uint32_t dds[] = {1};
+		test_assert(bigrat_init(&rat,
+					0, NULL, 0,
+					1, dds, countof(dds)) == 0);
+		test_assert(rat.nume.sign == 0);
+		test_assert(rat.nume.abs.ndigits == 0);
+		test_assert(rat.deno.sign == 1);
+		test_assert(rat.deno.abs.ndigits == 1);
+		test_assert(rat.deno.abs.digits[0] == 1);
+		bigrat_del(rat);
+	}
+	{
+		bigrat rat;
+		uint32_t nds[] = {1}, dds[] = {1};
+		test_assert(bigrat_init(&rat,
+					1, nds, countof(nds),
+					1, dds, countof(dds)) == 0);
+		test_assert(rat.nume.sign == 1);
+		test_assert(rat.nume.abs.ndigits == 1);
+		test_assert(rat.nume.abs.digits[0] == 1);
+		test_assert(rat.deno.sign == 1);
+		test_assert(rat.deno.abs.ndigits == 1);
+		test_assert(rat.deno.abs.digits[0] == 1);
+		bigrat_del(rat);
+	}
+	{
+		bigrat rat;
+		uint32_t nds[] = {3}, dds[] = {7};
+		test_assert(bigrat_init(&rat,
+					1, nds, countof(nds),
+					1, dds, countof(dds)) == 0);
+		test_assert(rat.nume.sign == 1);
+		test_assert(rat.nume.abs.ndigits == 1);
+		test_assert(rat.nume.abs.digits[0] == 3);
+		test_assert(rat.deno.sign == 1);
+		test_assert(rat.deno.abs.ndigits == 1);
+		test_assert(rat.deno.abs.digits[0] == 7);
+		bigrat_del(rat);
+	}
+	{
+		bigrat rat;
+		uint32_t nds[] = {3}, dds[] = {7};
+		test_assert(bigrat_init(&rat,
+					-1, nds, countof(nds),
+					1, dds, countof(dds)) == 0);
+		test_assert(rat.nume.sign == -1);
+		test_assert(rat.nume.abs.ndigits == 1);
+		test_assert(rat.nume.abs.digits[0] == 3);
+		test_assert(rat.deno.sign == 1);
+		test_assert(rat.deno.abs.ndigits == 1);
+		test_assert(rat.deno.abs.digits[0] == 7);
+		bigrat_del(rat);
+	}
+	{
+		bigrat rat;
+		uint32_t nds[] = {3}, dds[] = {7};
+		test_assert(bigrat_init(&rat,
+					1, nds, countof(nds),
+					-1, dds, countof(dds)) == 0);
+		test_assert(rat.nume.sign == -1);
+		test_assert(rat.nume.abs.ndigits == 1);
+		test_assert(rat.nume.abs.digits[0] == 3);
+		test_assert(rat.deno.sign == 1);
+		test_assert(rat.deno.abs.ndigits == 1);
+		test_assert(rat.deno.abs.digits[0] == 7);
+		bigrat_del(rat);
+	}
+	{
+		bigrat rat;
+		uint32_t nds[] = {12}, dds[] = {30};
+		test_assert(bigrat_init(&rat,
+					1, nds, countof(nds),
+					1, dds, countof(dds)) == 0);
+		test_assert(rat.nume.sign == 1);
+		test_assert(rat.nume.abs.ndigits == 1);
+		test_assert(rat.nume.abs.digits[0] == 2);
+		test_assert(rat.deno.sign == 1);
+		test_assert(rat.deno.abs.ndigits == 1);
+		test_assert(rat.deno.abs.digits[0] == 5);
+		bigrat_del(rat);
+	}
+	{
+		bigrat rat;
+		uint32_t nds[] = {12}, dds[] = {30};
+		test_assert(bigrat_init(&rat,
+					1, nds, countof(nds),
+					-1, dds, countof(dds)) == 0);
+		test_assert(rat.nume.sign == -1);
+		test_assert(rat.nume.abs.ndigits == 1);
+		test_assert(rat.nume.abs.digits[0] == 2);
+		test_assert(rat.deno.sign == 1);
+		test_assert(rat.deno.abs.ndigits == 1);
+		test_assert(rat.deno.abs.digits[0] == 5);
+		bigrat_del(rat);
+	}
+	{
+		bigrat rat;
+		uint32_t nds[] = {12}, dds[] = {30};
+		test_assert(bigrat_init(&rat,
+					-1, nds, countof(nds),
+					-1, dds, countof(dds)) == 0);
+		test_assert(rat.nume.sign == 1);
+		test_assert(rat.nume.abs.ndigits == 1);
+		test_assert(rat.nume.abs.digits[0] == 2);
+		test_assert(rat.deno.sign == 1);
+		test_assert(rat.deno.abs.ndigits == 1);
+		test_assert(rat.deno.abs.digits[0] == 5);
+		bigrat_del(rat);
+	}
+	{
+		bigrat rat;
+		uint32_t dds[] = {1};
+		test_assert(bigrat_init(&rat,
+					0, NULL, 0,
+					-1, dds, countof(dds)) == 0);
+		test_assert(rat.nume.sign == 0);
+		test_assert(rat.nume.abs.ndigits == 0);
+		test_assert(rat.deno.sign == 1);
+		test_assert(rat.deno.abs.ndigits == 1);
+		test_assert(rat.deno.abs.digits[0] == 1);
+		bigrat_del(rat);
+	}
+	{
+		bigrat rat;
+		test_assert(bigrat_init(&rat,
+					1, (uint32_t[]){1}, 1,
+					0, NULL, 0) == EINVAL);
+	}
+	{
+		bigrat rat;
+		test_assert(bigrat_init(&rat, 0, NULL, 0, 0, NULL, 0) == EINVAL);
+	}
+}
+
+void
+test_bigrat_del(void)
+{
+	bigrat r;
+	test_assert(bigrat_init(&r,
+				1, (uint32_t[]){1}, 1,
+				1, (uint32_t[]){2}, 1) == 0);
+	test_assert(r.nume.sign == 1);
+	test_assert(r.nume.abs.ndigits == 1);
+	test_assert(r.nume.abs.digits[0] == 1);
+	test_assert(r.deno.sign == 1);
+	test_assert(r.deno.abs.ndigits == 1);
+	test_assert(r.deno.abs.digits[0] == 2);
+	bigrat_del(r);
+}
+
 int
 main(int argc, char **argv)
 {
@@ -3238,7 +3449,9 @@ main(int argc, char **argv)
 	test_bignat_gcd();
 
 	/* bigint */
+	test_bigint_view();
 	test_bigint_init();
+	test_bigint_new_zero();
 	test_bigint_from_digit();
 	test_bigint_copy();
 	test_bigint_del();
@@ -3254,6 +3467,10 @@ main(int argc, char **argv)
 	test_bigint_divtrn();
 	test_bigint_divflr();
 	test_bigint_diveuc();
+
+	/* bigrat */
+	test_bigrat_init();
+	test_bigrat_del();
 
 	printf("successes: %d\n", nsuccesses);
 	printf("failures: %d\n", nfailures);

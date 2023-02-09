@@ -3,7 +3,7 @@
 
 #include "bignum.h"
 
-static int
+int
 bigint_view(bigint *int_, int sign, uint32_t *digits, size_t ndigits)
 {
 	if (ndigits == 0) {

@@ -30,6 +30,7 @@ typedef dgtvec bignat;
 
 int bignat_view(bignat *nat, uint32_t *digits, size_t ndigits);
 int bignat_init(bignat *nat, uint32_t *digits, size_t ndigits);
+bignat bignat_new_zero(void);
 int bignat_from_digit(bignat *nat, uint32_t n);
 int bignat_copy(bignat *dst, bignat src);
 void bignat_del(bignat n);
@@ -60,8 +61,9 @@ typedef struct bigint {
 	bignat abs;
 } bigint;
 
+int bigint_view(bigint *int_, int sign, uint32_t *digits, size_t ndigits);
 int bigint_init(bigint *int_, int sign, uint32_t *digits, size_t ndigits);
-bignat bignat_new_zero(void);
+bigint bigint_new_zero(void);
 int bigint_from_digit(bigint *int_, int32_t x);
 int bigint_copy(bigint *dst, bigint src);
 void bigint_del(bigint int_);
@@ -79,5 +81,17 @@ int bigint_mul(bigint *prod, bigint x, bigint y);
 int bigint_divtrn(bigint *quot, bigint *rem, bigint x, bigint y);
 int bigint_divflr(bigint *quot, bigint *rem, bigint x, bigint y);
 int bigint_diveuc(bigint *quot, bigint *rem, bigint x, bigint y);
+
+/* bigrat */
+
+typedef struct bigrat {
+	bigint nume;
+	bigint deno;
+} bigrat;
+
+int bigrat_init(bigrat *rat,
+		int nume_sign, uint32_t *nume_digits, size_t nume_ndigits,
+		int deno_sign, uint32_t *deno_digits, size_t deno_ndigits);
+void bigrat_del(bigrat rat);
 
 #endif /* BIGNUM_H */
