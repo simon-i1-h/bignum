@@ -1471,6 +1471,115 @@ test_bigint_del(void)
 }
 
 void
+test_bigint_cmp(void)
+{
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, 0) == 0);
+		test_assert(bigint_from_digit(&y, 0) == 0);
+		test_assert(bigint_cmp(x, y) == 0);
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, 1) == 0);
+		test_assert(bigint_from_digit(&y, 1) == 0);
+		test_assert(bigint_cmp(x, y) == 0);
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, 1) == 0);
+		test_assert(bigint_from_digit(&y, 2) == 0);
+		test_assert(bigint_cmp(x, y) == -1);
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, 2) == 0);
+		test_assert(bigint_from_digit(&y, 1) == 0);
+		test_assert(bigint_cmp(x, y) == 1);
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, -1) == 0);
+		test_assert(bigint_from_digit(&y, -1) == 0);
+		test_assert(bigint_cmp(x, y) == 0);
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, -2) == 0);
+		test_assert(bigint_from_digit(&y, -1) == 0);
+		test_assert(bigint_cmp(x, y) == -1);
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, -1) == 0);
+		test_assert(bigint_from_digit(&y, -2) == 0);
+		test_assert(bigint_cmp(x, y) == 1);
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, -1) == 0);
+		test_assert(bigint_from_digit(&y, 0) == 0);
+		test_assert(bigint_cmp(x, y) == -1);
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, 0) == 0);
+		test_assert(bigint_from_digit(&y, -1) == 0);
+		test_assert(bigint_cmp(x, y) == 1);
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, 0) == 0);
+		test_assert(bigint_from_digit(&y, 1) == 0);
+		test_assert(bigint_cmp(x, y) == -1);
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, 1) == 0);
+		test_assert(bigint_from_digit(&y, 0) == 0);
+		test_assert(bigint_cmp(x, y) == 1);
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, -1) == 0);
+		test_assert(bigint_from_digit(&y, 1) == 0);
+		test_assert(bigint_cmp(x, y) == -1);
+		bigint_del(x);
+		bigint_del(y);
+	}
+	{
+		bigint x, y;
+		test_assert(bigint_from_digit(&x, 1) == 0);
+		test_assert(bigint_from_digit(&y, -1) == 0);
+		test_assert(bigint_cmp(x, y) == 1);
+		bigint_del(x);
+		bigint_del(y);
+	}
+}
+
+void
 test_bigint_eq(void)
 {
 	{
@@ -3398,6 +3507,99 @@ test_bigrat_init(void)
 }
 
 void
+test_bigrat_from_digit(void)
+{
+	{
+		bigrat rat;
+		test_assert(bigrat_from_digit(&rat, 1, 1) == 0);
+		test_assert(rat.nume.sign == 1);
+		test_assert(rat.nume.abs.ndigits == 1);
+		test_assert(rat.nume.abs.digits[0] == 1);
+		test_assert(rat.deno.sign == 1);
+		test_assert(rat.deno.abs.ndigits == 1);
+		test_assert(rat.deno.abs.digits[0] == 1);
+		bigrat_del(rat);
+	}
+	{
+		bigrat rat;
+		test_assert(bigrat_from_digit(&rat, 0, 1) == 0);
+		test_assert(rat.nume.sign == 0);
+		test_assert(rat.nume.abs.ndigits == 0);
+		test_assert(rat.nume.abs.digits == NULL);
+		test_assert(rat.deno.sign == 1);
+		test_assert(rat.deno.abs.ndigits == 1);
+		test_assert(rat.deno.abs.digits[0] == 1);
+		bigrat_del(rat);
+	}
+	{
+		bigrat rat;
+		test_assert(bigrat_from_digit(&rat, 0, -1) == 0);
+		test_assert(rat.nume.sign == 0);
+		test_assert(rat.nume.abs.ndigits == 0);
+		test_assert(rat.nume.abs.digits == NULL);
+		test_assert(rat.deno.sign == 1);
+		test_assert(rat.deno.abs.ndigits == 1);
+		test_assert(rat.deno.abs.digits[0] == 1);
+		bigrat_del(rat);
+	}
+	{
+		bigrat rat;
+		test_assert(bigrat_from_digit(&rat, 0, 2) == 0);
+		test_assert(rat.nume.sign == 0);
+		test_assert(rat.nume.abs.ndigits == 0);
+		test_assert(rat.nume.abs.digits == NULL);
+		test_assert(rat.deno.sign == 1);
+		test_assert(rat.deno.abs.ndigits == 1);
+		test_assert(rat.deno.abs.digits[0] == 1);
+		bigrat_del(rat);
+	}
+	{
+		bigrat rat;
+		test_assert(bigrat_from_digit(&rat, 2, 3) == 0);
+		test_assert(rat.nume.sign == 1);
+		test_assert(rat.nume.abs.ndigits == 1);
+		test_assert(rat.nume.abs.digits[0] == 2);
+		test_assert(rat.deno.sign == 1);
+		test_assert(rat.deno.abs.ndigits == 1);
+		test_assert(rat.deno.abs.digits[0] == 3);
+		bigrat_del(rat);
+	}
+	{
+		bigrat rat;
+		test_assert(bigrat_from_digit(&rat, -2, 3) == 0);
+		test_assert(rat.nume.sign == -1);
+		test_assert(rat.nume.abs.ndigits == 1);
+		test_assert(rat.nume.abs.digits[0] == 2);
+		test_assert(rat.deno.sign == 1);
+		test_assert(rat.deno.abs.ndigits == 1);
+		test_assert(rat.deno.abs.digits[0] == 3);
+		bigrat_del(rat);
+	}
+	{
+		bigrat rat;
+		test_assert(bigrat_from_digit(&rat, 4, 6) == 0);
+		test_assert(rat.nume.sign == 1);
+		test_assert(rat.nume.abs.ndigits == 1);
+		test_assert(rat.nume.abs.digits[0] == 2);
+		test_assert(rat.deno.sign == 1);
+		test_assert(rat.deno.abs.ndigits == 1);
+		test_assert(rat.deno.abs.digits[0] == 3);
+		bigrat_del(rat);
+	}
+	{
+		bigrat rat;
+		test_assert(bigrat_from_digit(&rat, -4, 6) == 0);
+		test_assert(rat.nume.sign == -1);
+		test_assert(rat.nume.abs.ndigits == 1);
+		test_assert(rat.nume.abs.digits[0] == 2);
+		test_assert(rat.deno.sign == 1);
+		test_assert(rat.deno.abs.ndigits == 1);
+		test_assert(rat.deno.abs.digits[0] == 3);
+		bigrat_del(rat);
+	}
+}
+
+void
 test_bigrat_del(void)
 {
 	bigrat r;
@@ -3411,6 +3613,167 @@ test_bigrat_del(void)
 	test_assert(r.deno.abs.ndigits == 1);
 	test_assert(r.deno.abs.digits[0] == 2);
 	bigrat_del(r);
+}
+
+void
+test_bigrat_cmp(void)
+{
+	{
+		bigrat x, y;
+		int cmp;
+		test_assert(bigrat_from_digit(&x, 0, 1) == 0);
+		test_assert(bigrat_from_digit(&y, 0, 1) == 0);
+
+		test_assert(bigrat_cmp(&cmp, x, y) == 0);
+		test_assert(cmp == 0);
+
+		bigrat_del(x);
+		bigrat_del(y);
+	}
+	{
+		bigrat x, y;
+		int cmp;
+		test_assert(bigrat_from_digit(&x, 1, 1) == 0);
+		test_assert(bigrat_from_digit(&y, 1, 1) == 0);
+
+		test_assert(bigrat_cmp(&cmp, x, y) == 0);
+		test_assert(cmp == 0);
+
+		bigrat_del(x);
+		bigrat_del(y);
+	}
+	{
+		bigrat x, y;
+		int cmp;
+		test_assert(bigrat_from_digit(&x, 0, 1) == 0);
+		test_assert(bigrat_from_digit(&y, 1, 1) == 0);
+
+		test_assert(bigrat_cmp(&cmp, x, y) == 0);
+		test_assert(cmp == -1);
+
+		bigrat_del(x);
+		bigrat_del(y);
+	}
+	{
+		bigrat x, y;
+		int cmp;
+		test_assert(bigrat_from_digit(&x, 1, 1) == 0);
+		test_assert(bigrat_from_digit(&y, 0, 1) == 0);
+
+		test_assert(bigrat_cmp(&cmp, x, y) == 0);
+		test_assert(cmp == 1);
+
+		bigrat_del(x);
+		bigrat_del(y);
+	}
+	{
+		bigrat x, y;
+		int cmp;
+		test_assert(bigrat_from_digit(&x, -1, 1) == 0);
+		test_assert(bigrat_from_digit(&y, -1, 1) == 0);
+
+		test_assert(bigrat_cmp(&cmp, x, y) == 0);
+		test_assert(cmp == 0);
+
+		bigrat_del(x);
+		bigrat_del(y);
+	}
+	{
+		bigrat x, y;
+		int cmp;
+		test_assert(bigrat_from_digit(&x, -1, 1) == 0);
+		test_assert(bigrat_from_digit(&y, 0, 1) == 0);
+
+		test_assert(bigrat_cmp(&cmp, x, y) == 0);
+		test_assert(cmp == -1);
+
+		bigrat_del(x);
+		bigrat_del(y);
+	}
+	{
+		bigrat x, y;
+		int cmp;
+		test_assert(bigrat_from_digit(&x, 0, 1) == 0);
+		test_assert(bigrat_from_digit(&y, -1, 1) == 0);
+
+		test_assert(bigrat_cmp(&cmp, x, y) == 0);
+		test_assert(cmp == 1);
+
+		bigrat_del(x);
+		bigrat_del(y);
+	}
+	{
+		bigrat x, y;
+		int cmp;
+		test_assert(bigrat_from_digit(&x, 4, 3) == 0);
+		test_assert(bigrat_from_digit(&y, 2, 3) == 0);
+
+		test_assert(bigrat_cmp(&cmp, x, y) == 0);
+		test_assert(cmp == 1);
+
+		bigrat_del(x);
+		bigrat_del(y);
+	}
+	{
+		bigrat x, y;
+		int cmp;
+		test_assert(bigrat_from_digit(&x, 3, 3) == 0);
+		test_assert(bigrat_from_digit(&y, 2, 3) == 0);
+
+		test_assert(bigrat_cmp(&cmp, x, y) == 0);
+		test_assert(cmp == 1);
+
+		bigrat_del(x);
+		bigrat_del(y);
+	}
+	{
+		bigrat x, y;
+		int cmp;
+		test_assert(bigrat_from_digit(&x, 2, 3) == 0);
+		test_assert(bigrat_from_digit(&y, 4, 5) == 0);
+
+		test_assert(bigrat_cmp(&cmp, x, y) == 0);
+		test_assert(cmp == -1);
+
+		bigrat_del(x);
+		bigrat_del(y);
+	}
+	{
+		bigrat x, y;
+		int cmp;
+		test_assert(bigrat_from_digit(&x, -2, 3) == 0);
+		test_assert(bigrat_from_digit(&y, -4, 5) == 0);
+
+		test_assert(bigrat_cmp(&cmp, x, y) == 0);
+		test_assert(cmp == 1);
+
+		bigrat_del(x);
+		bigrat_del(y);
+	}
+	{
+		bigrat x, y;
+		int cmp;
+		test_assert(bigrat_from_digit(&x, 4, 3) == 0);
+		test_assert(bigrat_from_digit(&y, 4, 5) == 0);
+
+		test_assert(bigrat_cmp(&cmp, x, y) == 0);
+		test_assert(cmp == 1);
+
+		bigrat_del(x);
+		bigrat_del(y);
+	}
+	{
+		bigrat x, y;
+		int cmp;
+		test_assert(bigrat_from_digit(&x, 0, 3) == 0);
+		test_assert(bigrat_from_digit(&y, 1, 5) == 0);
+
+		test_assert(bigrat_cmp(&cmp, x, y) == 0);
+		test_assert(cmp == -1);
+
+		bigrat_del(x);
+		bigrat_del(y);
+	}
 }
 
 int
@@ -3455,6 +3818,7 @@ main(int argc, char **argv)
 	test_bigint_from_digit();
 	test_bigint_copy();
 	test_bigint_del();
+	test_bigint_cmp();
 	test_bigint_eq();
 	test_bigint_ne();
 	test_bigint_lt();
@@ -3470,7 +3834,9 @@ main(int argc, char **argv)
 
 	/* bigrat */
 	test_bigrat_init();
+	test_bigrat_from_digit();
 	test_bigrat_del();
+	test_bigrat_cmp();
 
 	printf("successes: %d\n", nsuccesses);
 	printf("failures: %d\n", nfailures);

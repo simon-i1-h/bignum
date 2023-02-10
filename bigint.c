@@ -103,7 +103,7 @@ bigint_del(bigint int_)
 	bignat_del(int_.abs);
 }
 
-static int
+int
 bigint_cmp(bigint x, bigint y)
 {
 	if (x.sign < y.sign) {

@@ -98,9 +98,69 @@ bigrat_init(bigrat *rat,
 	return 0;
 }
 
+int
+bigrat_from_digit(bigrat *rat, int32_t nume, int32_t deno)
+{
+	int err;
+	bigint int_nume;
+	err = bigint_from_digit(&int_nume, nume);
+	if (err != 0) {
+		return err;
+	}
+
+	bigint int_deno;
+	err = bigint_from_digit(&int_deno, deno);
+	if (err != 0) {
+		bigint_del(int_nume);
+		return err;
+	}
+
+	bigrat tmp_rat = (bigrat){
+		.nume=int_nume,
+		.deno=int_deno
+	};
+
+	err = bigrat_norm(&tmp_rat);
+	if (err != 0) {
+		bigrat_del(tmp_rat);
+	}
+
+	*rat = tmp_rat;
+	return 0;
+}
+
 void
 bigrat_del(bigrat rat)
 {
 	bigint_del(rat.nume);
 	bigint_del(rat.deno);
+}
+
+int
+bigrat_cmp(int *cmp, bigrat x, bigrat y)
+{
+	if (bigint_eq(x.deno, y.deno)) {
+		*cmp = bigint_cmp(x.nume, y.nume);
+		return 0;
+	}
+
+	int err;
+	bigint norm_x;
+	err = bigint_mul(&norm_x, x.nume, y.deno);
+	if (err != 0) {
+		return err;
+	}
+
+	bigint norm_y;
+	err = bigint_mul(&norm_y, y.nume, x.deno);
+	if (err != 0) {
+		bigint_del(norm_x);
+		return err;
+	}
+
+	int tmp_cmp = bigint_cmp(norm_x, norm_y);
+	bigint_del(norm_x);
+	bigint_del(norm_y);
+	*cmp = tmp_cmp;
+	return 0;
 }

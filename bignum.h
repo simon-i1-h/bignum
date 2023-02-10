@@ -68,6 +68,7 @@ int bigint_from_digit(bigint *int_, int32_t x);
 int bigint_copy(bigint *dst, bigint src);
 void bigint_del(bigint int_);
 
+int bigint_cmp(bigint x, bigint y);
 bool bigint_eq(bigint x, bigint y);
 bool bigint_ne(bigint x, bigint y);
 bool bigint_lt(bigint x, bigint y);
@@ -99,6 +100,9 @@ typedef struct bigrat {
 int bigrat_init(bigrat *rat,
 		int nume_sign, uint32_t *nume_digits, size_t nume_ndigits,
 		int deno_sign, uint32_t *deno_digits, size_t deno_ndigits);
+int bigrat_from_digit(bigrat *rat, int32_t nume, int32_t deno);
 void bigrat_del(bigrat rat);
+
+int bigrat_cmp(int *cmp, bigrat x, bigrat y);
 
 #endif /* BIGNUM_H */
