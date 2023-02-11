@@ -164,3 +164,87 @@ bigrat_cmp(int *cmp, bigrat x, bigrat y)
 	*cmp = tmp_cmp;
 	return 0;
 }
+
+int
+bigrat_eq(bool *eq, bigrat x, bigrat y)
+{
+	int err;
+	int cmp;
+	err = bigrat_cmp(&cmp, x, y);
+	if (err != 0) {
+		return err;
+	}
+
+	*eq = cmp == 0;
+	return 0;
+}
+
+int
+bigrat_ne(bool *ne, bigrat x, bigrat y)
+{
+	int err;
+	int cmp;
+	err = bigrat_cmp(&cmp, x, y);
+	if (err != 0) {
+		return err;
+	}
+
+	*ne = cmp != 0;
+	return 0;
+}
+
+int
+bigrat_lt(bool *lt, bigrat x, bigrat y)
+{
+	int err;
+	int cmp;
+	err = bigrat_cmp(&cmp, x, y);
+	if (err != 0) {
+		return err;
+	}
+
+	*lt = cmp < 0;
+	return 0;
+}
+
+int
+bigrat_gt(bool *gt, bigrat x, bigrat y)
+{
+	int err;
+	int cmp;
+	err = bigrat_cmp(&cmp, x, y);
+	if (err != 0) {
+		return err;
+	}
+
+	*gt = cmp > 0;
+	return 0;
+}
+
+int
+bigrat_le(bool *le, bigrat x, bigrat y)
+{
+	int err;
+	int cmp;
+	err = bigrat_cmp(&cmp, x, y);
+	if (err != 0) {
+		return err;
+	}
+
+	*le = cmp <= 0;
+	return 0;
+}
+
+int
+bigrat_ge(bool *ge, bigrat x, bigrat y)
+{
+	int err;
+	int cmp;
+	err = bigrat_cmp(&cmp, x, y);
+	if (err != 0) {
+		return err;
+	}
+
+	*ge = cmp >= 0;
+	return 0;
+}

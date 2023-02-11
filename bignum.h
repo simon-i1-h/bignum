@@ -104,5 +104,11 @@ int bigrat_from_digit(bigrat *rat, int32_t nume, int32_t deno);
 void bigrat_del(bigrat rat);
 
 int bigrat_cmp(int *cmp, bigrat x, bigrat y);
+int bigrat_eq(bool *eq, bigrat x, bigrat y);
+int bigrat_ne(bool *ne, bigrat x, bigrat y);
+int bigrat_lt(bool *lt, bigrat x, bigrat y);
+int bigrat_gt(bool *gt, bigrat x, bigrat y);
+int bigrat_le(bool *le, bigrat x, bigrat y);
+int bigrat_ge(bool *ge, bigrat x, bigrat y);
 
 #endif /* BIGNUM_H */
