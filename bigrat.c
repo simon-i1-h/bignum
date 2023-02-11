@@ -129,6 +129,30 @@ bigrat_from_digit(bigrat *rat, int32_t nume, int32_t deno)
 	return 0;
 }
 
+int
+bigrat_copy(bigrat *dst, bigrat src)
+{
+	int err;
+	bigint tmp_nume;
+	err = bigint_copy(&tmp_nume, src.nume);
+	if (err != 0) {
+		return err;
+	}
+
+	bigint tmp_deno;
+	err = bigint_copy(&tmp_deno, src.deno);
+	if (err != 0) {
+		bigint_del(tmp_nume);
+		return err;
+	}
+
+	*dst = (bigrat){
+		.nume=tmp_nume,
+		.deno=tmp_deno
+	};
+	return 0;
+}
+
 void
 bigrat_del(bigrat rat)
 {

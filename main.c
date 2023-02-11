@@ -3600,6 +3600,115 @@ test_bigrat_from_digit(void)
 }
 
 void
+test_bigrat_copy(void)
+{
+	{
+		bigrat src, dst;
+		test_assert(bigrat_from_digit(&src, 0, 1) == 0);
+		test_assert(bigrat_copy(&dst, src) == 0);
+		test_assert(dst.nume.sign == 0);
+		test_assert(dst.nume.abs.ndigits == 0);
+		test_assert(dst.nume.abs.digits == NULL);
+		test_assert(dst.deno.sign == 1);
+		test_assert(dst.deno.abs.ndigits == 1);
+		test_assert(dst.deno.abs.digits[0] == 1);
+		bigrat_del(src);
+		bigrat_del(dst);
+	}
+	{
+		bigrat src, dst;
+		test_assert(bigrat_from_digit(&src, 0, -1) == 0);
+		test_assert(bigrat_copy(&dst, src) == 0);
+		test_assert(dst.nume.sign == 0);
+		test_assert(dst.nume.abs.ndigits == 0);
+		test_assert(dst.nume.abs.digits == NULL);
+		test_assert(dst.deno.sign == 1);
+		test_assert(dst.deno.abs.ndigits == 1);
+		test_assert(dst.deno.abs.digits[0] == 1);
+		bigrat_del(src);
+		bigrat_del(dst);
+	}
+	{
+		bigrat src, dst;
+		test_assert(bigrat_from_digit(&src, 1, 1) == 0);
+		test_assert(bigrat_copy(&dst, src) == 0);
+		test_assert(dst.nume.sign == 1);
+		test_assert(dst.nume.abs.ndigits == 1);
+		test_assert(dst.nume.abs.digits[0] == 1);
+		test_assert(dst.deno.sign == 1);
+		test_assert(dst.deno.abs.ndigits == 1);
+		test_assert(dst.deno.abs.digits[0] == 1);
+		bigrat_del(src);
+		bigrat_del(dst);
+	}
+	{
+		bigrat src, dst;
+		test_assert(bigrat_from_digit(&src, -1, 1) == 0);
+		test_assert(bigrat_copy(&dst, src) == 0);
+		test_assert(dst.nume.sign == -1);
+		test_assert(dst.nume.abs.ndigits == 1);
+		test_assert(dst.nume.abs.digits[0] == 1);
+		test_assert(dst.deno.sign == 1);
+		test_assert(dst.deno.abs.ndigits == 1);
+		test_assert(dst.deno.abs.digits[0] == 1);
+		bigrat_del(src);
+		bigrat_del(dst);
+	}
+	{
+		bigrat src, dst;
+		test_assert(bigrat_from_digit(&src, 2, 3) == 0);
+		test_assert(bigrat_copy(&dst, src) == 0);
+		test_assert(dst.nume.sign == 1);
+		test_assert(dst.nume.abs.ndigits == 1);
+		test_assert(dst.nume.abs.digits[0] == 2);
+		test_assert(dst.deno.sign == 1);
+		test_assert(dst.deno.abs.ndigits == 1);
+		test_assert(dst.deno.abs.digits[0] == 3);
+		bigrat_del(src);
+		bigrat_del(dst);
+	}
+	{
+		bigrat src, dst;
+		test_assert(bigrat_from_digit(&src, -2, 3) == 0);
+		test_assert(bigrat_copy(&dst, src) == 0);
+		test_assert(dst.nume.sign == -1);
+		test_assert(dst.nume.abs.ndigits == 1);
+		test_assert(dst.nume.abs.digits[0] == 2);
+		test_assert(dst.deno.sign == 1);
+		test_assert(dst.deno.abs.ndigits == 1);
+		test_assert(dst.deno.abs.digits[0] == 3);
+		bigrat_del(src);
+		bigrat_del(dst);
+	}
+	{
+		bigrat src, dst;
+		test_assert(bigrat_from_digit(&src, 4, 3) == 0);
+		test_assert(bigrat_copy(&dst, src) == 0);
+		test_assert(dst.nume.sign == 1);
+		test_assert(dst.nume.abs.ndigits == 1);
+		test_assert(dst.nume.abs.digits[0] == 4);
+		test_assert(dst.deno.sign == 1);
+		test_assert(dst.deno.abs.ndigits == 1);
+		test_assert(dst.deno.abs.digits[0] == 3);
+		bigrat_del(src);
+		bigrat_del(dst);
+	}
+	{
+		bigrat src, dst;
+		test_assert(bigrat_from_digit(&src, -4, 3) == 0);
+		test_assert(bigrat_copy(&dst, src) == 0);
+		test_assert(dst.nume.sign == -1);
+		test_assert(dst.nume.abs.ndigits == 1);
+		test_assert(dst.nume.abs.digits[0] == 4);
+		test_assert(dst.deno.sign == 1);
+		test_assert(dst.deno.abs.ndigits == 1);
+		test_assert(dst.deno.abs.digits[0] == 3);
+		bigrat_del(src);
+		bigrat_del(dst);
+	}
+}
+
+void
 test_bigrat_del(void)
 {
 	bigrat r;
@@ -5233,6 +5342,7 @@ main(int argc, char **argv)
 	/* bigrat */
 	test_bigrat_init();
 	test_bigrat_from_digit();
+	test_bigrat_copy();
 	test_bigrat_del();
 	test_bigrat_cmp();
 	test_bigrat_eq();

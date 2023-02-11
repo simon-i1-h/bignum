@@ -101,6 +101,7 @@ int bigrat_init(bigrat *rat,
 		int nume_sign, uint32_t *nume_digits, size_t nume_ndigits,
 		int deno_sign, uint32_t *deno_digits, size_t deno_ndigits);
 int bigrat_from_digit(bigrat *rat, int32_t nume, int32_t deno);
+int bigrat_copy(bigrat *dst, bigrat src);
 void bigrat_del(bigrat rat);
 
 int bigrat_cmp(int *cmp, bigrat x, bigrat y);
