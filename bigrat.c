@@ -272,3 +272,94 @@ bigrat_ge(bool *ge, bigrat x, bigrat y)
 	*ge = cmp >= 0;
 	return 0;
 }
+
+int
+bigrat_add(bigrat *sum, bigrat x, bigrat y)
+{
+	if (bigint_eq(x.deno, y.deno)) {
+		int err;
+		bigint nume_sum;
+		err = bigint_add(&nume_sum, x.nume, y.nume);
+		if (err != 0) {
+			return err;
+		}
+
+		bigint deno_sum;
+		err = bigint_copy(&deno_sum, x.deno);
+		if (err != 0) {
+			bigint_del(nume_sum);
+			return err;
+		}
+
+		bigrat tmp_sum = (bigrat){
+			.nume=nume_sum,
+			.deno=deno_sum
+		};
+
+		err = bigrat_norm(&tmp_sum);
+		if (err != 0) {
+			bigrat_del(tmp_sum);
+			return err;
+		}
+
+		*sum = tmp_sum;
+		return 0;
+	}
+
+	int err;
+	bigint denorm_nume_x = bigint_new_zero();
+	bigint denorm_nume_y = bigint_new_zero();
+	bigint nume_sum = bigint_new_zero();
+	bigint deno_sum = bigint_new_zero();
+
+	err = bigint_mul(&denorm_nume_x, x.nume, y.deno);
+	if (err != 0) {
+		goto fail;
+	}
+
+	err = bigint_mul(&denorm_nume_y, y.nume, x.deno);
+	if (err != 0) {
+		goto fail;
+	}
+
+	err = bigint_add(&nume_sum, denorm_nume_x, denorm_nume_y);
+	if (err != 0) {
+		goto fail;
+	}
+
+	err = bigint_mul(&deno_sum, x.deno, y.deno);
+	if (err != 0) {
+		goto fail;
+	}
+
+	bigrat tmp_sum = (bigrat){
+		.nume=nume_sum,
+		.deno=deno_sum
+	};
+	err = bigrat_norm(&tmp_sum);
+	if (err != 0) {
+		bigint_del(denorm_nume_x);
+		bigint_del(denorm_nume_y);
+		bigrat_del(tmp_sum);
+		return err;
+	}
+
+	bigint_del(denorm_nume_x);
+	bigint_del(denorm_nume_y);
+	*sum = tmp_sum;
+	return 0;
+
+fail:
+	bigint_del(denorm_nume_x);
+	bigint_del(denorm_nume_y);
+	bigint_del(nume_sum);
+	bigint_del(deno_sum);
+	return err;
+}
+
+int
+bigrat_sub(bigrat *diff, bigrat x, bigrat y)
+{
+	y.nume.sign *= -1;
+	return bigrat_add(diff, x, y);
+}

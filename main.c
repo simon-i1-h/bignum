@@ -5283,6 +5283,544 @@ test_bigrat_ge(void)
 	}
 }
 
+void
+test_bigrat_add(void)
+{
+	{
+		bigrat x, y, sum, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, 1, 1) == 0);
+		test_assert(bigrat_from_digit(&y, 1, 1) == 0);
+		test_assert(bigrat_from_digit(&expected, 2, 1) == 0);
+
+		test_assert(bigrat_add(&sum, x, y) == 0);
+		test_assert(bigrat_eq(&eq, sum, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(sum);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, sum, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, 0, 1) == 0);
+		test_assert(bigrat_from_digit(&y, 0, 1) == 0);
+		test_assert(bigrat_from_digit(&expected, 0, 1) == 0);
+
+		test_assert(bigrat_add(&sum, x, y) == 0);
+		test_assert(bigrat_eq(&eq, sum, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(sum);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, sum, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, 1, 1) == 0);
+		test_assert(bigrat_from_digit(&y, 2, 1) == 0);
+		test_assert(bigrat_from_digit(&expected, 3, 1) == 0);
+
+		test_assert(bigrat_add(&sum, x, y) == 0);
+		test_assert(bigrat_eq(&eq, sum, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(sum);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, sum, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, 2, 1) == 0);
+		test_assert(bigrat_from_digit(&y, 1, 1) == 0);
+		test_assert(bigrat_from_digit(&expected, 3, 1) == 0);
+
+		test_assert(bigrat_add(&sum, x, y) == 0);
+		test_assert(bigrat_eq(&eq, sum, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(sum);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, sum, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, 1, 1) == 0);
+		test_assert(bigrat_from_digit(&y, 0, 1) == 0);
+		test_assert(bigrat_from_digit(&expected, 1, 1) == 0);
+
+		test_assert(bigrat_add(&sum, x, y) == 0);
+		test_assert(bigrat_eq(&eq, sum, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(sum);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, sum, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, 0, 1) == 0);
+		test_assert(bigrat_from_digit(&y, 1, 1) == 0);
+		test_assert(bigrat_from_digit(&expected, 1, 1) == 0);
+
+		test_assert(bigrat_add(&sum, x, y) == 0);
+		test_assert(bigrat_eq(&eq, sum, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(sum);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, sum, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, 1, 3) == 0);
+		test_assert(bigrat_from_digit(&y, 2, 3) == 0);
+		test_assert(bigrat_from_digit(&expected, 1, 1) == 0);
+
+		test_assert(bigrat_add(&sum, x, y) == 0);
+		test_assert(bigrat_eq(&eq, sum, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(sum);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, sum, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, 2, 3) == 0);
+		test_assert(bigrat_from_digit(&y, 1, 3) == 0);
+		test_assert(bigrat_from_digit(&expected, 1, 1) == 0);
+
+		test_assert(bigrat_add(&sum, x, y) == 0);
+		test_assert(bigrat_eq(&eq, sum, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(sum);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, sum, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, 2, 3) == 0);
+		test_assert(bigrat_from_digit(&y, 4, 5) == 0);
+		test_assert(bigrat_from_digit(&expected, 22, 15) == 0);
+
+		test_assert(bigrat_add(&sum, x, y) == 0);
+		test_assert(bigrat_eq(&eq, sum, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(sum);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, sum, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, 0, 1) == 0);
+		test_assert(bigrat_from_digit(&y, -1, 3) == 0);
+		test_assert(bigrat_from_digit(&expected, -1, 3) == 0);
+
+		test_assert(bigrat_add(&sum, x, y) == 0);
+		test_assert(bigrat_eq(&eq, sum, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(sum);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, sum, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, -2, 3) == 0);
+		test_assert(bigrat_from_digit(&y, -1, 3) == 0);
+		test_assert(bigrat_from_digit(&expected, -1, 1) == 0);
+
+		test_assert(bigrat_add(&sum, x, y) == 0);
+		test_assert(bigrat_eq(&eq, sum, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(sum);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, sum, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, 1, 3) == 0);
+		test_assert(bigrat_from_digit(&y, -1, 3) == 0);
+		test_assert(bigrat_from_digit(&expected, 0, 1) == 0);
+
+		test_assert(bigrat_add(&sum, x, y) == 0);
+		test_assert(bigrat_eq(&eq, sum, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(sum);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, sum, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, -2, 3) == 0);
+		test_assert(bigrat_from_digit(&y, 4, 5) == 0);
+		test_assert(bigrat_from_digit(&expected, 2, 15) == 0);
+
+		test_assert(bigrat_add(&sum, x, y) == 0);
+		test_assert(bigrat_eq(&eq, sum, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(sum);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, sum, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, 2, 3) == 0);
+		test_assert(bigrat_from_digit(&y, -4, 5) == 0);
+		test_assert(bigrat_from_digit(&expected, -2, 15) == 0);
+
+		test_assert(bigrat_add(&sum, x, y) == 0);
+		test_assert(bigrat_eq(&eq, sum, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(sum);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, sum, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, -2, 3) == 0);
+		test_assert(bigrat_from_digit(&y, -4, 5) == 0);
+		test_assert(bigrat_from_digit(&expected, -22, 15) == 0);
+
+		test_assert(bigrat_add(&sum, x, y) == 0);
+		test_assert(bigrat_eq(&eq, sum, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(sum);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, sum, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, 8, 3) == 0);
+		test_assert(bigrat_from_digit(&y, 7, 5) == 0);
+		test_assert(bigrat_from_digit(&expected, 61, 15) == 0);
+
+		test_assert(bigrat_add(&sum, x, y) == 0);
+		test_assert(bigrat_eq(&eq, sum, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(sum);
+		bigrat_del(expected);
+	}
+}
+
+void
+test_bigrat_sub(void)
+{
+	{
+		bigrat x, y, diff, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, 1, 1) == 0);
+		test_assert(bigrat_from_digit(&y, 1, 1) == 0);
+		test_assert(bigrat_from_digit(&expected, 0, 1) == 0);
+
+		test_assert(bigrat_sub(&diff, x, y) == 0);
+		test_assert(bigrat_eq(&eq, diff, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(diff);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, diff, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, 0, 1) == 0);
+		test_assert(bigrat_from_digit(&y, 0, 1) == 0);
+		test_assert(bigrat_from_digit(&expected, 0, 1) == 0);
+
+		test_assert(bigrat_sub(&diff, x, y) == 0);
+		test_assert(bigrat_eq(&eq, diff, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(diff);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, diff, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, 0, 1) == 0);
+		test_assert(bigrat_from_digit(&y, 1, 1) == 0);
+		test_assert(bigrat_from_digit(&expected, -1, 1) == 0);
+
+		test_assert(bigrat_sub(&diff, x, y) == 0);
+		test_assert(bigrat_eq(&eq, diff, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(diff);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, diff, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, 1, 1) == 0);
+		test_assert(bigrat_from_digit(&y, 0, 1) == 0);
+		test_assert(bigrat_from_digit(&expected, 1, 1) == 0);
+
+		test_assert(bigrat_sub(&diff, x, y) == 0);
+		test_assert(bigrat_eq(&eq, diff, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(diff);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, diff, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, 1, 1) == 0);
+		test_assert(bigrat_from_digit(&y, 2, 1) == 0);
+		test_assert(bigrat_from_digit(&expected, -1, 1) == 0);
+
+		test_assert(bigrat_sub(&diff, x, y) == 0);
+		test_assert(bigrat_eq(&eq, diff, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(diff);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, diff, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, 2, 1) == 0);
+		test_assert(bigrat_from_digit(&y, 1, 1) == 0);
+		test_assert(bigrat_from_digit(&expected, 1, 1) == 0);
+
+		test_assert(bigrat_sub(&diff, x, y) == 0);
+		test_assert(bigrat_eq(&eq, diff, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(diff);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, diff, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, 1, 3) == 0);
+		test_assert(bigrat_from_digit(&y, 2, 3) == 0);
+		test_assert(bigrat_from_digit(&expected, -1, 3) == 0);
+
+		test_assert(bigrat_sub(&diff, x, y) == 0);
+		test_assert(bigrat_eq(&eq, diff, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(diff);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, diff, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, 2, 3) == 0);
+		test_assert(bigrat_from_digit(&y, 1, 3) == 0);
+		test_assert(bigrat_from_digit(&expected, 1, 3) == 0);
+
+		test_assert(bigrat_sub(&diff, x, y) == 0);
+		test_assert(bigrat_eq(&eq, diff, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(diff);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, diff, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, 2, 3) == 0);
+		test_assert(bigrat_from_digit(&y, 4, 5) == 0);
+		test_assert(bigrat_from_digit(&expected, -2, 15) == 0);
+
+		test_assert(bigrat_sub(&diff, x, y) == 0);
+		test_assert(bigrat_eq(&eq, diff, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(diff);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, diff, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, 0, 1) == 0);
+		test_assert(bigrat_from_digit(&y, -1, 3) == 0);
+		test_assert(bigrat_from_digit(&expected, 1, 3) == 0);
+
+		test_assert(bigrat_sub(&diff, x, y) == 0);
+		test_assert(bigrat_eq(&eq, diff, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(diff);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, diff, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, -2, 3) == 0);
+		test_assert(bigrat_from_digit(&y, -1, 3) == 0);
+		test_assert(bigrat_from_digit(&expected, -1, 3) == 0);
+
+		test_assert(bigrat_sub(&diff, x, y) == 0);
+		test_assert(bigrat_eq(&eq, diff, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(diff);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, diff, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, 1, 3) == 0);
+		test_assert(bigrat_from_digit(&y, -1, 3) == 0);
+		test_assert(bigrat_from_digit(&expected, 2, 3) == 0);
+
+		test_assert(bigrat_sub(&diff, x, y) == 0);
+		test_assert(bigrat_eq(&eq, diff, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(diff);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, diff, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, 1, 3) == 0);
+		test_assert(bigrat_from_digit(&y, 1, 3) == 0);
+		test_assert(bigrat_from_digit(&expected, 0, 1) == 0);
+
+		test_assert(bigrat_sub(&diff, x, y) == 0);
+		test_assert(bigrat_eq(&eq, diff, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(diff);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, diff, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, -2, 3) == 0);
+		test_assert(bigrat_from_digit(&y, 4, 5) == 0);
+		test_assert(bigrat_from_digit(&expected, -22, 15) == 0);
+
+		test_assert(bigrat_sub(&diff, x, y) == 0);
+		test_assert(bigrat_eq(&eq, diff, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(diff);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, diff, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, 2, 3) == 0);
+		test_assert(bigrat_from_digit(&y, -4, 5) == 0);
+		test_assert(bigrat_from_digit(&expected, 22, 15) == 0);
+
+		test_assert(bigrat_sub(&diff, x, y) == 0);
+		test_assert(bigrat_eq(&eq, diff, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(diff);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, diff, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, -2, 3) == 0);
+		test_assert(bigrat_from_digit(&y, -4, 5) == 0);
+		test_assert(bigrat_from_digit(&expected, 2, 15) == 0);
+
+		test_assert(bigrat_sub(&diff, x, y) == 0);
+		test_assert(bigrat_eq(&eq, diff, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(diff);
+		bigrat_del(expected);
+	}
+	{
+		bigrat x, y, diff, expected;
+		bool eq;
+		test_assert(bigrat_from_digit(&x, 8, 3) == 0);
+		test_assert(bigrat_from_digit(&y, 7, 5) == 0);
+		test_assert(bigrat_from_digit(&expected, 19, 15) == 0);
+
+		test_assert(bigrat_sub(&diff, x, y) == 0);
+		test_assert(bigrat_eq(&eq, diff, expected) == 0);
+		test_assert(eq);
+
+		bigrat_del(x);
+		bigrat_del(y);
+		bigrat_del(diff);
+		bigrat_del(expected);
+	}
+}
+
 int
 main(int argc, char **argv)
 {
@@ -5351,6 +5889,8 @@ main(int argc, char **argv)
 	test_bigrat_gt();
 	test_bigrat_le();
 	test_bigrat_ge();
+	test_bigrat_add();
+	test_bigrat_sub();
 
 	printf("successes: %d\n", nsuccesses);
 	printf("failures: %d\n", nfailures);
