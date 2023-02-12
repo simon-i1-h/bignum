@@ -7,6 +7,9 @@
 
 /* dgtvec */
 
+/*
+ * uint32_t型の値を要素する可変長配列。
+ */
 typedef struct dgtvec {
 	uint32_t *digits;
 	size_t ndigits;
@@ -23,6 +26,10 @@ uint32_t dgtvec_pop(dgtvec *v);
 /* bignat */
 
 /*
+ * dgtvecに基づく、(0を含む)自然数型。dgtvecの最初の要素を最下位の桁と
+ * して、より後方の要素ほど大きい桁を表す。2の32乗進数と考えると分かり
+ * やすい。
+ *
  * 先行0は常にすべて取り除かれる。特に、値0は要素数0として表現されるこ
  * とに注意。
  */
@@ -53,6 +60,9 @@ int bignat_gcd(bignat *gcd, bignat x, bignat y);
 /* bigint */
 
 /*
+ * bignatに基づく整数型。bignatと符号変数で整数を表す。符号変数の符号
+ * でbigintの符号を表す。
+ *
  * signは-1か0か1となる。absが0であればsignは0を、absが0以外であれば
  * signも0以外を指定する必要がある。
  */
@@ -86,6 +96,9 @@ int bigint_diveuc(bigint *quot, bigint *rem, bigint x, bigint y);
 /* bigrat */
 
 /*
+ * bigintに基づく有理数型。2つのbigintをそれぞれ分子と分母として有理数
+ * を表す。
+ *
  * denoは0にできない。
  *
  * numeとdenoは互いに素になるように正規化される。また、denoは正の整数
