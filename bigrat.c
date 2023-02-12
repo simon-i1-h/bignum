@@ -363,3 +363,54 @@ bigrat_sub(bigrat *diff, bigrat x, bigrat y)
 	y.nume.sign *= -1;
 	return bigrat_add(diff, x, y);
 }
+
+int
+bigrat_mul(bigrat *prod, bigrat x, bigrat y)
+{
+	int err;
+	bigint nume_prod = bigint_new_zero();
+	bigint deno_prod = bigint_new_zero();
+
+	err = bigint_mul(&nume_prod, x.nume, y.nume);
+	if (err != 0) {
+		goto fail;
+	}
+
+	err = bigint_mul(&deno_prod, x.deno, y.deno);
+	if (err != 0) {
+		goto fail;
+	}
+
+	bigrat tmp_prod = (bigrat){
+		.nume=nume_prod,
+		.deno=deno_prod
+	};
+	err = bigrat_norm(&tmp_prod);
+	if (err != 0) {
+		bigrat_del(tmp_prod);
+		return err;
+	}
+
+	*prod = tmp_prod;
+	return 0;
+
+fail:
+	bigint_del(nume_prod);
+	bigint_del(deno_prod);
+	return err;
+}
+
+int
+bigrat_div(bigrat *quot, bigrat x, bigrat y)
+{
+	if (y.nume.sign == 0) {
+		return EDOM;
+	}
+
+	bigrat inv_y = (bigrat){
+		.nume=y.deno,
+		.deno=y.nume
+	};
+
+	return bigrat_mul(quot, x, inv_y);
+}

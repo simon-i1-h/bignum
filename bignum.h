@@ -114,5 +114,7 @@ int bigrat_ge(bool *ge, bigrat x, bigrat y);
 
 int bigrat_add(bigrat *sum, bigrat x, bigrat y);
 int bigrat_sub(bigrat *diff, bigrat x, bigrat y);
+int bigrat_mul(bigrat *prod, bigrat x, bigrat y);
+int bigrat_div(bigrat *quot, bigrat x, bigrat y);
 
 #endif /* BIGNUM_H */
