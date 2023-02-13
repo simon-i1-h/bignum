@@ -130,4 +130,6 @@ int bigrat_sub(bigrat *diff, bigrat x, bigrat y);
 int bigrat_mul(bigrat *prod, bigrat x, bigrat y);
 int bigrat_div(bigrat *quot, bigrat x, bigrat y);
 
+int bigrat_trn(bigrat *int_, bigrat *frac, bigrat rat);
+
 #endif /* BIGNUM_H */

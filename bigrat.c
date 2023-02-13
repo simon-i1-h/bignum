@@ -414,3 +414,42 @@ bigrat_div(bigrat *quot, bigrat x, bigrat y)
 
 	return bigrat_mul(quot, x, inv_y);
 }
+
+int
+bigrat_trn(bigrat *int_, bigrat *frac, bigrat rat)
+{
+	int err;
+	bigint quot = bigint_new_zero();
+	bigint rem = bigint_new_zero();
+
+	err = bigint_divtrn(&quot, &rem, rat.nume, rat.deno);
+	if (err != 0) {
+		goto fail;
+	}
+
+	bigrat tmp_frac;
+	err = bigrat_init(&tmp_frac,
+			  rem.sign, rem.abs.digits, rem.abs.ndigits,
+			  rat.deno.sign, rat.deno.abs.digits, rat.deno.abs.ndigits);
+	if (err != 0) {
+		goto fail;
+	}
+
+	bigrat tmp_int;
+	err = bigrat_sub(&tmp_int, rat, tmp_frac);
+	if (err != 0) {
+		bigrat_del(tmp_frac);
+		goto fail;
+	}
+
+	bigint_del(quot);
+	bigint_del(rem);
+	*int_ = tmp_int;
+	*frac = tmp_frac;
+	return 0;
+
+fail:
+	bigint_del(quot);
+	bigint_del(rem);
+	return err;
+}

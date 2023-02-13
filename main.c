@@ -6241,6 +6241,182 @@ test_bigrat_div(void)
 	}
 }
 
+void
+test_bigrat_trn(void)
+{
+	{
+		bigrat rat, int_, frac, expected_i, expected_f;
+		bool eq;
+		test_assert(bigrat_from_digit(&rat, 0, 1) == 0);
+		test_assert(bigrat_from_digit(&expected_i, 0, 1) == 0);
+		test_assert(bigrat_from_digit(&expected_f, 0, 1) == 0);
+
+		test_assert(bigrat_trn(&int_, &frac, rat) == 0);
+		test_assert(bigrat_eq(&eq, int_, expected_i) == 0);
+		test_assert(eq);
+		test_assert(bigrat_eq(&eq, frac, expected_f) == 0);
+		test_assert(eq);
+
+		bigrat_del(rat);
+		bigrat_del(int_);
+		bigrat_del(frac);
+		bigrat_del(expected_i);
+		bigrat_del(expected_f);
+	}
+	{
+		bigrat rat, int_, frac, expected_i, expected_f;
+		bool eq;
+		test_assert(bigrat_from_digit(&rat, 1, 1) == 0);
+		test_assert(bigrat_from_digit(&expected_i, 1, 1) == 0);
+		test_assert(bigrat_from_digit(&expected_f, 0, 1) == 0);
+
+		test_assert(bigrat_trn(&int_, &frac, rat) == 0);
+		test_assert(bigrat_eq(&eq, int_, expected_i) == 0);
+		test_assert(eq);
+		test_assert(bigrat_eq(&eq, frac, expected_f) == 0);
+		test_assert(eq);
+
+		bigrat_del(rat);
+		bigrat_del(int_);
+		bigrat_del(frac);
+		bigrat_del(expected_i);
+		bigrat_del(expected_f);
+	}
+	{
+		bigrat rat, int_, frac, expected_i, expected_f;
+		bool eq;
+		test_assert(bigrat_from_digit(&rat, 2, 1) == 0);
+		test_assert(bigrat_from_digit(&expected_i, 2, 1) == 0);
+		test_assert(bigrat_from_digit(&expected_f, 0, 1) == 0);
+
+		test_assert(bigrat_trn(&int_, &frac, rat) == 0);
+		test_assert(bigrat_eq(&eq, int_, expected_i) == 0);
+		test_assert(eq);
+		test_assert(bigrat_eq(&eq, frac, expected_f) == 0);
+		test_assert(eq);
+
+		bigrat_del(rat);
+		bigrat_del(int_);
+		bigrat_del(frac);
+		bigrat_del(expected_i);
+		bigrat_del(expected_f);
+	}
+	{
+		bigrat rat, int_, frac, expected_i, expected_f;
+		bool eq;
+		test_assert(bigrat_from_digit(&rat, 1, 2) == 0);
+		test_assert(bigrat_from_digit(&expected_i, 0, 1) == 0);
+		test_assert(bigrat_from_digit(&expected_f, 1, 2) == 0);
+
+		test_assert(bigrat_trn(&int_, &frac, rat) == 0);
+		test_assert(bigrat_eq(&eq, int_, expected_i) == 0);
+		test_assert(eq);
+		test_assert(bigrat_eq(&eq, frac, expected_f) == 0);
+		test_assert(eq);
+
+		bigrat_del(rat);
+		bigrat_del(int_);
+		bigrat_del(frac);
+		bigrat_del(expected_i);
+		bigrat_del(expected_f);
+	}
+	{
+		bigrat rat, int_, frac, expected_i, expected_f;
+		bool eq;
+		test_assert(bigrat_from_digit(&rat, 7, 2) == 0);
+		test_assert(bigrat_from_digit(&expected_i, 3, 1) == 0);
+		test_assert(bigrat_from_digit(&expected_f, 1, 2) == 0);
+
+		test_assert(bigrat_trn(&int_, &frac, rat) == 0);
+		test_assert(bigrat_eq(&eq, int_, expected_i) == 0);
+		test_assert(eq);
+		test_assert(bigrat_eq(&eq, frac, expected_f) == 0);
+		test_assert(eq);
+
+		bigrat_del(rat);
+		bigrat_del(int_);
+		bigrat_del(frac);
+		bigrat_del(expected_i);
+		bigrat_del(expected_f);
+	}
+	{
+		bigrat rat, int_, frac, expected_i, expected_f;
+		bool eq;
+		test_assert(bigrat_from_digit(&rat, -7, 2) == 0);
+		test_assert(bigrat_from_digit(&expected_i, -3, 1) == 0);
+		test_assert(bigrat_from_digit(&expected_f, -1, 2) == 0);
+
+		test_assert(bigrat_trn(&int_, &frac, rat) == 0);
+		test_assert(bigrat_eq(&eq, int_, expected_i) == 0);
+		test_assert(eq);
+		test_assert(bigrat_eq(&eq, frac, expected_f) == 0);
+		test_assert(eq);
+
+		bigrat_del(rat);
+		bigrat_del(int_);
+		bigrat_del(frac);
+		bigrat_del(expected_i);
+		bigrat_del(expected_f);
+	}
+	{
+		bigrat rat, int_, frac, expected_i, expected_f;
+		bool eq;
+		test_assert(bigrat_from_digit(&rat, 2, 7) == 0);
+		test_assert(bigrat_from_digit(&expected_i, 0, 1) == 0);
+		test_assert(bigrat_from_digit(&expected_f, 2, 7) == 0);
+
+		test_assert(bigrat_trn(&int_, &frac, rat) == 0);
+		test_assert(bigrat_eq(&eq, int_, expected_i) == 0);
+		test_assert(eq);
+		test_assert(bigrat_eq(&eq, frac, expected_f) == 0);
+		test_assert(eq);
+
+		bigrat_del(rat);
+		bigrat_del(int_);
+		bigrat_del(frac);
+		bigrat_del(expected_i);
+		bigrat_del(expected_f);
+	}
+	{
+		bigrat rat, int_, frac, expected_i, expected_f;
+		bool eq;
+		test_assert(bigrat_from_digit(&rat, -2, 7) == 0);
+		test_assert(bigrat_from_digit(&expected_i, 0, 1) == 0);
+		test_assert(bigrat_from_digit(&expected_f, -2, 7) == 0);
+
+		test_assert(bigrat_trn(&int_, &frac, rat) == 0);
+		test_assert(bigrat_eq(&eq, int_, expected_i) == 0);
+		test_assert(eq);
+		test_assert(bigrat_eq(&eq, frac, expected_f) == 0);
+		test_assert(eq);
+
+		bigrat_del(rat);
+		bigrat_del(int_);
+		bigrat_del(frac);
+		bigrat_del(expected_i);
+		bigrat_del(expected_f);
+	}
+	{
+		bigrat rat, int_, frac, expected_i, expected_f;
+		bool eq;
+		test_assert(bigrat_from_digit(&rat, -18, 5) == 0);
+		test_assert(bigrat_from_digit(&expected_i, -3, 1) == 0);
+		test_assert(bigrat_from_digit(&expected_f, -3, 5) == 0);
+
+		test_assert(bigrat_trn(&int_, &frac, rat) == 0);
+		test_assert(bigrat_eq(&eq, int_, expected_i) == 0);
+		test_assert(eq);
+		test_assert(bigrat_eq(&eq, frac, expected_f) == 0);
+		test_assert(eq);
+
+		bigrat_del(rat);
+		bigrat_del(int_);
+		bigrat_del(frac);
+		bigrat_del(expected_i);
+		bigrat_del(expected_f);
+	}
+}
+
 int
 main(int argc, char **argv)
 {
@@ -6313,6 +6489,7 @@ main(int argc, char **argv)
 	test_bigrat_sub();
 	test_bigrat_mul();
 	test_bigrat_div();
+	test_bigrat_trn();
 
 	printf("successes: %d\n", nsuccesses);
 	printf("failures: %d\n", nfailures);
